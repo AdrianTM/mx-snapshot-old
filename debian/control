@@ -1,0 +1,14 @@
+Source: mx-snapshot
+Section: admin
+Priority: optional
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Build-Depends: qt4-qmake,
+	debhelper (>=7.0.50~)
+Standards-Version: 3.9.5
+Vcs-Git: git://github.com/AdrianTM/mx-snapshot
+
+Package: mx-snapshot
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, mx-viewer
+Description: MX Snapshot
+ MX Snapshot is a tool used for creating a live-CD from the running system.
