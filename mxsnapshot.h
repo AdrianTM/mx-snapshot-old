@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QTimer>
+#include <QSettings>
 
 #include <QDir>
 #include <QTime>
@@ -51,8 +52,9 @@ public:
 
     QString getCmdOut(QString cmd);
     QString getVersion(QString name);
-    void setup();
+    QSettings settings;
 
+    QFile config_file;
     QDir error_log;
     QDir work_dir;
     QDir snapshot_dir;
@@ -69,20 +71,36 @@ public:
     QString edit_boot_menu;
     QString iso_dir;
     QDir lib_mod_dir;
+    QFile text_editor;
+    QFile gui_editor;
     QDir ata_dir;
+    QString kernel_used;
+    QString kernels_avail;
+    QString save_message;
+
+    void setup();
+    void listDiskSpace();
+    QString getSnapshotCount();
+    QString getSnapshotSize();
+    void checkEditor();
+    void installLiveInitMx();
+    bool checkInstalled(QString package);
+    void checkDirectories();
+    void detectKernels();
+    void checkSaveWork();
 
 
 public slots:
     void procStart();
     void procTime();
-    void procDone(int exitCode);
     void setConnections(QTimer* timer, QProcess* proc);
-    void onStdoutAvailable();
+    void onStdoutAvailable();    
 
 private slots:
     void on_buttonStart_clicked();
     void on_buttonAbout_clicked();
-    void on_buttonHelp_clicked();
+    void on_buttonHelp_clicked();    
+    void on_buttonSelectWork_clicked();
 
 private:
     Ui::mxsnapshot *ui;    
