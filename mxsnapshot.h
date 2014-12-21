@@ -64,7 +64,7 @@ public:
     QString snapshot_persist;
     QString kernel_image;
     QString initrd_image;
-    QTime stamp;
+    QString stamp;
     QString snapshot_basename;
     QString make_md5sum;
     QString make_isohybrid;
@@ -86,13 +86,18 @@ public:
     void installLiveInitMx();
     bool checkInstalled(QString package);
     void checkDirectories();
+    void checkInitrdModules();
     void detectKernels();
     void checkSaveWork();
-
+    void openInitrd(QString file, QString initrd_dir);
+    void closeInitrd(QString initrd_dir, QString file);
+    void copyModules(QString to, QString form);
+    void copyNewIso();
 
 public slots:
     void procStart();
     void procTime();
+    void procDone(int);
     void setConnections(QTimer* timer, QProcess* proc);
     void onStdoutAvailable();    
 

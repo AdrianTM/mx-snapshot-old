@@ -90,7 +90,7 @@ QString mxsnapshot::getCmdOut(QString cmd)
     proc->setReadChannel(QProcess::StandardOutput);
     proc->setReadChannelMode(QProcess::MergedChannels);
     proc->waitForFinished(-1);
-    return proc->readAllStandardOutput().trimmed();
+    return proc->readAllStandardOutput().trimmed();    
 }
 
 // Get version of the program
@@ -100,6 +100,30 @@ QString mxsnapshot::getVersion(QString name)
     return getCmdOut(cmd);
 }
 
+// return number of snapshots in snapshot_dir
+QString mxsnapshot::getSnapshotCount()
+{
+    if (snapshot_dir.exists()) {
+        QString cmd = QString("ls \"%1\"/*.iso | wc -l").arg(snapshot_dir.absolutePath());
+        return getCmdOut(cmd);
+    }
+    return "0";
+}
+
+// return the size of the work folder
+QString mxsnapshot::getSnapshotSize()
+{
+    QString size;
+    if (snapshot_dir.exists()) {
+        QString cmd = QString("du -sh \"%1\" | awk '{print $1}'").arg(snapshot_dir.absolutePath());
+        size = getCmdOut(cmd);
+        if (size == "" ) {
+            return "0";
+        }
+        return size;
+    }
+    return "0";
+}
 
 // List the info regarding the free space on drives
 void mxsnapshot::listDiskSpace()
@@ -116,7 +140,6 @@ void mxsnapshot::listDiskSpace()
                                        "      by removing previous snapshots and saved copies:\n"
                                        "      %1 snapshots are taking up %2 of disk space.").arg(getSnapshotCount()).arg(getSnapshotSize()));
 }
-
 
 // Checks if the editor listed in the config file is present
 void mxsnapshot::checkEditor()
@@ -145,20 +168,16 @@ bool mxsnapshot::checkInstalled(QString package)
 void mxsnapshot::installLiveInitMx()
 {
     QEventLoop loop;
-    setCursor(QCursor(Qt::BusyCursor));
     if (proc->state() != QProcess::NotRunning){
         proc->kill();
     }
-    proc->start("apt-get update");
     ui->outputBox->clear();
     setConnections(timer, proc);
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
+    proc->start("apt-get update");
     loop.exec();
     proc->start("apt-get install live-init-mx");
     loop.exec();
-    timer->stop();
-    ui->progressBar->setValue(100);
-    setCursor(QCursor(Qt::ArrowCursor));
     if (proc->exitCode() != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Count not install live-init-mx"));
     }
@@ -206,18 +225,146 @@ void mxsnapshot::checkSaveWork()
     }
 }
 
-//// sync process events ////
-
-void mxsnapshot::procStart() {
-    timer->start(100);
+void mxsnapshot::checkInitrdModules()
+{
+    if (!initrd_modules_file.exists()) {
+        QString msg = tr("Could not find list of modules to put into the initrd") + "/n"\
+            + tr("Missing file:") + " " + initrd_modules_file.fileName();
+        QMessageBox::critical(0, tr("Error"), msg);
+        qApp->exit(2);
+    }
 }
 
-void mxsnapshot::procTime() {
+void mxsnapshot::openInitrd(QString file, QString initrd_dir)
+{
+    QString cmd = "mkdir -p " + initrd_dir;
+    system(cmd.toAscii());
+    cmd = "chmod a+rx " + initrd_dir;
+    system(cmd.toAscii());
+    QDir::setCurrent(initrd_dir);
+    cmd = QString("gunzip -c %1 | cpio -idum").arg(file);
+    system(cmd.toAscii());
+}
+
+void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
+{
+    QDir::setCurrent(initrd_dir);
+    qDebug() << "initrd_dir" << initrd_dir;
+    QString cmd = "(find . | cpio -o -H newc --owner root:root | gzip -9) >" + file;
+    qDebug() << "cmd=" << cmd;
+    system(cmd.toAscii());
+    cmd = "rm -r " + initrd_dir;
+    qDebug() << "cmdrm=" << cmd;
+    system(cmd.toAscii());
+}
+
+// Copying the new-iso filesystem
+void mxsnapshot::copyNewIso()
+{
+    QEventLoop loop;
+    if (proc->state() != QProcess::NotRunning){
+        proc->kill();
+    }
+    ui->outputBox->clear();
+    setConnections(timer, proc);
+    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
+
+    ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
+    QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";
+    proc->start(cmd.toAscii());
+    loop.exec();
+
+    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
+    proc->start(cmd.toAscii());
+    loop.exec();
+
+    QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");
+    openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
+
+    QString mod_dir = initrd_dir + "/lib/modules";
+    cmd = "rm -rf " + mod_dir + "/*";
+    system(cmd.toAscii());
+
+    copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
+
+    closeInitrd(initrd_dir, work_dir.absolutePath() + "/new-iso/antiX/initrd.gz");
+}
+
+// copyModules(mod_dir/kernel_used /lib/modules/kernel_used)
+void mxsnapshot::copyModules(QString to, QString from)
+{
+    QStringList mod_list; // list of modules
+    QString expr; // expression list for find
+
+    // read list of modules from file
+    if (initrd_modules_file.open(QIODevice::ReadOnly)) {
+        QTextStream in(&initrd_modules_file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (line != "") {
+                mod_list.append(line);
+            }
+        }
+        initrd_modules_file.close();
+    } else {
+        QMessageBox::critical(0, tr("Error"), tr("Cound not open file: ") + initrd_modules_file.fileName());
+        qApp->exit(2);
+    }
+
+    // modify module names for find operation
+    for (QStringList::Iterator it = mod_list.begin(); it != mod_list.end(); ++it) {
+        QString mod_name;
+        mod_name = *it;
+        mod_name.replace(QRegExp("[_-]"), "[_-]"); // replace _ or - with [_-]
+        mod_name.replace(QRegExp("$"), ".ko"); // add .ko at end of the name
+        *it = mod_name;
+    }
+    expr = mod_list.join(" -o -name ");
+    expr = "-name " + expr;
+
+    QDir dir;
+    dir.mkpath(to);
+
+    // find modules from list in "from" directory
+    QString cmd = QString("find %1 %2").arg(from).arg(expr);
+    QString files = getCmdOut(cmd);
+    QStringList file_list = files.split("\n");
+    ui->outputLabel->setText(tr("Copying %1 modules into the initrd").arg(file_list.count()));
+
+    // copy modules to destination
+    for (QStringList::Iterator it = file_list.begin(); it != file_list.end(); ++it) {
+        QString sub_dir, file_name;
+        cmd = QString("basename $(dirname %1)").arg(*it);
+        sub_dir = to + "/" + getCmdOut(cmd.toAscii());
+        dir.mkpath(sub_dir);
+        cmd = QString("basename %1").arg(*it);
+        file_name = getCmdOut(cmd.toAscii());
+        QFile::copy(*it, sub_dir + "/" + file_name);
+    }
+}
+
+//// sync process events ////
+
+void mxsnapshot::procStart()
+{
+    timer->start(100);    
+    setCursor(QCursor(Qt::BusyCursor));
+}
+
+void mxsnapshot::procTime()
+{
     int i = ui->progressBar->value() + 1;
     if (i > 100) {
         i = 0;
     }
     ui->progressBar->setValue(i);
+}
+
+void mxsnapshot::procDone(int)
+{
+    timer->stop();
+    ui->progressBar->setValue(100);
+    setCursor(QCursor(Qt::ArrowCursor));
 }
 
 // set proc and timer connections
@@ -230,31 +377,7 @@ void mxsnapshot::setConnections(QTimer* timer, QProcess* proc)
     disconnect(proc, SIGNAL(readyReadStandardOutput()), 0, 0);    
     connect(proc, SIGNAL(readyReadStandardOutput()), SLOT(onStdoutAvailable()));
     disconnect(proc, SIGNAL(finished(int)), 0, 0);
-}
-
-// return number of snapshots in snapshot_dir
-QString mxsnapshot::getSnapshotCount()
-{
-    if (snapshot_dir.exists()) {
-        QString cmd = QString("ls \"%1\"/*.iso | wc -l").arg(snapshot_dir.absolutePath());
-        return getCmdOut(cmd);
-    }
-    return "0";
-}
-
-// return the size of the work folder
-QString mxsnapshot::getSnapshotSize()
-{
-    QString size;
-    if (snapshot_dir.exists()) {
-        QString cmd = QString("du -sh \"%1\" | awk '{print $1}'").arg(snapshot_dir.absolutePath());
-        size = getCmdOut(cmd);
-        if (size == "" ) {
-            return "0";
-        }
-        return size;
-    }
-    return "0";
+    connect(proc, SIGNAL(finished(int)), SLOT(procDone(int)));
 }
 
 //// slots ////
@@ -288,6 +411,7 @@ void mxsnapshot::on_buttonStart_clicked()
         checkDirectories();
         checkSaveWork();
         detectKernels();
+        checkInitrdModules();
         this->hide();
         QString msg = QString(tr("Snapshot will use the following settings.*\n\n"
                                  "* Working directory:") + "\n    %1\n" +
@@ -301,14 +425,15 @@ void mxsnapshot::on_buttonStart_clicked()
         if (msgBox.exec() == QMessageBox::Cancel) {
             qApp->quit();
         }
-        int ret = QMessageBox::question(this, tr("Final chance"),
+        int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
                               tr("It will take some time to finish, depending on the size of the installed system and the capacity of your computer.") + "\n\n" +
                               tr("OK to start?"), QMessageBox::Ok | QMessageBox::Cancel);
-        if (ret == QMessageBox::Cancel) {
+        if (ans == QMessageBox::Cancel) {
             qApp->quit();
         }
         this->show();
+        copyNewIso();
 
     // on output page
     } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
