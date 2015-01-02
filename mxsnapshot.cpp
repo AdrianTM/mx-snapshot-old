@@ -57,7 +57,7 @@ void mxsnapshot::setup()
     proc->setReadChannelMode(QProcess::MergedChannels);
     ui->stackedWidget->setCurrentIndex(0);
     ui->buttonCancel->setEnabled(true);
-    ui->buttonStart->setEnabled(true);        
+    ui->buttonStart->setEnabled(true);
 
     // Load settings or use the default value
     error_log = settings.value("error_log", "/var/log/snapshot_errors.log").toString();
@@ -84,13 +84,25 @@ void mxsnapshot::setup()
 
 // Util function
 QString mxsnapshot::getCmdOut(QString cmd)
-{
+{    
+    QEventLoop loop;
     proc = new QProcess(this);
+    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
     proc->start("/bin/bash", QStringList() << "-c" << cmd);
-    proc->setReadChannel(QProcess::StandardOutput);
-    proc->setReadChannelMode(QProcess::MergedChannels);
-    proc->waitForFinished(-1);
-    return proc->readAllStandardOutput().trimmed();    
+    loop.exec();
+    return proc->readAllStandardOutput().trimmed();
+}
+
+
+QString mxsnapshot::getCmdOut2(QString cmd)
+{
+    QEventLoop loop;
+    proc = new QProcess(this);
+    setConnections(timer, proc);
+    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
+    proc->start("/bin/bash", QStringList() << "-c" << cmd);
+    loop.exec();
+    return proc->readAllStandardOutput().trimmed();
 }
 
 // Get version of the program
@@ -101,28 +113,27 @@ QString mxsnapshot::getVersion(QString name)
 }
 
 // return number of snapshots in snapshot_dir
-QString mxsnapshot::getSnapshotCount()
+int mxsnapshot::getSnapshotCount()
 {
     if (snapshot_dir.exists()) {
-        QString cmd = QString("ls \"%1\"/*.iso | wc -l").arg(snapshot_dir.absolutePath());
-        return getCmdOut(cmd);
+        QFileInfoList list = snapshot_dir.entryInfoList(QStringList("*.iso"), QDir::Files);
+        return list.size();
     }
-    return "0";
+    return 0;
 }
 
 // return the size of the work folder
-QString mxsnapshot::getSnapshotSize()
+int mxsnapshot::getSnapshotSize()
 {
     QString size;
     if (snapshot_dir.exists()) {
         QString cmd = QString("du -sh \"%1\" | awk '{print $1}'").arg(snapshot_dir.absolutePath());
         size = getCmdOut(cmd);
-        if (size == "" ) {
-            return "0";
-        }
-        return size;
+        if (size != "" ) {
+            return size.toInt();
+        }        
     }
-    return "0";
+    return 0;
 }
 
 // List the info regarding the free space on drives
@@ -138,7 +149,7 @@ void mxsnapshot::listDiskSpace()
     ui->labelDiskSpaceHelp->setText(tr("It is recommended that free space ('Avail') be at least twice as big as the total installed system size ('Used').\n\n"
                                        "      If necessary, you can create more available space\n"
                                        "      by removing previous snapshots and saved copies:\n"
-                                       "      %1 snapshots are taking up %2 of disk space.").arg(getSnapshotCount()).arg(getSnapshotSize()));
+                                       "      %1 snapshots are taking up %2 of disk space.").arg(QString::number(getSnapshotCount())).arg(QString::number(getSnapshotSize())));
 }
 
 // Checks if the editor listed in the config file is present
@@ -249,41 +260,30 @@ void mxsnapshot::openInitrd(QString file, QString initrd_dir)
 void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
 {
     QDir::setCurrent(initrd_dir);
-    qDebug() << "initrd_dir" << initrd_dir;
     QString cmd = "(find . | cpio -o -H newc --owner root:root | gzip -9) >" + file;
-    qDebug() << "cmd=" << cmd;
     system(cmd.toAscii());
     cmd = "rm -r " + initrd_dir;
-    qDebug() << "cmdrm=" << cmd;
-    system(cmd.toAscii());
+    getCmdOut2(cmd);
 }
 
 // Copying the new-iso filesystem
 void mxsnapshot::copyNewIso()
 {
-    QEventLoop loop;
-    if (proc->state() != QProcess::NotRunning){
-        proc->kill();
-    }
     ui->outputBox->clear();
-    setConnections(timer, proc);
-    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
 
     ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
-    QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";
-    proc->start(cmd.toAscii());
-    loop.exec();
+    QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";    
+    getCmdOut2(cmd);
 
     cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
-    proc->start(cmd.toAscii());
-    loop.exec();
+    getCmdOut2(cmd);
 
-    QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");
+    QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");    
     openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
-    cmd = "rm -rf " + mod_dir + "/*";
-    system(cmd.toAscii());
+    cmd = "rm -rf " + mod_dir + "/*";        
+    getCmdOut2(cmd);
 
     copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
 
@@ -338,16 +338,35 @@ void mxsnapshot::copyModules(QString to, QString from)
         sub_dir = to + "/" + getCmdOut(cmd.toAscii());
         dir.mkpath(sub_dir);
         cmd = QString("basename %1").arg(*it);
-        file_name = getCmdOut(cmd.toAscii());
+        file_name = getCmdOut2(cmd.toAscii());
         QFile::copy(*it, sub_dir + "/" + file_name);
     }
+}
+
+void mxsnapshot::copyFileSystem()
+{
+    QEventLoop loop;
+    ui->outputBox->clear();
+    setConnections(timer, proc);
+    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
+
+    ui->outputLabel->setText(tr("Copying filesystem..."));
+    QDir::setCurrent("/");
+    QString cmd = QString("rsync -av / %1/new-squashfs/ --delete --exclude=\"%1\" --exclude=\"%2\" --exclude-from=\"%3\"")\
+            .arg(work_dir.absolutePath()).arg(snapshot_dir.absolutePath()).arg(snapshot_excludes.fileName());
+    proc->start(cmd.toAscii());
+    loop.exec();
+
+    // create fstab if it doesn't exist
+    cmd = QString("touch %1/new-squashfs/etc/fstab").arg(work_dir.absolutePath());
+    system(cmd.toAscii());
 }
 
 //// sync process events ////
 
 void mxsnapshot::procStart()
 {
-    timer->start(100);    
+    timer->start(100);
     setCursor(QCursor(Qt::BusyCursor));
 }
 
@@ -374,7 +393,7 @@ void mxsnapshot::setConnections(QTimer* timer, QProcess* proc)
     connect(timer, SIGNAL(timeout()), SLOT(procTime()));
     disconnect(proc, SIGNAL(started()), 0, 0);
     connect(proc, SIGNAL(started()), SLOT(procStart()));
-    disconnect(proc, SIGNAL(readyReadStandardOutput()), 0, 0);    
+    disconnect(proc, SIGNAL(readyReadStandardOutput()), 0, 0);
     connect(proc, SIGNAL(readyReadStandardOutput()), SLOT(onStdoutAvailable()));
     disconnect(proc, SIGNAL(finished(int)), 0, 0);
     connect(proc, SIGNAL(finished(int)), SLOT(procDone(int)));
@@ -386,8 +405,7 @@ void mxsnapshot::setConnections(QTimer* timer, QProcess* proc)
 void mxsnapshot::onStdoutAvailable()
 {
     QByteArray output = proc->readAllStandardOutput();
-    QString out = ui->outputBox->toPlainText() + QString::fromUtf8(output);
-    ui->outputBox->setPlainText(out);
+    ui->outputBox->insertPlainText(output);
     QScrollBar *sb = ui->outputBox->verticalScrollBar();
     sb->setValue(sb->maximum());
 }
@@ -397,7 +415,7 @@ void mxsnapshot::onStdoutAvailable()
 void mxsnapshot::on_buttonStart_clicked()
 {
     // on first page
-    if (ui->stackedWidget->currentIndex() == 0) {        
+    if (ui->stackedWidget->currentIndex() == 0) {
         ui->buttonStart->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(1);
         if (edit_boot_menu == "yes") {
@@ -434,13 +452,14 @@ void mxsnapshot::on_buttonStart_clicked()
         }
         this->show();
         copyNewIso();
+        copyFileSystem();
 
     // on output page
     } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
         ui->stackedWidget->setCurrentIndex(0);
         // restore Start button
         ui->buttonStart->setText(tr("Start"));
-        ui->buttonStart->setIcon(QIcon("/usr/share/mx-snapshot/icons/dialog-ok.png"));        
+        ui->buttonStart->setIcon(QIcon("/usr/share/mx-snapshot/icons/dialog-ok.png"));
         ui->outputBox->clear();
     } else {
         qApp->quit();

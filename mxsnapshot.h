@@ -51,6 +51,7 @@ public:
     ~mxsnapshot();
 
     QString getCmdOut(QString cmd);
+    QString getCmdOut2(QString cmd);
     QString getVersion(QString name);
     QSettings settings;
 
@@ -80,8 +81,8 @@ public:
 
     void setup();
     void listDiskSpace();
-    QString getSnapshotCount();
-    QString getSnapshotSize();
+    int getSnapshotCount();
+    int getSnapshotSize();
     void checkEditor();
     void installLiveInitMx();
     bool checkInstalled(QString package);
@@ -93,6 +94,7 @@ public:
     void closeInitrd(QString initrd_dir, QString file);
     void copyModules(QString to, QString form);
     void copyNewIso();
+    void copyFileSystem();
 
 public slots:
     void procStart();
