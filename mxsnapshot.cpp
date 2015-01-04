@@ -214,7 +214,7 @@ void mxsnapshot::checkDirectories()
     QString path2 = work_dir.absolutePath() + "/new-squashfs";
     //  Remove folders if save_work = "no"
     if (save_work == "no") {
-        QString cmd = "rm -r " + path1 + " " + path2 + " 2>&1";
+        QString cmd = "rm -r " + path1 + " " + path2 + " 2>/dev/null";
         system(cmd.toAscii());
     }
     work_dir.mkpath(path1);
@@ -441,11 +441,11 @@ void mxsnapshot::cleanUp() {
         QDir::setCurrent("/");
         ui->outputLabel->setText(tr("Cleaning..."));
         setConnections(timer, proc);
-        getCmdOut2("rm -r " + work_dir.absolutePath() + "/new-iso");
-        getCmdOut2("rm -r " + work_dir.absolutePath() + "/new-squashfs");
+        getCmdOut2("rm -r " + work_dir.absolutePath() + "/new-iso 2>/dev/null");
+        getCmdOut2("rm -r " + work_dir.absolutePath() + "/new-squashfs 2>/dev/null");
     } else {
         QDir::setCurrent(work_dir.absolutePath());
-        system("rm new-iso/antiX/linuxfs 2>&1");
+        system("rm new-iso/antiX/linuxfs 2>/dev/null");
     }
 
     if (snapshot_persist == "yes") {
