@@ -78,11 +78,12 @@ void mxsnapshot::setup()
     text_editor.setFileName(settings.value("text_editor", "/usr/bin/nano").toString());
     gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/geany").toString());
     ata_dir = settings.value("ata_dir", "kernel/drivers/ata").toString();
+    stamp = settings.value("stamp", "datetime").toString();
 
     listDiskSpace();
 }
 
-// Util function
+// Util function for getting bash command output
 QString mxsnapshot::getCmdOut(QString cmd)
 {    
     QEventLoop loop;
@@ -93,7 +94,7 @@ QString mxsnapshot::getCmdOut(QString cmd)
     return proc->readAllStandardOutput().trimmed();
 }
 
-
+// Util function for getting bash command output + updating the progress bar and output
 QString mxsnapshot::getCmdOut2(QString cmd)
 {
     QEventLoop loop;
@@ -162,7 +163,7 @@ void mxsnapshot::checkEditor()
                      "and set the gui_editor variable to the editor of your choice. "
                      "(examples: /usr/bin/gedit, /usr/bin/leafpad)").arg(gui_editor.fileName()).arg(config_file.fileName());
     QMessageBox::critical(0, QString::null, msg);
-    qApp->quit();
+    return qApp->quit();
 }
 
 // Checks if package is installed
@@ -213,7 +214,7 @@ void mxsnapshot::checkDirectories()
     QString path2 = work_dir.absolutePath() + "/new-squashfs";
     //  Remove folders if save_work = "no"
     if (save_work == "no") {
-        QString cmd = "rm -rf " + path1 + path2;
+        QString cmd = "rm -r " + path1 + path2;
         system(cmd.toAscii());
     }
     work_dir.mkpath(path1);
@@ -242,7 +243,7 @@ void mxsnapshot::checkInitrdModules()
         QString msg = tr("Could not find list of modules to put into the initrd") + "/n"\
             + tr("Missing file:") + " " + initrd_modules_file.fileName();
         QMessageBox::critical(0, tr("Error"), msg);
-        qApp->exit(2);
+        return qApp->exit(2);
     }
 }
 
@@ -272,7 +273,7 @@ void mxsnapshot::copyNewIso()
     ui->outputBox->clear();
 
     ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
-    QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";    
+    QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";
     getCmdOut2(cmd);
 
     cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
@@ -282,7 +283,7 @@ void mxsnapshot::copyNewIso()
     openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
-    cmd = "rm -rf " + mod_dir + "/*";        
+    cmd = "rm -r " + mod_dir + "/*";
     getCmdOut2(cmd);
 
     copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
@@ -308,7 +309,7 @@ void mxsnapshot::copyModules(QString to, QString from)
         initrd_modules_file.close();
     } else {
         QMessageBox::critical(0, tr("Error"), tr("Cound not open file: ") + initrd_modules_file.fileName());
-        qApp->exit(2);
+        return qApp->exit(2);
     }
 
     // modify module names for find operation
@@ -362,8 +363,98 @@ void mxsnapshot::copyFileSystem()
     system(cmd.toAscii());
 }
 
-//// sync process events ////
+// Create the output filename
+QString mxsnapshot::getFilename() {
+    if (stamp == "datetime") {
+        return snapshot_basename + "-" + getCmdOut("date +%Y%m%d_%H%M") + ".iso";
+    } else {
+        int n = 1;
+        QString name = snapshot_dir.absolutePath() + "/" + snapshot_basename + QString::number(n) + ".iso";
+        QDir dir;
+        dir.setPath(name);
+        while (dir.exists(dir.absolutePath())) {
+            n++;
+            QString name = snapshot_dir.absolutePath() + "/" + snapshot_basename + QString::number(n) + ".iso";
+            dir.setPath(name);
+        }
+        return dir.absolutePath();
+    }
+}
 
+// removes the directory of the old package-list directories (that use the same basename)
+void mxsnapshot::removeOldPackageDirectory() {
+    QString dir =  work_dir.absolutePath() + "/new-iso/" + snapshot_basename;
+    QString cmd = "rm -r " + dir + "*";
+    getCmdOut2(cmd);
+    ui->outputLabel->setText(tr("Removing old package-list directory: ") + dir);
+}
+
+// make working directory using the base filename
+void mxsnapshot::mkDir(QString filename) {
+    QDir dir;
+    filename.chop(4); //remove ".iso" string
+    dir.setPath(work_dir.absolutePath() + "/new-iso/" + filename);
+    dir.mkpath(dir.absolutePath());
+}
+
+// save package list in working directory
+void mxsnapshot::savePackageList(QString filename) {
+    filename.chop(4); //remove .iso
+    filename = work_dir.absolutePath() + "/new-iso/" + filename + "/package_list";
+    QString cmd = "dpkg -l | grep \"ii\" | awk '{ print $2 }' >" + filename;
+    system(cmd.toAscii());
+}
+
+void mxsnapshot::createIso(QString filename) {
+    // squash the filesystem copy
+    QDir::setCurrent(work_dir.absolutePath());
+    QString cmd = "mksquashfs new-squashfs new-iso/antiX/linuxfs";
+    ui->outputLabel->setText(tr("Squashing filesystem..."));
+    setConnections(timer, proc);
+    getCmdOut2(cmd);
+
+    // create the iso file
+    QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
+    cmd = "genisoimage -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
+    ////ui->outputBox->clear();
+    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
+    setConnections(timer, proc);
+    getCmdOut2(cmd);
+
+    // make it isohybrid
+    if (make_isohybrid == "yes") {
+        ui->outputLabel->setText(tr("Making hybrid iso"));
+        cmd = "isohybrid " + snapshot_dir.absolutePath() + "/" + filename;
+        getCmdOut2(cmd);
+    }
+
+    // make md5sum
+    if (make_md5sum == "yes") {
+        ui->outputLabel->setText(tr("Making md5sum"));
+        cmd = "md5sum " + snapshot_dir.absolutePath() + "/" + filename + " > " + snapshot_dir.absolutePath() + "/" + filename + ".md5";
+        getCmdOut2(cmd);
+    }
+}
+
+void mxsnapshot::cleanUp() {
+    if (save_work == "no") {
+        QDir::setCurrent("/");
+        ui->outputLabel->setText(tr("Cleaning..."));
+        setConnections(timer, proc);
+        getCmdOut2("rm -r " + work_dir.absolutePath());
+    } else {
+        QDir::setCurrent(work_dir.absolutePath());
+        system("rm new-iso/antiX/linuxfs 2>&1");
+    }
+
+    if (snapshot_persist == "yes") {
+        ui->outputLabel->setText(tr("Removing live-init-mx"));
+        setConnections(timer, proc);
+        getCmdOut2("apt-get purge linux-init-mx");
+    }
+}
+
+//// sync process events ////
 void mxsnapshot::procStart()
 {
     timer->start(100);
@@ -431,28 +522,52 @@ void mxsnapshot::on_buttonStart_clicked()
         detectKernels();
         checkInitrdModules();
         this->hide();
+
         QString msg = QString(tr("Snapshot will use the following settings.*\n\n"
-                                 "* Working directory:") + "\n    %1\n" +
-                              tr("* Snapshot directory:") + "\n   %2\n" +
-                              tr("* Kernel to be used:") + "\n    %3\n%4\n-----\n" +
-                              tr("These settings can be changed by exiting and editing") + "\n    %5")\
-                              .arg(work_dir.absolutePath()).arg(snapshot_dir.absolutePath()).arg(kernel_used)\
+                         "* Working directory:") + "\n    %1\n" +
+                      tr("* Snapshot directory:") + "\n   %2\n" +
+                      tr("* Kernel to be used:") + "\n    %3\n%4\n-----\n" +
+                      tr("These settings can be changed by exiting and editing") + "\n    %5")\
+                .arg(work_dir.absolutePath()).arg(snapshot_dir.absolutePath()).arg(kernel_used)\
                 .arg(save_message).arg(config_file.fileName());
-        QMessageBox msgBox(QMessageBox::NoIcon, QString("Settings"), msg, 0 ,this);
+        QMessageBox msgBox(QMessageBox::NoIcon, tr("Settings"), msg, 0 ,this);
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         if (msgBox.exec() == QMessageBox::Cancel) {
-            qApp->quit();
+            return qApp->quit();
         }
         int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
                               tr("It will take some time to finish, depending on the size of the installed system and the capacity of your computer.") + "\n\n" +
                               tr("OK to start?"), QMessageBox::Ok | QMessageBox::Cancel);
         if (ans == QMessageBox::Cancel) {
-            qApp->quit();
+            return qApp->quit();
         }
         this->show();
         copyNewIso();
         copyFileSystem();
+        QString filename = getFilename();
+        removeOldPackageDirectory(); // removes the directory of the old package-list directories (that use the same basename)
+        ui->outputLabel->clear();
+        mkDir(filename);
+        savePackageList(filename);
+
+        if (edit_boot_menu == "yes") {
+            ans = QMessageBox::question(this, tr("Edit Boot Menu"),
+                                  tr("The program will now pause to allow you to edit any files in the work directory. Select Yes to edit the boot menu or select No to bypass this step and continue creating the snapshot."),
+                                     QMessageBox::Yes | QMessageBox::No);
+            if (ans == QMessageBox::Yes) {
+                this->hide();
+                QString cmd = gui_editor.fileName() + " " + work_dir.absolutePath() + "/new-iso/boot/isolinux/isolinux.cfg";
+                qDebug() << "cmd: " << cmd;
+                system(cmd.toAscii());
+                this->show();
+            }
+        }
+        createIso(filename);
+        cleanUp();
+        QMessageBox::information(this, tr("Done"),tr("All finished!"), QMessageBox::Ok);
+        ui->buttonStart->setText(tr("< Back"));
+        ui->buttonStart->setEnabled(true);
 
     // on output page
     } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
@@ -462,7 +577,7 @@ void mxsnapshot::on_buttonStart_clicked()
         ui->buttonStart->setIcon(QIcon("/usr/share/mx-snapshot/icons/dialog-ok.png"));
         ui->outputBox->clear();
     } else {
-        qApp->quit();
+        return qApp->quit();
     }
 }
 

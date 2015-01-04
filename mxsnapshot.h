@@ -95,6 +95,12 @@ public:
     void copyModules(QString to, QString form);
     void copyNewIso();
     void copyFileSystem();
+    QString getFilename();
+    void removeOldPackageDirectory();
+    void mkDir(QString filename);
+    void savePackageList(QString filename);
+    void createIso(QString filename);
+    void cleanUp();
 
 public slots:
     void procStart();
