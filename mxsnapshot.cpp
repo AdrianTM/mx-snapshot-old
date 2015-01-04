@@ -214,7 +214,7 @@ void mxsnapshot::checkDirectories()
     QString path2 = work_dir.absolutePath() + "/new-squashfs";
     //  Remove folders if save_work = "no"
     if (save_work == "no") {
-        QString cmd = "rm -r " + path1 + path2;
+        QString cmd = "rm -r " + path1 + " " + path2 + " 2>&1";
         system(cmd.toAscii());
     }
     work_dir.mkpath(path1);
@@ -441,7 +441,8 @@ void mxsnapshot::cleanUp() {
         QDir::setCurrent("/");
         ui->outputLabel->setText(tr("Cleaning..."));
         setConnections(timer, proc);
-        getCmdOut2("rm -r " + work_dir.absolutePath());
+        getCmdOut2("rm -r " + work_dir.absolutePath() + "/new-iso");
+        getCmdOut2("rm -r " + work_dir.absolutePath() + "/new-squashfs");
     } else {
         QDir::setCurrent(work_dir.absolutePath());
         system("rm new-iso/antiX/linuxfs 2>&1");
@@ -565,7 +566,9 @@ void mxsnapshot::on_buttonStart_clicked()
         }
         createIso(filename);
         cleanUp();
+        this->hide();
         QMessageBox::information(this, tr("Done"),tr("All finished!"), QMessageBox::Ok);
+        this->show();
         ui->buttonStart->setText(tr("< Back"));
         ui->buttonStart->setEnabled(true);
 
