@@ -569,7 +569,7 @@ void mxsnapshot::on_buttonStart_clicked()
         createIso(filename);
         cleanUp();
         this->hide();
-        QMessageBox::information(this, tr("Done"),tr("All finished!"), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Success"),tr("All finished!"), QMessageBox::Ok);
         this->show();
         ui->buttonStart->setText(tr("< Back"));
         ui->buttonStart->setEnabled(true);
