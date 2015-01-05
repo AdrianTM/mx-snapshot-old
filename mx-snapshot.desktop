@@ -25,4 +25,4 @@ Terminal=false
 Type=Application
 Icon=system
 Categories=GNOME;GTK;System;
-NoDisplay=true
+NoDisplay=false
