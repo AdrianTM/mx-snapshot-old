@@ -148,8 +148,7 @@ void mxsnapshot::listDiskSpace()
         path = work_dir.absolutePath();
     }
     QString cmd = QString("df -h  %1 | awk '{printf \"%-8s\\t%-8s\\t%-8s\\t%-8s\\n\",$2,$3,$5,$4}'").arg(path);
-    out = getCmdOut(cmd);
-    out.append("\n");
+    out = "\n" + getCmdOut(cmd) + "\n";
     ui->labelDiskSpace->setText(out);
     ui->labelDiskSpaceHelp->setText(tr("It is recommended that free space ('Avail') be at least twice as big as the total installed system size ('Used').\n\n"
                                        "      If necessary, you can create more available space\n"

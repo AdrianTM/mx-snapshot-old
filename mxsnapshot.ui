@@ -38,16 +38,6 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="labelSelectDifferent">
-         <property name="text">
-          <string>*By default, this is / (root).</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
        <item row="8" column="0">
         <spacer name="verticalSpacer">
          <property name="orientation">
@@ -106,7 +96,11 @@
           <bool>false</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(255, 255, 204);</string>
+          <string notr="true">background-color: rgb(255, 255, 204);
+border-color: rgb(0, 0, 0);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
          </property>
          <property name="text">
           <string/>
@@ -116,6 +110,16 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QLabel" name="labelSelectDifferent">
+         <property name="text">
+          <string>*By default, this is / (root).</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
