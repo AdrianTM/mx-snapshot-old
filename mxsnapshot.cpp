@@ -154,7 +154,7 @@ void mxsnapshot::listDiskSpace()
     ui->labelDiskSpaceHelp->setText(tr("It is recommended that free space ('Avail') be at least twice as big as the total installed system size ('Used').\n\n"
                                        "      If necessary, you can create more available space\n"
                                        "      by removing previous snapshots and saved copies:\n"
-                                       "      %1 snapshots are taking up %2 of disk space.").arg(QString::number(getSnapshotCount())).arg(QString::number(getSnapshotSize())));
+                                       "      %1 snapshots are taking up %2 of disk space.\n").arg(QString::number(getSnapshotCount())).arg(QString::number(getSnapshotSize())));
 }
 
 // Checks if the editor listed in the config file is present
