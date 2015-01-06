@@ -30,8 +30,6 @@
 #include <QScrollBar>
 #include <QTextStream>
 
-#include <QDebug>
-
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
@@ -150,7 +148,6 @@ void mxsnapshot::listDiskSpace()
         path = work_dir.absolutePath();
     }
     QString cmd = QString("df -h  %1 | awk '{printf \"%-8s\\t%-8s\\t%-8s\\t%-8s\\n\",$2,$3,$5,$4}'").arg(path);
-    qDebug() << "cmd: "<< cmd;
     out = getCmdOut(cmd);
     out.append("\n");
     ui->labelDiskSpace->setText(out);
@@ -239,9 +236,9 @@ void mxsnapshot::detectKernels()
 void mxsnapshot::checkSaveWork()
 {
     if (save_work == "yes") {
-        save_message = QString(tr("* The temporary copy of the filesystem will be saved at %1/new-squashfs.")).arg(work_dir.absolutePath());
+        save_message = QString(tr("- The temporary copy of the filesystem will be saved at: %1/new-squashfs.")).arg(work_dir.absolutePath());
     } else {
-        save_message = QString(tr("* The temporary copy of the filesystem will be created at %1/new-squashfs and removed when this program finishes.")).arg(work_dir.absolutePath());
+        save_message = QString(tr("- The temporary copy of the filesystem will be created at: %1/new-squashfs and removed when this program finishes.")).arg(work_dir.absolutePath());
     }
 }
 
@@ -533,17 +530,21 @@ void mxsnapshot::on_buttonStart_clicked()
         checkInitrdModules();
         this->hide();
 
-        QString msg = QString(tr("Snapshot will use the following settings.*\n\n"
-                         "* Working directory:") + "\n    %1\n" +
-                      tr("* Snapshot directory:") + "\n   %2\n" +
-                      tr("* Kernel to be used:") + "\n    %3\n%4\n-----\n" +
-                      tr("These settings can be changed by exiting and editing") + "\n    %5")\
+        QString msg = QString(tr("Snapshot will use the following settings:*\n\n"
+                         "- Working directory:") + " %1\n" +
+                      tr("- Snapshot directory:") + " %2\n" +
+                      tr("- Kernel to be used:") + " %3\n%4\n-----\n" +
+                      tr("*These settings can be changed by exiting and editing:") + "\n    %5")\
                 .arg(work_dir.absolutePath()).arg(snapshot_dir.absolutePath()).arg(kernel_used)\
                 .arg(save_message).arg(config_file.fileName());
         QMessageBox msgBox(QMessageBox::NoIcon, tr("Settings"), msg, 0 ,this);
-        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-        if (msgBox.exec() == QMessageBox::Cancel) {
-            return qApp->quit();
+        msgBox.addButton(QMessageBox::Ok);
+        msgBox.addButton(tr("Back"), QMessageBox::RejectRole);
+        if (msgBox.exec() != QMessageBox::Ok) {
+            ui->stackedWidget->setCurrentIndex(0);
+            ui->buttonStart->setEnabled(true);
+            this->show();
+            return;
         }
         int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
@@ -568,7 +569,6 @@ void mxsnapshot::on_buttonStart_clicked()
             if (ans == QMessageBox::Yes) {
                 this->hide();
                 QString cmd = gui_editor.fileName() + " " + work_dir.absolutePath() + "/new-iso/boot/isolinux/isolinux.cfg";
-                qDebug() << "cmd: " << cmd;
                 system(cmd.toAscii());
                 this->show();
             }
@@ -585,7 +585,7 @@ void mxsnapshot::on_buttonStart_clicked()
     } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
         ui->stackedWidget->setCurrentIndex(0);
         // restore Start button
-        ui->buttonStart->setText(tr("Start"));
+        ui->buttonStart->setText(tr("Next"));
         ui->buttonStart->setIcon(QIcon("/usr/share/mx-snapshot/icons/dialog-ok.png"));
         ui->outputBox->clear();
     } else {
