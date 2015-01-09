@@ -30,11 +30,12 @@
 #include <QScrollBar>
 #include <QTextStream>
 
+
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
     setup();
 }
 
@@ -46,6 +47,7 @@ mxsnapshot::~mxsnapshot()
 // setup versious items first time program runs
 void mxsnapshot::setup()
 {
+    ui->buttonBack->setHidden(true);
     config_file.setFileName("/etc/mx-snapshot.conf");
     QSettings settings(config_file.fileName(), QSettings::IniFormat);
 
@@ -55,7 +57,7 @@ void mxsnapshot::setup()
     proc->setReadChannelMode(QProcess::MergedChannels);
     ui->stackedWidget->setCurrentIndex(0);
     ui->buttonCancel->setEnabled(true);
-    ui->buttonStart->setEnabled(true);
+    ui->buttonNext->setEnabled(true);
 
     // Load settings or use the default value
     error_log = settings.value("error_log", "/var/log/snapshot_errors.log").toString();
@@ -509,12 +511,14 @@ void mxsnapshot::onStdoutAvailable()
 
 
 // Start button clicked
-void mxsnapshot::on_buttonStart_clicked()
+void mxsnapshot::on_buttonNext_clicked()
 {
+QEventLoop loop;
     // on first page
-    if (ui->stackedWidget->currentIndex() == 0) {
-        ui->buttonStart->setEnabled(false);
+    if (ui->stackedWidget->currentIndex() == 0) {        
         ui->stackedWidget->setCurrentIndex(1);
+        ui->buttonBack->setHidden(false);
+        ui->buttonBack->setEnabled(true);
         if (edit_boot_menu == "yes") {
             checkEditor();
         }
@@ -527,32 +531,28 @@ void mxsnapshot::on_buttonStart_clicked()
         checkSaveWork();
         detectKernels();
         checkInitrdModules();
-        this->hide();
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->label_1->setText(tr("Snapshot will use the following settings:*"));
 
-        QString msg = QString(tr("Snapshot will use the following settings:*\n\n"
-                         "- Working directory:") + " %1\n" +
-                      tr("- Snapshot directory:") + " %2\n" +
-                      tr("- Kernel to be used:") + " %3\n%4\n-----\n" +
-                      tr("*These settings can be changed by exiting and editing:") + "\n    %5")\
-                .arg(work_dir.absolutePath()).arg(snapshot_dir.absolutePath()).arg(kernel_used)\
-                .arg(save_message).arg(config_file.fileName());
-        QMessageBox msgBox(QMessageBox::NoIcon, tr("Settings"), msg, 0 ,this);
-        msgBox.addButton(QMessageBox::Ok);
-        msgBox.addButton(tr("Back"), QMessageBox::RejectRole);
-        if (msgBox.exec() != QMessageBox::Ok) {
-            ui->stackedWidget->setCurrentIndex(0);
-            ui->buttonStart->setEnabled(true);
-            this->show();
-            return;
-        }
+        ui->label_2->setText(QString("\n" + tr("- Working directory:") + " %1\n" +
+                                    tr("- Snapshot directory:") + " %2\n" +
+                                    tr("- Kernel to be used:") + " %3\n%4\n").arg(work_dir.absolutePath())\
+                                    .arg(snapshot_dir.absolutePath()).arg(kernel_used).arg(save_message));
+        ui->label_3->setText(tr("*These settings can be changed by exiting and editing:"));
+        ui->label_4->setText(config_file.fileName());
+
+    // on confirmation page
+    } else if (ui->stackedWidget->currentWidget() == ui->confirmationPage) {
         int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
                               tr("It will take some time to finish, depending on the size of the installed system and the capacity of your computer.") + "\n\n" +
                               tr("OK to start?"), QMessageBox::Ok | QMessageBox::Cancel);
         if (ans == QMessageBox::Cancel) {
-            return qApp->quit();
+            return;
         }
-        this->show();
+        ui->buttonNext->setEnabled(false);
+        ui->buttonBack->setEnabled(false);
+        ui->stackedWidget->setCurrentIndex(2);
         copyNewIso();
         copyFileSystem();
         QString filename = getFilename();
@@ -574,23 +574,26 @@ void mxsnapshot::on_buttonStart_clicked()
         }
         createIso(filename);
         cleanUp();
-        this->hide();
         QMessageBox::information(this, tr("Success"),tr("All finished!"), QMessageBox::Ok);
-        this->show();
-        ui->buttonStart->setText(tr("< Back"));
-        ui->buttonStart->setEnabled(true);
-
-    // on output page
-    } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
-        ui->stackedWidget->setCurrentIndex(0);
-        // restore Start button
-        ui->buttonStart->setText(tr("Next"));
-        ui->buttonStart->setIcon(QIcon("/usr/share/mx-snapshot/icons/dialog-ok.png"));
-        ui->outputBox->clear();
+        ui->buttonBack->setEnabled(true);
     } else {
         return qApp->quit();
     }
 }
+
+void mxsnapshot::on_buttonBack_clicked()
+{
+    if (ui->stackedWidget->currentWidget() == ui->confirmationPage) {
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->buttonNext->setEnabled(true);
+        ui->buttonBack->setDisabled(true);
+    } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->buttonNext->setEnabled(true);
+        ui->outputBox->clear();
+    }
+}
+
 
 
 // About button clicked
@@ -624,3 +627,4 @@ void mxsnapshot::on_buttonSelectWork_clicked()
         listDiskSpace();
     }
 }
+

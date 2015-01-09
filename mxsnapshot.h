@@ -41,7 +41,7 @@ class mxsnapshot;
 class mxsnapshot : public QDialog
 {
     Q_OBJECT
-    
+
 protected:
     QProcess *proc;
     QTimer *timer;
@@ -107,16 +107,18 @@ public slots:
     void procTime();
     void procDone(int);
     void setConnections(QTimer* timer, QProcess* proc);
-    void onStdoutAvailable();    
+    void onStdoutAvailable();
 
 private slots:
-    void on_buttonStart_clicked();
+    void on_buttonNext_clicked();
     void on_buttonAbout_clicked();
-    void on_buttonHelp_clicked();    
+    void on_buttonHelp_clicked();
     void on_buttonSelectWork_clicked();
+    void on_buttonBack_clicked();
 
 private:
-    Ui::mxsnapshot *ui;    
+    Ui::mxsnapshot *ui;
+
 };
 
 #endif // MXSNAPSHOT_H
