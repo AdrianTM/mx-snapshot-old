@@ -76,7 +76,7 @@ void mxsnapshot::setup()
     iso_dir = settings.value("iso_dir", "/usr/lib/mx-snapshot/new-iso").toString();
     lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();
     text_editor.setFileName(settings.value("text_editor", "/usr/bin/nano").toString());
-    gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/geany").toString());
+    gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
     ata_dir = settings.value("ata_dir", "kernel/drivers/ata").toString();
     stamp = settings.value("stamp", "datetime").toString();
 
@@ -166,9 +166,12 @@ void mxsnapshot::checkEditor()
     }
     QString msg = tr("The graphical text editor is set to %1, but it is not installed. Edit %2 "
                      "and set the gui_editor variable to the editor of your choice. "
-                     "(examples: /usr/bin/gedit, /usr/bin/leafpad)").arg(gui_editor.fileName()).arg(config_file.fileName());
-    QMessageBox::critical(0, QString::null, msg);
-    return qApp->quit();
+                     "(examples: /usr/bin/gedit, /usr/bin/leafpad)\n\n"
+                     "Will install leafpad and use it this time.").arg(gui_editor.fileName()).arg(config_file.fileName());
+    QMessageBox::information(0, QString::null, msg);
+    if (installLeafpad()) {
+        gui_editor.setFileName("/usr/bin/leafpad");
+    }
 }
 
 // Checks if package is installed
@@ -185,10 +188,10 @@ bool mxsnapshot::checkInstalled(QString package)
 void mxsnapshot::installLiveInitMx()
 {
     QEventLoop loop;
-    if (proc->state() != QProcess::NotRunning){
-        proc->kill();
-    }
     ui->outputBox->clear();
+    ui->buttonNext->setDisabled(true);
+    ui->buttonBack->setDisabled(true);
+    this->show();
     setConnections(timer, proc);
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
     proc->start("apt-get update");
@@ -198,6 +201,30 @@ void mxsnapshot::installLiveInitMx()
     if (proc->exitCode() != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Count not install live-init-mx"));
     }
+}
+
+// Installs live-init-mx package
+bool mxsnapshot::installLeafpad()
+{
+    QEventLoop loop;
+    ui->outputBox->clear();
+    ui->buttonNext->setDisabled(true);
+    ui->buttonBack->setDisabled(true);
+    this->show();
+    ui->stackedWidget->setCurrentIndex(2);
+    setConnections(timer, proc);
+    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
+    proc->start("apt-get update");
+    loop.exec();
+    proc->start("apt-get install leafpad");
+    loop.exec();
+    this->hide();
+    if (proc->exitCode() != 0) {
+        QMessageBox::critical(0, tr("Error"), tr("Count not install leafpad"));
+        return false;
+    }
+    ui->stackedWidget->setCurrentIndex(1);
+    return true;
 }
 
 void mxsnapshot::checkDirectories()
@@ -237,9 +264,9 @@ void mxsnapshot::detectKernels()
 void mxsnapshot::checkSaveWork()
 {
     if (save_work == "yes") {
-        save_message = QString(tr("- The temporary copy of the filesystem will be saved at: %1/new-squashfs.")).arg(work_dir.absolutePath());
+        save_message = QString(tr("- The copy of the filesystem will be saved at: %1/new-squashfs.")).arg(work_dir.absolutePath());
     } else {
-        save_message = QString(tr("- The temporary copy of the filesystem will be created at: %1/new-squashfs and removed when this program finishes.")).arg(work_dir.absolutePath());
+        save_message = QString(tr("- The temporary copy of the filesystem will be created at: %1/new-squashfs.")).arg(work_dir.absolutePath());
     }
 }
 
@@ -524,7 +551,9 @@ QEventLoop loop;
         }
         if (snapshot_persist == "yes") {
               if (!checkInstalled("live-init-mx")) {
+                ui->stackedWidget->setCurrentIndex(2);
                 installLiveInitMx();
+                ui->stackedWidget->setCurrentIndex(1);
               }
         }
         checkDirectories();
@@ -538,7 +567,7 @@ QEventLoop loop;
                                     tr("- Snapshot directory:") + " %2\n" +
                                     tr("- Kernel to be used:") + " %3\n%4\n").arg(work_dir.absolutePath())\
                                     .arg(snapshot_dir.absolutePath()).arg(kernel_used).arg(save_message));
-        ui->label_3->setText(tr("*These settings can be changed by exiting and editing:"));
+        ui->label_3->setText(tr("*These settings can be changed by editing:"));
         ui->label_4->setText(config_file.fileName());
 
     // on confirmation page
@@ -597,7 +626,8 @@ void mxsnapshot::on_buttonBack_clicked()
 void mxsnapshot::on_buttonEditConfig_clicked()
 {
     this->hide();
-    system("leafpad /etc/mx-snapshot.conf");
+    checkEditor();
+    system((gui_editor.fileName() + " /etc/mx-snapshot.conf").toAscii());
     setup();
     this->show();
 }
@@ -633,5 +663,3 @@ void mxsnapshot::on_buttonSelectWork_clicked()
         listDiskSpace();
     }
 }
-
-

@@ -85,6 +85,7 @@ public:
     int getSnapshotSize();
     void checkEditor();
     void installLiveInitMx();
+    bool installLeafpad();
     bool checkInstalled(QString package);
     void checkDirectories();
     void checkInitrdModules();
