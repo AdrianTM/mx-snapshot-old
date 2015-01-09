@@ -197,7 +197,7 @@ void mxsnapshot::installLiveInitMx()
     proc->start("apt-get update");
     loop.exec();
     proc->start("apt-get install live-init-mx");
-    loop.exec();
+    loop.exec();    
     if (proc->exitCode() != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Count not install live-init-mx"));
     }
@@ -553,6 +553,8 @@ QEventLoop loop;
               if (!checkInstalled("live-init-mx")) {
                 ui->stackedWidget->setCurrentIndex(2);
                 installLiveInitMx();
+                ui->buttonNext->setEnabled(true);
+                ui->buttonBack->setEnabled(true);
                 ui->stackedWidget->setCurrentIndex(1);
               }
         }
