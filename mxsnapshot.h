@@ -115,6 +115,7 @@ private slots:
     void on_buttonHelp_clicked();
     void on_buttonSelectWork_clicked();
     void on_buttonBack_clicked();
+    void on_buttonEditConfig_clicked();
 
 private:
     Ui::mxsnapshot *ui;
