@@ -8,7 +8,7 @@
  *
  * This file is part of MX Snapshot.
  *
- * MX Tolls is free software: you can redistribute it and/or modify
+ * MX Tools is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -194,7 +194,7 @@ void mxsnapshot::installLiveInitMx()
     proc->start("apt-get install live-init-mx");
     loop.exec();    
     if (proc->exitCode() != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not install live-init-mx"));
+        QMessageBox::critical(0, tr("Error"), tr("Could not install live-init-mx"));
     }
 }
 
@@ -215,7 +215,7 @@ bool mxsnapshot::installLeafpad()
     loop.exec();
     this->hide();
     if (proc->exitCode() != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not install leafpad"));
+        QMessageBox::critical(0, tr("Error"), tr("Could not install leafpad"));
         return false;
     }
     ui->stackedWidget->setCurrentIndex(1);
@@ -339,7 +339,7 @@ void mxsnapshot::copyModules(QString to, QString from)
         }
         initrd_modules_file.close();
     } else {
-        QMessageBox::critical(0, tr("Error"), tr("Cound not open file: ") + initrd_modules_file.fileName());
+        QMessageBox::critical(0, tr("Error"), tr("Could not open file: ") + initrd_modules_file.fileName());
         return qApp->exit(2);
     }
     // modify module names for find operation
