@@ -30,7 +30,6 @@
 #include <QScrollBar>
 #include <QTextStream>
 
-
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
@@ -60,24 +59,20 @@ void mxsnapshot::setup()
     ui->buttonNext->setEnabled(true);
 
     // Load settings or use the default value
-    error_log = settings.value("error_log", "/var/log/snapshot_errors.log").toString();
     work_dir = settings.value("work_dir", "/home/work").toString();
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     save_work = settings.value("save_work", "no").toString();
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot_exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd_modules.list").toString());
     snapshot_persist = settings.value("snapshot_persist", "no").toString();
-    kernel_image = settings.value("kernel_image", "/vmlinuz").toString();
-    initrd_image = settings.value("initrd_image", "/initrd.gz").toString();
     snapshot_basename = settings.value("snapshot_basename", "snapshot").toString();
     make_md5sum = settings.value("make_md5sum", "no").toString();
     make_isohybrid = settings.value("make_isohybrid", "yes").toString();
+    mksq_opt = settings.value("mksq_opt", "-comp xz").toString();
     edit_boot_menu = settings.value("edit_boot_menu", "no").toString();
     iso_dir = settings.value("iso_dir", "/usr/lib/mx-snapshot/new-iso").toString();
-    lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();
-    text_editor.setFileName(settings.value("text_editor", "/usr/bin/nano").toString());
-    gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
-    ata_dir = settings.value("ata_dir", "kernel/drivers/ata").toString();
+    lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();    
+    gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());    
     stamp = settings.value("stamp", "datetime").toString();
 
     listDiskSpace();
@@ -296,8 +291,8 @@ void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
     QDir::setCurrent(initrd_dir);
     QString cmd = "(find . | cpio -o -H newc --owner root:root | gzip -9) >" + file;
     system(cmd.toAscii());
-    cmd = "rm -r " + initrd_dir;
-    getCmdOut2(cmd);
+    //cmd = "rm -r " + initrd_dir;
+    //getCmdOut2(cmd);
 }
 
 // Copying the new-iso filesystem
@@ -309,6 +304,7 @@ void mxsnapshot::copyNewIso()
     QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";
     getCmdOut2(cmd);
 
+
     cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
     getCmdOut2(cmd);
 
@@ -316,12 +312,14 @@ void mxsnapshot::copyNewIso()
     openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
-    cmd = "rm -r " + mod_dir + "/*";
-    getCmdOut2(cmd);
+    if (mod_dir != "") {
+        cmd = "rm -r " + mod_dir + "/*";
+        getCmdOut2(cmd);
 
-    copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
 
-    closeInitrd(initrd_dir, work_dir.absolutePath() + "/new-iso/antiX/initrd.gz");
+        copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
+        closeInitrd(initrd_dir, work_dir.absolutePath() + "/new-iso/antiX/initrd.gz");
+    }
 }
 
 // copyModules(mod_dir/kernel_used /lib/modules/kernel_used)
@@ -344,7 +342,6 @@ void mxsnapshot::copyModules(QString to, QString from)
         QMessageBox::critical(0, tr("Error"), tr("Cound not open file: ") + initrd_modules_file.fileName());
         return qApp->exit(2);
     }
-
     // modify module names for find operation
     for (QStringList::Iterator it = mod_list.begin(); it != mod_list.end(); ++it) {
         QString mod_name;
@@ -372,7 +369,7 @@ void mxsnapshot::copyModules(QString to, QString from)
         sub_dir = to + "/" + getCmdOut(cmd.toAscii());
         dir.mkpath(sub_dir);
         cmd = QString("basename %1").arg(*it);
-        file_name = getCmdOut2(cmd.toAscii());
+        file_name = getCmdOut(cmd.toAscii());
         QFile::copy(*it, sub_dir + "/" + file_name);
     }
 }
@@ -441,7 +438,7 @@ void mxsnapshot::savePackageList(QString filename) {
 void mxsnapshot::createIso(QString filename) {
     // squash the filesystem copy
     QDir::setCurrent(work_dir.absolutePath());
-    QString cmd = "mksquashfs new-squashfs new-iso/antiX/linuxfs";
+    QString cmd = "mksquashfs new-squashfs new-iso/antiX/linuxfs" + mksq_opt;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     setConnections(timer, proc);
     getCmdOut2(cmd);

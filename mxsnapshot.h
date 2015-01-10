@@ -56,15 +56,12 @@ public:
     QSettings settings;
 
     QFile config_file;
-    QDir error_log;
     QDir work_dir;
     QDir snapshot_dir;
     QString save_work;
     QFile snapshot_excludes;
     QFile initrd_modules_file;
     QString snapshot_persist;
-    QString kernel_image;
-    QString initrd_image;
     QString stamp;
     QString snapshot_basename;
     QString make_md5sum;
@@ -72,12 +69,11 @@ public:
     QString edit_boot_menu;
     QString iso_dir;
     QDir lib_mod_dir;
-    QFile text_editor;
     QFile gui_editor;
-    QDir ata_dir;
     QString kernel_used;
     QString kernels_avail;
     QString save_message;
+    QString mksq_opt;
 
     void setup();
     void listDiskSpace();
