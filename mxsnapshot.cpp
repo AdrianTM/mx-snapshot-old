@@ -30,11 +30,12 @@
 #include <QScrollBar>
 #include <QTextStream>
 
+
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
 {
-    ui->setupUi(this);    
+    ui->setupUi(this);
     setup();
 }
 
@@ -57,6 +58,7 @@ void mxsnapshot::setup()
     ui->stackedWidget->setCurrentIndex(0);
     ui->buttonCancel->setEnabled(true);
     ui->buttonNext->setEnabled(true);
+    session_excludes = "";
 
     // Load settings or use the default value
     work_dir = settings.value("work_dir", "/home/work").toString();
@@ -71,8 +73,8 @@ void mxsnapshot::setup()
     mksq_opt = settings.value("mksq_opt", "-comp xz").toString();
     edit_boot_menu = settings.value("edit_boot_menu", "no").toString();
     iso_dir = settings.value("iso_dir", "/usr/lib/mx-snapshot/new-iso").toString();
-    lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();    
-    gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());    
+    lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();
+    gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
     stamp = settings.value("stamp", "datetime").toString();
 
     listDiskSpace();
@@ -80,7 +82,7 @@ void mxsnapshot::setup()
 
 // Util function for getting bash command output
 QString mxsnapshot::getCmdOut(QString cmd)
-{    
+{
     QEventLoop loop;
     proc = new QProcess(this);
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
@@ -127,7 +129,7 @@ int mxsnapshot::getSnapshotSize()
         size = getCmdOut(cmd);
         if (size != "" ) {
             return size.toInt();
-        }        
+        }
     }
     return 0;
 }
@@ -192,7 +194,7 @@ void mxsnapshot::installLiveInitMx()
     proc->start("apt-get update");
     loop.exec();
     proc->start("apt-get install live-init-mx");
-    loop.exec();    
+    loop.exec();
     if (proc->exitCode() != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Count not install live-init-mx"));
     }
@@ -308,7 +310,7 @@ void mxsnapshot::copyNewIso()
     cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
     getCmdOut2(cmd);
 
-    QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");    
+    QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");
     openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
@@ -383,8 +385,10 @@ void mxsnapshot::copyFileSystem()
 
     ui->outputLabel->setText(tr("Copying filesystem..."));
     QDir::setCurrent("/");
-    QString cmd = QString("rsync -av / %1/new-squashfs/ --delete --exclude=\"%1\" --exclude=\"%2\" --exclude-from=\"%3\"")\
-            .arg(work_dir.absolutePath()).arg(snapshot_dir.absolutePath()).arg(snapshot_excludes.fileName());
+    addRemoveExclusion(true, work_dir.absolutePath());
+    addRemoveExclusion(true, snapshot_dir.absolutePath());
+    QString cmd = QString("rsync -av / %1/new-squashfs/ --delete %2 --exclude-from=%3")\
+            .arg(work_dir.absolutePath()).arg(session_excludes).arg(snapshot_excludes.fileName());
     proc->start(cmd.toAscii());
     loop.exec();
 
@@ -539,7 +543,7 @@ void mxsnapshot::on_buttonNext_clicked()
 {
 QEventLoop loop;
     // on first page
-    if (ui->stackedWidget->currentIndex() == 0) {        
+    if (ui->stackedWidget->currentIndex() == 0) {
         ui->stackedWidget->setCurrentIndex(1);
         ui->buttonBack->setHidden(false);
         ui->buttonBack->setEnabled(true);
@@ -566,8 +570,7 @@ QEventLoop loop;
                                     tr("- Snapshot directory:") + " %2\n" +
                                     tr("- Kernel to be used:") + " %3\n%4\n").arg(work_dir.absolutePath())\
                                     .arg(snapshot_dir.absolutePath()).arg(kernel_used).arg(save_message));
-        ui->label_3->setText(tr("*These settings can be changed by editing:"));
-        ui->label_4->setText(config_file.fileName());
+        ui->label_3->setText(tr("*These settings can be changed by editing: ") + config_file.fileName());
 
     // on confirmation page
     } else if (ui->stackedWidget->currentWidget() == ui->confirmationPage) {
@@ -629,6 +632,59 @@ void mxsnapshot::on_buttonEditConfig_clicked()
     system((gui_editor.fileName() + " /etc/mx-snapshot.conf").toAscii());
     setup();
     this->show();
+}
+
+void mxsnapshot::on_buttonEditExclude_clicked()
+{
+    this->hide();
+    checkEditor();
+    system((gui_editor.fileName() + " /usr/lib/mx-snapshot/snapshot_exclude.list").toAscii());
+    this->show();
+}
+
+
+void mxsnapshot::addRemoveExclusion(bool add, QString exclusion){
+    if (add) {
+        session_excludes.insert(0, "--exclude=" + exclusion + " ");
+    } else {
+        session_excludes.remove("--exclude=" + exclusion + " ");
+    }
+}
+
+void mxsnapshot::on_excludeHome_clicked(bool checked)
+{
+    QString exclusion = "/home/*/*";
+    addRemoveExclusion(checked, exclusion);
+}
+
+void mxsnapshot::on_excludeDocuments_clicked(bool checked)
+{
+    QString exclusion = "/home/*/Documents/*";
+    addRemoveExclusion(checked, exclusion);
+}
+
+void mxsnapshot::on_excludeDownloads_clicked(bool checked)
+{
+    QString exclusion = "/home/*/Downloads/*";
+    addRemoveExclusion(checked, exclusion);
+}
+
+void mxsnapshot::on_excludePictures_clicked(bool checked)
+{
+    QString exclusion = "/home/*/Pictures/*";
+    addRemoveExclusion(checked, exclusion);
+}
+
+void mxsnapshot::on_excludeMusic_clicked(bool checked)
+{
+    QString exclusion = "/home/*/Music/*";
+    addRemoveExclusion(checked, exclusion);
+}
+
+void mxsnapshot::on_excludeVideos_clicked(bool checked)
+{
+    QString exclusion = "/home/*/Videos/*";
+    addRemoveExclusion(checked, exclusion);
 }
 
 // About button clicked

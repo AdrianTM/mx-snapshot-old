@@ -1,6 +1,7 @@
-# rsync excludes file for mxsnapshot and mxsnapshot-gui
-# version 0.2.7.7 (23.05.2013)
+# rsync excludes file for mx-snapshot
+# version 0.3 (1.10.2015)
 
+# Do NOT edit this entry block unless you know what you are doing
 - dev/*
 - cdrom/*
 - media/*

@@ -53,6 +53,7 @@ public:
     QString getCmdOut(QString cmd);
     QString getCmdOut2(QString cmd);
     QString getVersion(QString name);
+    void addRemoveExclusion(bool add, QString exclusion);
     QSettings settings;
 
     QFile config_file;
@@ -74,6 +75,7 @@ public:
     QString kernels_avail;
     QString save_message;
     QString mksq_opt;
+    QString session_excludes;
 
     void setup();
     void listDiskSpace();
@@ -113,6 +115,13 @@ private slots:
     void on_buttonSelectWork_clicked();
     void on_buttonBack_clicked();
     void on_buttonEditConfig_clicked();
+    void on_buttonEditExclude_clicked();
+    void on_excludeHome_clicked(bool checked);
+    void on_excludeDocuments_clicked(bool checked);
+    void on_excludeDownloads_clicked(bool checked);
+    void on_excludePictures_clicked(bool checked);
+    void on_excludeMusic_clicked(bool checked);
+    void on_excludeVideos_clicked(bool checked);
 
 private:
     Ui::mxsnapshot *ui;
