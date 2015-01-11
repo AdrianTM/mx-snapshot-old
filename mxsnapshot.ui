@@ -17,10 +17,17 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="selectionPage">
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="11" column="0">
+        <widget class="QLabel" name="labelSnapshot">
+         <property name="text">
+          <string>The snapshot will be placed by default in /home/snapshot</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0" colspan="3">
         <widget class="QLabel" name="labelCurrentSpace">
          <property name="text">
@@ -28,13 +35,6 @@
          </property>
          <property name="wordWrap">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QPushButton" name="buttonSelectWork">
-         <property name="text">
-          <string>Select a different work partition</string>
          </property>
         </widget>
        </item>
@@ -113,7 +113,7 @@ border-color: rgb(0, 0, 0);</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
+       <item row="14" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -126,9 +126,46 @@ border-color: rgb(0, 0, 0);</string>
          </property>
         </spacer>
        </item>
+       <item row="9" column="0" colspan="3">
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QPushButton" name="buttonSelectWork">
+         <property name="text">
+          <string>Select a different work partition</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="2">
+        <widget class="QPushButton" name="buttonSelectSnapshot">
+         <property name="text">
+          <string>Select a different snapshot directory</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Maximum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="confirmationPage">
+     <widget class="QWidget" name="settingsPage">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QLabel" name="label_1">
@@ -234,45 +271,63 @@ border-color: rgb(0, 0, 0);</string>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="excludeHome">
-         <property name="text">
-          <string>All files in /home (You will lose custom desktop configs if you select this)</string>
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="excludeDocuments">
-         <property name="text">
-          <string>Documents</string>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="excludeDownloads">
-         <property name="text">
-          <string>Dowloads</string>
+         <property name="lineWidth">
+          <number>0</number>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="excludePictures">
-         <property name="text">
-          <string>Pictures</string>
+         <property name="midLineWidth">
+          <number>1</number>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="excludeMusic">
-         <property name="text">
-          <string>Music</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="excludeVideos">
-         <property name="text">
-          <string>Video</string>
-         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="excludeMusic">
+            <property name="text">
+             <string>Music</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="excludePictures">
+            <property name="text">
+             <string>Pictures</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="excludeDownloads">
+            <property name="text">
+             <string>Dowloads</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="excludeDocuments">
+            <property name="text">
+             <string>Documents</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QCheckBox" name="excludeVideos">
+            <property name="text">
+             <string>Videos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QCheckBox" name="excludeAll">
+            <property name="text">
+             <string>All of the above</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -538,6 +593,86 @@ border-color: rgb(0, 0, 0);</string>
     <hint type="destinationlabel">
      <x>388</x>
      <y>272</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>excludeAll</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>excludeDocuments</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>excludeAll</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>excludeDownloads</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>excludeAll</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>excludeMusic</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>excludeAll</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>excludePictures</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>excludeAll</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>excludeVideos</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>632</x>
+     <y>192</y>
     </hint>
    </hints>
   </connection>

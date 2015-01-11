@@ -30,6 +30,7 @@
 #include <QScrollBar>
 #include <QTextStream>
 
+//#include <QDebug>
 
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
@@ -47,6 +48,7 @@ mxsnapshot::~mxsnapshot()
 // setup versious items first time program runs
 void mxsnapshot::setup()
 {
+    this->setWindowTitle(tr("MX Snapshot"));
     ui->buttonBack->setHidden(true);
     config_file.setFileName("/etc/mx-snapshot.conf");
     QSettings settings(config_file.fileName(), QSettings::IniFormat);
@@ -121,17 +123,17 @@ int mxsnapshot::getSnapshotCount()
 }
 
 // return the size of the work folder
-int mxsnapshot::getSnapshotSize()
+QString mxsnapshot::getSnapshotSize()
 {
     QString size;
     if (snapshot_dir.exists()) {
-        QString cmd = QString("du -sh \"%1\" | awk '{print $1}'").arg(snapshot_dir.absolutePath());
+        QString cmd = QString("find %1 -type f -name '*.iso' -exec du -shc {} + | tail -1 | awk '{print $1}'").arg(snapshot_dir.absolutePath());
         size = getCmdOut(cmd);
         if (size != "" ) {
-            return size.toInt();
+            return size;
         }
     }
-    return 0;
+    return "0";
 }
 
 // List the info regarding the free space on drives
@@ -152,7 +154,7 @@ void mxsnapshot::listDiskSpace()
     ui->labelDiskSpaceHelp->setText(tr("It is recommended that free space ('Avail') be at least twice as big as the total installed system size ('Used').\n\n"
                                        "      If necessary, you can create more available space\n"
                                        "      by removing previous snapshots and saved copies:\n"
-                                       "      %1 snapshots are taking up %2 of disk space.\n\n").arg(QString::number(getSnapshotCount())).arg(QString::number(getSnapshotSize())));
+                                       "      %1 snapshots are taking up %2 of disk space.\n\n").arg(QString::number(getSnapshotCount())).arg(getSnapshotSize()));
 }
 
 // Checks if the editor listed in the config file is present
@@ -208,7 +210,7 @@ bool mxsnapshot::installLeafpad()
     ui->buttonNext->setDisabled(true);
     ui->buttonBack->setDisabled(true);
     this->show();
-    ui->stackedWidget->setCurrentIndex(2);
+    ui->stackedWidget->setCurrentWidget(ui->outputPage);
     setConnections(timer, proc);
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
     proc->start("apt-get update");
@@ -220,7 +222,7 @@ bool mxsnapshot::installLeafpad()
         QMessageBox::critical(0, tr("Error"), tr("Count not install leafpad"));
         return false;
     }
-    ui->stackedWidget->setCurrentIndex(1);
+    ui->stackedWidget->setCurrentWidget(ui->settingsPage);
     return true;
 }
 
@@ -490,6 +492,14 @@ void mxsnapshot::cleanUp() {
     ui->outputLabel->clear();
 }
 
+void mxsnapshot::addRemoveExclusion(bool add, QString exclusion){
+    if (add) {
+        session_excludes.insert(0, "--exclude=" + exclusion + " ");
+    } else {
+        session_excludes.remove("--exclude=" + exclusion + " ");
+    }
+}
+
 //// sync process events ////
 void mxsnapshot::procStart()
 {
@@ -538,13 +548,13 @@ void mxsnapshot::onStdoutAvailable()
 }
 
 
-// Start button clicked
+// Next button clicked
 void mxsnapshot::on_buttonNext_clicked()
 {
-QEventLoop loop;
     // on first page
     if (ui->stackedWidget->currentIndex() == 0) {
-        ui->stackedWidget->setCurrentIndex(1);
+        this->setWindowTitle(tr("Settings"));
+        ui->stackedWidget->setCurrentWidget(ui->settingsPage);
         ui->buttonBack->setHidden(false);
         ui->buttonBack->setEnabled(true);
         if (edit_boot_menu == "yes") {
@@ -552,18 +562,18 @@ QEventLoop loop;
         }
         if (snapshot_persist == "yes") {
               if (!checkInstalled("live-init-mx")) {
-                ui->stackedWidget->setCurrentIndex(2);
+                ui->stackedWidget->setCurrentWidget(ui->outputPage);
                 installLiveInitMx();
                 ui->buttonNext->setEnabled(true);
                 ui->buttonBack->setEnabled(true);
-                ui->stackedWidget->setCurrentIndex(1);
+                ui->stackedWidget->setCurrentWidget(ui->settingsPage);
               }
         }
         checkDirectories();
         checkSaveWork();
         detectKernels();
         checkInitrdModules();
-        ui->stackedWidget->setCurrentIndex(1);
+        ui->stackedWidget->setCurrentWidget(ui->settingsPage);
         ui->label_1->setText(tr("Snapshot will use the following settings:*"));
 
         ui->label_2->setText(QString("\n" + tr("- Working directory:") + " %1\n" +
@@ -573,7 +583,7 @@ QEventLoop loop;
         ui->label_3->setText(tr("*These settings can be changed by editing: ") + config_file.fileName());
 
     // on confirmation page
-    } else if (ui->stackedWidget->currentWidget() == ui->confirmationPage) {
+    } else if (ui->stackedWidget->currentWidget() == ui->settingsPage) {
         int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
                               tr("It will take some time to finish, depending on the size of the installed system and the capacity of your computer.") + "\n\n" +
@@ -583,7 +593,8 @@ QEventLoop loop;
         }
         ui->buttonNext->setEnabled(false);
         ui->buttonBack->setEnabled(false);
-        ui->stackedWidget->setCurrentIndex(2);
+        ui->stackedWidget->setCurrentWidget(ui->outputPage);
+        this->setWindowTitle(tr("Output"));
         copyNewIso();
         copyFileSystem();
         QString filename = getFilename();
@@ -614,15 +625,11 @@ QEventLoop loop;
 
 void mxsnapshot::on_buttonBack_clicked()
 {
-    if (ui->stackedWidget->currentWidget() == ui->confirmationPage) {
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->buttonNext->setEnabled(true);
-        ui->buttonBack->setDisabled(true);
-    } else if (ui->stackedWidget->currentWidget() == ui->outputPage) {
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->buttonNext->setEnabled(true);
-        ui->outputBox->clear();
-    }
+    this->setWindowTitle(tr("MX Snapshot"));
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->buttonNext->setEnabled(true);
+    ui->buttonBack->setDisabled(true);
+    ui->outputBox->clear();
 }
 
 void mxsnapshot::on_buttonEditConfig_clicked()
@@ -640,21 +647,6 @@ void mxsnapshot::on_buttonEditExclude_clicked()
     checkEditor();
     system((gui_editor.fileName() + " /usr/lib/mx-snapshot/snapshot_exclude.list").toAscii());
     this->show();
-}
-
-
-void mxsnapshot::addRemoveExclusion(bool add, QString exclusion){
-    if (add) {
-        session_excludes.insert(0, "--exclude=" + exclusion + " ");
-    } else {
-        session_excludes.remove("--exclude=" + exclusion + " ");
-    }
-}
-
-void mxsnapshot::on_excludeHome_clicked(bool checked)
-{
-    QString exclusion = "/home/*/*";
-    addRemoveExclusion(checked, exclusion);
 }
 
 void mxsnapshot::on_excludeDocuments_clicked(bool checked)
@@ -716,5 +708,17 @@ void mxsnapshot::on_buttonSelectWork_clicked()
     if (selected.exists()) {
         work_dir.setPath(selected.absolutePath());
         listDiskSpace();
+    }
+}
+
+// Select snapshot directory
+void mxsnapshot::on_buttonSelectSnapshot_clicked()
+{
+    QFileDialog dialog;
+    QDir selected = dialog.getExistingDirectory(0, tr("Select Snapshot Directory"), QString(), QFileDialog::ShowDirsOnly);
+    if (selected.exists()) {
+        snapshot_dir.setPath(selected.absolutePath());
+        addRemoveExclusion(true, snapshot_dir.absolutePath());
+        ui->labelSnapshot->setText(tr("The snapshot will be placed in ") + snapshot_dir.absolutePath());
     }
 }

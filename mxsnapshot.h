@@ -80,7 +80,7 @@ public:
     void setup();
     void listDiskSpace();
     int getSnapshotCount();
-    int getSnapshotSize();
+    QString getSnapshotSize();
     void checkEditor();
     void installLiveInitMx();
     bool installLeafpad();
@@ -116,12 +116,12 @@ private slots:
     void on_buttonBack_clicked();
     void on_buttonEditConfig_clicked();
     void on_buttonEditExclude_clicked();
-    void on_excludeHome_clicked(bool checked);
     void on_excludeDocuments_clicked(bool checked);
     void on_excludeDownloads_clicked(bool checked);
     void on_excludePictures_clicked(bool checked);
     void on_excludeMusic_clicked(bool checked);
     void on_excludeVideos_clicked(bool checked);
+    void on_buttonSelectSnapshot_clicked();
 
 private:
     Ui::mxsnapshot *ui;
