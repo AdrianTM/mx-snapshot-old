@@ -21,40 +21,6 @@
      </property>
      <widget class="QWidget" name="selectionPage">
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0" colspan="3">
-        <widget class="QLabel" name="labelCurrentSpace">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="3">
-        <widget class="QLabel" name="labelDiskSpaceHelp">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="3">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="labelSnapshot">
-         <property name="text">
-          <string>The snapshot will be placed by default in /home/snapshot</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0" colspan="3">
         <widget class="QLabel" name="labelIntro">
          <property name="sizePolicy">
@@ -71,7 +37,24 @@
          </property>
         </widget>
        </item>
-       <item row="15" column="1">
+       <item row="9" column="0">
+        <widget class="QLabel" name="labelSnapshot">
+         <property name="text">
+          <string>The snapshot will be placed by default in /home/snapshot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="3">
+        <widget class="QLabel" name="labelCurrentSpace">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -84,47 +67,10 @@
          </property>
         </spacer>
        </item>
-       <item row="9" column="0" colspan="3">
-        <widget class="Line" name="line_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QPushButton" name="buttonSelectWork">
+       <item row="4" column="0" colspan="3">
+        <widget class="QLabel" name="labelDiskSpaceHelp">
          <property name="text">
-          <string>Select a different work partition</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="2">
-        <widget class="QPushButton" name="buttonSelectSnapshot">
-         <property name="text">
-          <string>Select a different snapshot directory</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <spacer name="verticalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="labelSelectDifferent">
-         <property name="text">
-          <string>*By default, this is / (root).</string>
+          <string/>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -161,6 +107,20 @@ color: rgb(0, 0, 0);</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="3">
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="2">
+        <widget class="QPushButton" name="buttonSelectSnapshot">
+         <property name="text">
+          <string>Select a different snapshot directory</string>
          </property>
         </widget>
        </item>

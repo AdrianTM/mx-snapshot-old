@@ -1,14 +1,14 @@
 /**********************************************************************
  *  mxsnapshot.h
  **********************************************************************
- * Copyright (C) 2014 MX Authors
+ * Copyright (C) 2015 MX Authors
  *
  * Authors: Adrian
  *          MEPIS Community <http://forum.mepiscommunity.org>
  *
  * This file is part of MX Snapshot.
  *
- * MX Tolls is free software: you can redistribute it and/or modify
+ * MX Snapshot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -59,7 +59,6 @@ public:
     QFile config_file;
     QDir work_dir;
     QDir snapshot_dir;
-    QString save_work;
     QFile snapshot_excludes;
     QFile initrd_modules_file;
     QString snapshot_persist;
@@ -93,7 +92,7 @@ public:
     void closeInitrd(QString initrd_dir, QString file);
     void copyModules(QString to, QString form);
     void copyNewIso();
-    void copyFileSystem();
+    void mountFileSystem();
     QString getFilename();
     void removeOldPackageDirectory();
     void mkDir(QString filename);
@@ -112,15 +111,14 @@ private slots:
     void on_buttonNext_clicked();
     void on_buttonAbout_clicked();
     void on_buttonHelp_clicked();
-    void on_buttonSelectWork_clicked();
     void on_buttonBack_clicked();
     void on_buttonEditConfig_clicked();
     void on_buttonEditExclude_clicked();
-    void on_excludeDocuments_clicked(bool checked);
-    void on_excludeDownloads_clicked(bool checked);
-    void on_excludePictures_clicked(bool checked);
-    void on_excludeMusic_clicked(bool checked);
-    void on_excludeVideos_clicked(bool checked);
+    void on_excludeDocuments_toggled(bool checked);
+    void on_excludeDownloads_toggled(bool checked);
+    void on_excludePictures_toggled(bool checked);
+    void on_excludeMusic_toggled(bool checked);
+    void on_excludeVideos_toggled(bool checked);
     void on_buttonSelectSnapshot_clicked();
 
 private:
