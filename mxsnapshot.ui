@@ -17,7 +17,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="selectionPage">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -143,8 +143,9 @@
           <bool>false</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(255, 255, 204);
-border-color: rgb(0, 0, 0);</string>
+          <string notr="true">background-color: rgb(255, 255, 205);
+border-color: rgb(0, 0, 0);
+color: rgb(0, 0, 0);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Box</enum>
@@ -180,8 +181,9 @@ border-color: rgb(0, 0, 0);</string>
        <item>
         <widget class="QLabel" name="label_2">
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(255, 255, 204);
-border-color: rgb(0, 0, 0);</string>
+          <string notr="true">background-color: rgb(255, 255, 205);
+border-color: rgb(0, 0, 0);
+color: rgb(0, 0, 0);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Box</enum>
