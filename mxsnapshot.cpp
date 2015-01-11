@@ -451,7 +451,7 @@ void mxsnapshot::createIso(QString filename)
 
     // squash the filesystem copy
     QDir::setCurrent(work_dir.absolutePath());
-    QString cmd = "mksquashfs new-squashfs new-iso/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + config_file.fileName() + " " + session_excludes;
+    QString cmd = "mksquashfs new-squashfs new-iso/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     setConnections(timer, proc);
     getCmdOut2(cmd);
