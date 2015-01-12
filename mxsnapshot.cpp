@@ -126,7 +126,7 @@ QString mxsnapshot::getSnapshotSize()
 {
     QString size;
     if (snapshot_dir.exists()) {
-        QString cmd = QString("find %1 -type f -name '*.iso' -exec du -shc {} + | tail -1 | awk '{print $1}'").arg(snapshot_dir.absolutePath());
+        QString cmd = QString("find %1 -maxdepth 1 -type f -name '*.iso' -exec du -shc {} + | tail -1 | awk '{print $1}'").arg(snapshot_dir.absolutePath());
         size = getCmdOut(cmd);
         if (size != "" ) {
             return size;

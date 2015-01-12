@@ -64,5 +64,5 @@ home/*/Desktop/*
 # home/*/.[a-z,A-Z,0-9]*
 
 # This stops any nvidia drivers from loading - safe option.
-# etc/X11/xorg.conf
-# etc/X11/xorg.conf.d/20-nvidia.conf
+etc/X11/xorg.conf
+etc/X11/xorg.conf.d/20-nvidia.conf
