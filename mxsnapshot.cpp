@@ -376,7 +376,7 @@ void mxsnapshot::mountFileSystem()
     ui->outputLabel->setText(tr("Bind mounting filesystem..."));
     QDir::setCurrent("/");        
     // mount filesystem
-    QString cmd = "mount --bind / " + work_dir.absolutePath() + "/new-squashfs";
+    QString cmd = "mount --rbind / " + work_dir.absolutePath() + "/new-squashfs";
     if (system(cmd.toAscii()) != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Count not install mount file system"));
         cleanUp();
