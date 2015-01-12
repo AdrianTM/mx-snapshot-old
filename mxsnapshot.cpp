@@ -245,7 +245,7 @@ void mxsnapshot::checkDirectories()
     // Remove/unmount folders if they exist
     QString cmd = "rm -rf " + path1 + "  2>/dev/null";
     getCmdOut(cmd);
-    cmd = "umount -l" + path2;
+    cmd = "umount -l " + path2;
     getCmdOut(cmd);
 
     // Recreate folders
@@ -484,9 +484,9 @@ void mxsnapshot::cleanUp()
 {
     ui->stackedWidget->setCurrentWidget(ui->outputPage);
     // unmount mounted files/directories
-    QString cmd = "umount -l" + work_dir.absolutePath() + "/new-squashfs/etc/fstab";
+    QString cmd = "umount -l " + work_dir.absolutePath() + "/new-squashfs/etc/fstab";
     system(cmd.toAscii());
-    cmd = "umount -l" + work_dir.absolutePath() + "/new-squashfs";
+    cmd = "umount -l " + work_dir.absolutePath() + "/new-squashfs";
     system(cmd.toAscii());
     // remove dummy fstab file
     cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
