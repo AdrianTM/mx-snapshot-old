@@ -447,7 +447,7 @@ void mxsnapshot::savePackageList(QString filename)
 void mxsnapshot::createIso(QString filename)
 {
     // add exclusions snapshot dir
-    addRemoveExclusion(true, snapshot_dir.absolutePath() + "/*");
+    addRemoveExclusion(true, snapshot_dir.absolutePath());
 
     // squash the filesystem copy
     QDir::setCurrent(work_dir.absolutePath());
@@ -745,7 +745,6 @@ void mxsnapshot::on_buttonSelectSnapshot_clicked()
     QDir selected = dialog.getExistingDirectory(0, tr("Select Snapshot Directory"), QString(), QFileDialog::ShowDirsOnly);
     if (selected.exists()) {
         snapshot_dir.setPath(selected.absolutePath());
-        addRemoveExclusion(true, snapshot_dir.absolutePath());
         ui->labelSnapshot->setText(tr("The snapshot will be placed in ") + snapshot_dir.absolutePath());
         listDiskSpace();
         work_dir.setPath(snapshot_dir.absolutePath() + "/work");
