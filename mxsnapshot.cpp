@@ -4,7 +4,7 @@
  * Copyright (C) 2015 MX Authors
  *
  * Authors: Adrian
- *          MEPIS Community <http://forum.mepiscommunity.org>
+ *          MX & MEPIS Community <http://forum.mepiscommunity.org>
  *
  * This file is part of MX Snapshot.
  *
@@ -245,7 +245,9 @@ void mxsnapshot::checkDirectories()
     // Remove/unmount folders if they exist
     QString cmd = "rm -rf " + path1 + "  2>/dev/null";
     getCmdOut(cmd);
-    cmd = "umount -l " + path2;
+    cmd = "umount " + path2 + "/home";
+    getCmdOut(cmd);
+    cmd = "umount " + path2;
     getCmdOut(cmd);
 
     // Recreate folders
@@ -376,9 +378,9 @@ void mxsnapshot::mountFileSystem()
     ui->outputLabel->setText(tr("Bind mounting filesystem..."));
     QDir::setCurrent("/");        
     // mount filesystem
-    QString cmd = "mount --rbind / " + work_dir.absolutePath() + "/new-squashfs";
+    QString cmd = "mount --bind / " + work_dir.absolutePath() + "/new-squashfs";
     if (system(cmd.toAscii()) != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not install mount file system"));
+        QMessageBox::critical(0, tr("Error"), tr("Count not mount file system"));
         cleanUp();
         return qApp->exit(1);
     }
@@ -389,6 +391,21 @@ void mxsnapshot::mountFileSystem()
         cleanUp();
         return qApp->exit(1);
     }
+    // mount /home
+    cmd = "mount --bind /home " + work_dir.absolutePath() + "/new-squashfs/home";
+    if (system(cmd.toAscii()) != 0) {
+        QMessageBox::critical(0, tr("Error"), tr("Count not mount /home"));
+        cleanUp();
+        return qApp->exit(1);
+    }
+    // remount /home as read-only
+    cmd = "mount -o remount,ro,bind " +  work_dir.absolutePath() + "/new-squashfs";
+    if (system(cmd.toAscii()) != 0) {
+        QMessageBox::critical(0, tr("Error"), tr("Count not mount file system"));
+        cleanUp();
+        return qApp->exit(1);
+    }
+
     // create an empty fstab file
     cmd = QString("touch %1/fstabdummy").arg(snapshot_dir.absolutePath());
     system(cmd.toAscii());
@@ -459,7 +476,6 @@ void mxsnapshot::createIso(QString filename)
     // create the iso file
     QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
     cmd = "genisoimage -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
-    ////ui->outputBox->clear();
     ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     setConnections(timer, proc);
     getCmdOut2(cmd);
@@ -484,9 +500,11 @@ void mxsnapshot::cleanUp()
 {
     ui->stackedWidget->setCurrentWidget(ui->outputPage);
     // unmount mounted files/directories
-    QString cmd = "umount -l " + work_dir.absolutePath() + "/new-squashfs/etc/fstab";
+    QString cmd = "umount " + work_dir.absolutePath() + "/new-squashfs/etc/fstab";
     system(cmd.toAscii());
-    cmd = "umount -l " + work_dir.absolutePath() + "/new-squashfs";
+    cmd = "umount " + work_dir.absolutePath() + "/new-squashfs/home";
+    system(cmd.toAscii());
+    cmd = "umount " + work_dir.absolutePath() + "/new-squashfs";
     system(cmd.toAscii());
     // remove dummy fstab file
     cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
@@ -744,10 +762,10 @@ void mxsnapshot::on_buttonSelectSnapshot_clicked()
     QFileDialog dialog;
     QDir selected = dialog.getExistingDirectory(0, tr("Select Snapshot Directory"), QString(), QFileDialog::ShowDirsOnly);
     if (selected.exists()) {
-        snapshot_dir.setPath(selected.absolutePath());
+        snapshot_dir.setPath(selected.absolutePath() + "/snapshot");
         ui->labelSnapshot->setText(tr("The snapshot will be placed in ") + snapshot_dir.absolutePath());
-        listDiskSpace();
         work_dir.setPath(snapshot_dir.absolutePath() + "/work");
+        listDiskSpace();
     }
 }
 
