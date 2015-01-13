@@ -92,7 +92,6 @@ public:
     void closeInitrd(QString initrd_dir, QString file);
     void copyModules(QString to, QString form);
     void copyNewIso();
-    void mountFileSystem();
     QString getFilename();
     void removeOldPackageDirectory();
     void mkDir(QString filename);

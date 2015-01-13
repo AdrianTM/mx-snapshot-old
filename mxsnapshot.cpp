@@ -63,8 +63,7 @@ void mxsnapshot::setup()
     session_excludes = "";
 
     // Load settings or use the default value
-    snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
-    work_dir.setPath(snapshot_dir.absolutePath() + "/work");
+    snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();    
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot_exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd_modules.list").toString());
     snapshot_persist = settings.value("snapshot_persist", "no").toString();
@@ -236,23 +235,7 @@ void mxsnapshot::checkDirectories()
     }
 
     // Create work_dir if it doesn't exist
-    if (!work_dir.exists()) {
-        work_dir.mkpath(work_dir.absolutePath());
-    }
-
-    QString path1 = work_dir.absolutePath() + "/new-iso";
-    QString path2 = work_dir.absolutePath() + "/new-squashfs";
-    // Remove/unmount folders if they exist
-    QString cmd = "rm -rf " + path1 + "  2>/dev/null";
-    getCmdOut(cmd);
-    cmd = "umount " + path2 + "/home";
-    getCmdOut(cmd);
-    cmd = "umount " + path2;
-    getCmdOut(cmd);
-
-    // Recreate folders
-    work_dir.mkpath(path1);
-    work_dir.mkpath(path2);
+    work_dir.setPath(getCmdOut("mktemp -d " + snapshot_dir.absolutePath() + "/work-XXXXXXXX"));
 }
 
 void mxsnapshot::detectKernels()
@@ -268,7 +251,6 @@ void mxsnapshot::checkInitrdModules()
         QString msg = tr("Could not find list of modules to put into the initrd") + "/n"\
             + tr("Missing file:") + " " + initrd_modules_file.fileName();
         QMessageBox::critical(0, tr("Error"), msg);
-        cleanUp();
         return qApp->exit(2);
     }
 }
@@ -373,47 +355,6 @@ void mxsnapshot::copyModules(QString to, QString from)
     }
 }
 
-void mxsnapshot::mountFileSystem()
-{
-    ui->outputLabel->setText(tr("Bind mounting filesystem..."));
-    QDir::setCurrent("/");
-    // mount filesystem
-    QString cmd = "mount --bind / " + work_dir.absolutePath() + "/new-squashfs";
-    if (system(cmd.toAscii()) != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not mount file system"));
-        cleanUp();
-        return qApp->exit(1);
-    }
-    // remount filesystem as read-only
-    cmd = "mount -o remount,ro,bind " +  work_dir.absolutePath() + "/new-squashfs";
-    if (system(cmd.toAscii()) != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not mount file system"));
-        cleanUp();
-        return qApp->exit(1);
-    }
-    // mount /home
-    cmd = "mount --bind /home " + work_dir.absolutePath() + "/new-squashfs/home";
-    if (system(cmd.toAscii()) != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not mount /home"));
-        cleanUp();
-        return qApp->exit(1);
-    }
-    // remount /home as read-only
-    cmd = "mount -o remount,ro,bind " +  work_dir.absolutePath() + "/new-squashfs/home";
-    if (system(cmd.toAscii()) != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Count not mount file system"));
-        cleanUp();
-        return qApp->exit(1);
-    }
-
-    // create an empty fstab file
-    cmd = QString("touch %1/fstabdummy").arg(snapshot_dir.absolutePath());
-    system(cmd.toAscii());
-    // mount empty fstab file
-    cmd = QString("mount --bind %1/fstabdummy %2/new-squashfs/etc/fstab").arg(snapshot_dir.absolutePath()).arg(work_dir.absolutePath());
-    system(cmd.toAscii());
-}
-
 // Create the output filename
 QString mxsnapshot::getFilename()
 {
@@ -466,12 +407,26 @@ void mxsnapshot::createIso(QString filename)
     // add exclusions snapshot dir
     addRemoveExclusion(true, snapshot_dir.absolutePath());
 
+    // create an empty fstab file
+    QString cmd = QString("touch %1/fstabdummy").arg(snapshot_dir.absolutePath());
+    system(cmd.toAscii());
+    // mount empty fstab file
+    cmd = QString("mount --bind %1/fstabdummy /etc/fstab").arg(snapshot_dir.absolutePath());
+    system(cmd.toAscii());
+
     // squash the filesystem copy
     QDir::setCurrent(work_dir.absolutePath());
-    QString cmd = "mksquashfs new-squashfs new-iso/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
+    cmd = "mksquashfs / new-iso/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     setConnections(timer, proc);
     getCmdOut2(cmd);
+
+    // umount empty fstab file
+    cmd = QString("umount /etc/fstab");
+    system(cmd.toAscii());
+    // remove dummy fstab file
+    cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
+    system(cmd.toAscii());
 
     // create the iso file
     QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
@@ -499,22 +454,11 @@ void mxsnapshot::createIso(QString filename)
 void mxsnapshot::cleanUp()
 {
     ui->stackedWidget->setCurrentWidget(ui->outputPage);
-    // unmount mounted files/directories
-    QString cmd = "umount " + work_dir.absolutePath() + "/new-squashfs/etc/fstab";
-    system(cmd.toAscii());
-    cmd = "umount " + work_dir.absolutePath() + "/new-squashfs/home";
-    system(cmd.toAscii());
-    cmd = "umount " + work_dir.absolutePath() + "/new-squashfs";
-    system(cmd.toAscii());
-    // remove dummy fstab file
-    cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
-    system(cmd.toAscii());
-
     QDir::setCurrent("/");
     ui->outputLabel->setText(tr("Cleaning..."));
-    setConnections(timer, proc);
-    getCmdOut2("rm -rf " + work_dir.absolutePath() + "/new-iso 2>/dev/null");
-    getCmdOut2("rm -rf " + work_dir.absolutePath() + "/new-squashfs 2>/dev/null");
+    if (work_dir.exists() && work_dir.absolutePath() != "/") {
+        getCmdOut("rm -rf " + work_dir.absolutePath());
+    }
 
     // remove linux-init-mx
     if (snapshot_persist == "yes") {
@@ -595,7 +539,6 @@ void mxsnapshot::on_buttonNext_clicked()
 {
     // on first page
     if (ui->stackedWidget->currentIndex() == 0) {
-
         this->setWindowTitle(tr("Settings"));
         ui->stackedWidget->setCurrentWidget(ui->settingsPage);
         ui->buttonBack->setHidden(false);
@@ -636,7 +579,6 @@ void mxsnapshot::on_buttonNext_clicked()
         ui->stackedWidget->setCurrentWidget(ui->outputPage);
         this->setWindowTitle(tr("Output"));
         copyNewIso();
-        mountFileSystem();
         QString filename = getFilename();
         removeOldPackageDirectory(); // removes the directory of the old package-list directories (that use the same basename)
         ui->outputLabel->clear();
@@ -659,7 +601,6 @@ void mxsnapshot::on_buttonNext_clicked()
         QMessageBox::information(this, tr("Success"),tr("All finished!"), QMessageBox::Ok);
         ui->buttonBack->setEnabled(true);
     } else {
-        cleanUp();
         return qApp->quit();
     }
 }
@@ -764,7 +705,6 @@ void mxsnapshot::on_buttonSelectSnapshot_clicked()
     if (selected.exists()) {
         snapshot_dir.setPath(selected.absolutePath() + "/snapshot");
         ui->labelSnapshot->setText(tr("The snapshot will be placed in ") + snapshot_dir.absolutePath());
-        work_dir.setPath(snapshot_dir.absolutePath() + "/work");
         listDiskSpace();
     }
 }
