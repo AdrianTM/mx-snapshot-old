@@ -415,6 +415,13 @@ void mxsnapshot::createIso(QString filename)
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     getCmdOut2(cmd);
 
+    // umount empty fstab file
+    cmd = QString("umount /etc/fstab");
+    system(cmd.toAscii());
+    // remove dummy fstab file
+    cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
+    system(cmd.toAscii());
+
     // create the iso file
     QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
     cmd = "genisoimage -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
@@ -434,14 +441,6 @@ void mxsnapshot::createIso(QString filename)
         cmd = "md5sum " + snapshot_dir.absolutePath() + "/" + filename + " > " + snapshot_dir.absolutePath() + "/" + filename + ".md5";
         getCmdOut2(cmd);
     }
-
-    // umount empty fstab file
-    cmd = QString("umount /etc/fstab");
-    system(cmd.toAscii());
-    // remove dummy fstab file
-    cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
-    system(cmd.toAscii());
-
 }
 
 // clean up changes before exit
