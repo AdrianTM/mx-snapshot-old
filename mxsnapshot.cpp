@@ -30,6 +30,8 @@
 #include <QScrollBar>
 #include <QTextStream>
 
+//#include <QDebug>
+
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
@@ -278,12 +280,10 @@ void mxsnapshot::copyNewIso()
 
     ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
     QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";
-    setConnections(timer, proc);
     getCmdOut2(cmd);
 
 
     cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
-    setConnections(timer, proc);
     getCmdOut2(cmd);
 
     QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");
@@ -375,7 +375,6 @@ void mxsnapshot::removeOldPackageDirectory()
 {
     QString dir =  work_dir.absolutePath() + "/new-iso/" + snapshot_basename;
     QString cmd = "rm -r " + dir + "*";
-    setConnections(timer, proc);
     getCmdOut2(cmd);
     ui->outputLabel->setText(tr("Removing old package-list directory: ") + dir);
 }
@@ -414,8 +413,27 @@ void mxsnapshot::createIso(QString filename)
     QDir::setCurrent(work_dir.absolutePath());
     cmd = "mksquashfs / new-iso/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
-    setConnections(timer, proc);
     getCmdOut2(cmd);
+
+    // create the iso file
+    QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
+    cmd = "genisoimage -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
+    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
+    getCmdOut2(cmd);
+
+    // make it isohybrid
+    if (make_isohybrid == "yes") {
+        ui->outputLabel->setText(tr("Making hybrid iso"));
+        cmd = "isohybrid " + snapshot_dir.absolutePath() + "/" + filename;
+        getCmdOut2(cmd);
+    }
+
+    // make md5sum
+    if (make_md5sum == "yes") {
+        ui->outputLabel->setText(tr("Making md5sum"));
+        cmd = "md5sum " + snapshot_dir.absolutePath() + "/" + filename + " > " + snapshot_dir.absolutePath() + "/" + filename + ".md5";
+        getCmdOut2(cmd);
+    }
 
     // umount empty fstab file
     cmd = QString("umount /etc/fstab");
@@ -424,28 +442,6 @@ void mxsnapshot::createIso(QString filename)
     cmd = "rm " + snapshot_dir.absolutePath() + "/fstabdummy";
     system(cmd.toAscii());
 
-    // create the iso file
-    QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
-    cmd = "genisoimage -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
-    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
-    setConnections(timer, proc);
-    getCmdOut2(cmd);
-
-    // make it isohybrid
-    if (make_isohybrid == "yes") {
-        ui->outputLabel->setText(tr("Making hybrid iso"));
-        cmd = "isohybrid " + snapshot_dir.absolutePath() + "/" + filename;
-        setConnections(timer, proc);
-        getCmdOut2(cmd);
-    }
-
-    // make md5sum
-    if (make_md5sum == "yes") {
-        ui->outputLabel->setText(tr("Making md5sum"));
-        cmd = "md5sum " + snapshot_dir.absolutePath() + "/" + filename + " > " + snapshot_dir.absolutePath() + "/" + filename + ".md5";
-        setConnections(timer, proc);
-        getCmdOut2(cmd);
-    }
 }
 
 // clean up changes before exit
@@ -455,13 +451,12 @@ void mxsnapshot::cleanUp()
     QDir::setCurrent("/");
     ui->outputLabel->setText(tr("Cleaning..."));
     if (work_dir.exists() && work_dir.absolutePath() != "/") {
-        getCmdOut("rm -rf " + work_dir.absolutePath());
+        system("rm -rf " + work_dir.absolutePath().toAscii());
     }
 
     // remove linux-init-mx
     if (snapshot_persist == "yes") {
         ui->outputLabel->setText(tr("Removing live-init-mx"));
-        setConnections(timer, proc);
         getCmdOut2("apt-get purge linux-init-mx");
     }
     ui->outputLabel->clear();
