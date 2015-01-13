@@ -30,8 +30,6 @@
 #include <QScrollBar>
 #include <QTextStream>
 
-//#include <QDebug>
-
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
@@ -271,8 +269,6 @@ void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
     QDir::setCurrent(initrd_dir);
     QString cmd = "(find . | cpio -o -H newc --owner root:root | gzip -9) >" + file;
     system(cmd.toAscii());
-    //cmd = "rm -r " + initrd_dir;
-    //getCmdOut2(cmd);
 }
 
 // Copying the new-iso filesystem
@@ -294,7 +290,7 @@ void mxsnapshot::copyNewIso()
     openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
-    if (mod_dir != "") {
+    if (initrd_dir != "") {
         cmd = "rm -r " + mod_dir + "/*";
         getCmdOut2(cmd);
         copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
@@ -439,6 +435,7 @@ void mxsnapshot::createIso(QString filename)
     if (make_isohybrid == "yes") {
         ui->outputLabel->setText(tr("Making hybrid iso"));
         cmd = "isohybrid " + snapshot_dir.absolutePath() + "/" + filename;
+        setConnections(timer, proc);
         getCmdOut2(cmd);
     }
 
@@ -446,6 +443,7 @@ void mxsnapshot::createIso(QString filename)
     if (make_md5sum == "yes") {
         ui->outputLabel->setText(tr("Making md5sum"));
         cmd = "md5sum " + snapshot_dir.absolutePath() + "/" + filename + " > " + snapshot_dir.absolutePath() + "/" + filename + ".md5";
+        setConnections(timer, proc);
         getCmdOut2(cmd);
     }
 }
