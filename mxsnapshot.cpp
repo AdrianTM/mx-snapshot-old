@@ -62,7 +62,7 @@ void mxsnapshot::setup()
     ui->buttonNext->setEnabled(true);
     session_excludes = "";
 
-    // Load settings or use the default value    
+    // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     work_dir.setPath(snapshot_dir.absolutePath() + "/work");
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot_exclude.list").toString());
@@ -226,7 +226,7 @@ bool mxsnapshot::installLeafpad()
 }
 
 void mxsnapshot::checkDirectories()
-{    
+{
     //  Create snapshot dir if it doesn't exist
     if (!snapshot_dir.exists()) {
         snapshot_dir.mkpath(snapshot_dir.absolutePath());
@@ -376,7 +376,7 @@ void mxsnapshot::copyModules(QString to, QString from)
 void mxsnapshot::mountFileSystem()
 {
     ui->outputLabel->setText(tr("Bind mounting filesystem..."));
-    QDir::setCurrent("/");        
+    QDir::setCurrent("/");
     // mount filesystem
     QString cmd = "mount --bind / " + work_dir.absolutePath() + "/new-squashfs";
     if (system(cmd.toAscii()) != 0) {
@@ -399,7 +399,7 @@ void mxsnapshot::mountFileSystem()
         return qApp->exit(1);
     }
     // remount /home as read-only
-    cmd = "mount -o remount,ro,bind " +  work_dir.absolutePath() + "/new-squashfs";
+    cmd = "mount -o remount,ro,bind " +  work_dir.absolutePath() + "/new-squashfs/home";
     if (system(cmd.toAscii()) != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Count not mount file system"));
         cleanUp();
@@ -539,7 +539,7 @@ void mxsnapshot::addRemoveExclusion(bool add, QString exclusion)
         if ( session_excludes == "-e" ) {
             session_excludes = "";
         }
-    }    
+    }
 }
 
 //// sync process events ////
@@ -622,7 +622,7 @@ void mxsnapshot::on_buttonNext_clicked()
         ui->label_3->setText(tr("*These settings can be changed by editing: ") + config_file.fileName());
 
     // on settings page
-    } else if (ui->stackedWidget->currentWidget() == ui->settingsPage) {        
+    } else if (ui->stackedWidget->currentWidget() == ui->settingsPage) {
         int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
                               tr("It will take some time to finish, depending on the size of the installed system and the capacity of your computer.") + "\n\n" +
@@ -768,4 +768,3 @@ void mxsnapshot::on_buttonSelectSnapshot_clicked()
         listDiskSpace();
     }
 }
-
