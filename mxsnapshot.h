@@ -91,7 +91,6 @@ public:
     void copyModules(QString to, QString form);
     void copyNewIso();
     QString getFilename();
-    void removeOldPackageDirectory();
     void mkDir(QString filename);
     void savePackageList(QString filename);
     void createIso(QString filename);
