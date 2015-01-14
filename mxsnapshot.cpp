@@ -140,12 +140,7 @@ void mxsnapshot::listDiskSpace()
     QString out = QString("Current space on the partition* holding the snapshot directory %1:").arg(snapshot_dir.absolutePath());
     ui->labelCurrentSpace->setText(out);
 
-    QString path;
-    if (snapshot_dir.absolutePath() == "/home/snapshot") {
-        path = "/home";
-    } else {
-        path = snapshot_dir.absolutePath();
-    }
+    QString path = snapshot_dir.absolutePath().remove("/snapshot");
     QString cmd = QString("df -h  %1 | awk '{printf \"%-8s\\t%-8s\\t%-8s\\t%-8s\\n\",$2,$3,$5,$4}'").arg(path);
     out = "\n" + getCmdOut(cmd) + "\n";
     ui->labelDiskSpace->setText(out);
