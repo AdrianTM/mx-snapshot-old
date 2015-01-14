@@ -137,14 +137,17 @@ QString mxsnapshot::getSnapshotSize()
 // List the info regarding the free space on drives
 void mxsnapshot::listDiskSpace()
 {
-    QString out = QString("Current space on the partition* holding the snapshot directory %1:").arg(snapshot_dir.absolutePath());
-    ui->labelCurrentSpace->setText(out);
-
     QString path = snapshot_dir.absolutePath().remove("/snapshot");
-    QString cmd = QString("df -h  %1 | awk '{printf \"%-8s\\t%-8s\\t%-8s\\t%-8s\\n\",$2,$3,$5,$4}'").arg(path);
-    out = "\n" + getCmdOut(cmd) + "\n";
+    QString cmd = QString("df -h  / | awk 'NR==2 {print $3}'");
+    QString out = "\n- " + tr("Used space on / (root): ") + getCmdOut(cmd);
+    if (system("mountpoint -q /home") == 0 ) {
+        cmd = QString("df -h  /home | awk 'NR==2 {print $3}'");
+        out.append("\n- " + tr("Used space on /home: ") + getCmdOut(cmd));
+    }
+    cmd = QString("df -h %1 | awk 'NR==2 {print $4}'").arg(path);
+    out.append("\n- " + tr("Free space on %1, where snapshot folder is placed: ").arg(path) + getCmdOut(cmd) + "\n");
     ui->labelDiskSpace->setText(out);
-    ui->labelDiskSpaceHelp->setText(tr("It is recommended that free space ('Avail') be at least equal to the total installed system size ('Used').\n\n"
+    ui->labelDiskSpaceHelp->setText(tr("The free space should be sufficient to hold the compressed data from / and /home\n\n"
                                        "      If necessary, you can create more available space\n"
                                        "      by removing previous snapshots and saved copies:\n"
                                        "      %1 snapshots are taking up %2 of disk space.\n").arg(QString::number(getSnapshotCount())).arg(getSnapshotSize()));

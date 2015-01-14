@@ -17,7 +17,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="selectionPage">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -47,7 +47,7 @@
        <item row="1" column="0" colspan="3">
         <widget class="QLabel" name="labelCurrentSpace">
          <property name="text">
-          <string/>
+          <string>Used space on / (root) and /home partitions:</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -101,9 +101,6 @@ color: rgb(0, 0, 0);</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
