@@ -85,6 +85,8 @@ QString mxsnapshot::getCmdOut(QString cmd)
 {
     QEventLoop loop;
     proc = new QProcess(this);
+    proc->setReadChannel(QProcess::StandardOutput);
+    proc->setReadChannelMode(QProcess::MergedChannels);
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
     proc->start("/bin/bash", QStringList() << "-c" << cmd);
     loop.exec();
@@ -96,6 +98,8 @@ QString mxsnapshot::getCmdOut2(QString cmd)
 {
     QEventLoop loop;
     proc = new QProcess(this);
+    proc->setReadChannel(QProcess::StandardOutput);
+    proc->setReadChannelMode(QProcess::MergedChannels);
     setConnections(timer, proc);
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
     proc->start("/bin/bash", QStringList() << "-c" << cmd);
@@ -282,8 +286,8 @@ void mxsnapshot::copyNewIso()
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
-        cmd = "rm -r " + mod_dir + "/*";
-        getCmdOut2(cmd);
+        //cmd = "rm -r " + mod_dir + "/*";
+        //getCmdOut2(cmd);
         copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
         closeInitrd(initrd_dir, work_dir.absolutePath() + "/new-iso/antiX/initrd.gz");
     }
@@ -361,15 +365,6 @@ QString mxsnapshot::getFilename()
     }
 }
 
-// removes the directory of the old package-list directories (that use the same basename)
-void mxsnapshot::removeOldPackageDirectory()
-{
-    QString dir =  work_dir.absolutePath() + "/new-iso/" + snapshot_basename;
-    QString cmd = "rm -r " + dir + "*";
-    getCmdOut2(cmd);
-    ui->outputLabel->setText(tr("Removing old package-list directory: ") + dir);
-}
-
 // make working directory using the base filename
 void mxsnapshot::mkDir(QString filename)
 {
@@ -415,7 +410,7 @@ void mxsnapshot::createIso(QString filename)
 
     // create the iso file
     QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
-    cmd = "genisoimage -iso-level 3 -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
+    cmd = "genisoimage -allow-limited-size -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
     ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     getCmdOut2(cmd);
 
@@ -437,12 +432,12 @@ void mxsnapshot::createIso(QString filename)
 // clean up changes before exit
 void mxsnapshot::cleanUp()
 {
-    ui->stackedWidget->setCurrentWidget(ui->outputPage);
-    QDir::setCurrent("/");
-    ui->outputLabel->setText(tr("Cleaning..."));
-    if (work_dir.exists() && work_dir.absolutePath() != "/") {
-        system("rm -rf " + work_dir.absolutePath().toAscii());
-    }
+//    ui->stackedWidget->setCurrentWidget(ui->outputPage);
+//    QDir::setCurrent("/");
+//    ui->outputLabel->setText(tr("Cleaning..."));
+//    if (work_dir.exists() && work_dir.absolutePath() != "/") {
+//        system("rm -rf " + work_dir.absolutePath().toAscii());
+//    }
 
     // remove linux-init-mx
     if (snapshot_persist == "yes") {
@@ -564,7 +559,6 @@ void mxsnapshot::on_buttonNext_clicked()
         this->setWindowTitle(tr("Output"));
         copyNewIso();
         QString filename = getFilename();
-        removeOldPackageDirectory(); // removes the directory of the old package-list directories (that use the same basename)
         ui->outputLabel->clear();
         mkDir(filename);
         savePackageList(filename);
