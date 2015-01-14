@@ -71,7 +71,6 @@ public:
     QDir lib_mod_dir;
     QFile gui_editor;
     QString kernel_used;
-    QString kernels_avail;
     QString save_message;
     QString mksq_opt;
     QString session_excludes;
@@ -86,7 +85,6 @@ public:
     bool checkInstalled(QString package);
     void checkDirectories();
     void checkInitrdModules();
-    void detectKernels();
     void checkSaveWork();
     void openInitrd(QString file, QString initrd_dir);
     void closeInitrd(QString initrd_dir, QString file);

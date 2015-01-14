@@ -63,9 +63,9 @@ void mxsnapshot::setup()
     session_excludes = "";
 
     // Load settings or use the default value
-    snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();    
-    snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot_exclude.list").toString());
-    initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd_modules.list").toString());
+    snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
+    snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot-exclude.list").toString());
+    initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
     snapshot_persist = settings.value("snapshot_persist", "no").toString();
     snapshot_basename = settings.value("snapshot_basename", "snapshot").toString();
     make_md5sum = settings.value("make_md5sum", "no").toString();
@@ -234,13 +234,6 @@ void mxsnapshot::checkDirectories()
 
     // Create work_dir if it doesn't exist
     work_dir.setPath(getCmdOut("mktemp -d " + snapshot_dir.absolutePath() + "/work-XXXXXXXX"));
-}
-
-void mxsnapshot::detectKernels()
-{
-    kernel_used = getCmdOut("uname -r");
-    QString cmd = QString("ls /boot/vmlinuz-* | sed 's|/boot/vmlinuz-||g'| grep -v %1").arg(kernel_used);
-    kernels_avail = getCmdOut(cmd);
 }
 
 void mxsnapshot::checkInitrdModules()
@@ -422,7 +415,7 @@ void mxsnapshot::createIso(QString filename)
 
     // create the iso file
     QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
-    cmd = "genisoimage -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
+    cmd = "genisoimage -iso-level 3 -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
     ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     getCmdOut2(cmd);
 
@@ -545,8 +538,8 @@ void mxsnapshot::on_buttonNext_clicked()
                 ui->stackedWidget->setCurrentWidget(ui->settingsPage);
               }
         }
-        detectKernels();
         checkInitrdModules();
+        kernel_used = getCmdOut("uname -r");
         ui->stackedWidget->setCurrentWidget(ui->settingsPage);
         ui->label_1->setText(tr("Snapshot will use the following settings:*"));
 
@@ -556,6 +549,7 @@ void mxsnapshot::on_buttonNext_clicked()
 
     // on settings page
     } else if (ui->stackedWidget->currentWidget() == ui->settingsPage) {
+
         int ans = QMessageBox::question(this, tr("Final chance"),
                               tr("Snapshot now has all the information it needs to create an ISO from your running system.") + "\n\n" +
                               tr("It will take some time to finish, depending on the size of the installed system and the capacity of your computer.") + "\n\n" +
@@ -608,7 +602,7 @@ void mxsnapshot::on_buttonEditConfig_clicked()
 {
     this->hide();
     checkEditor();
-    system((gui_editor.fileName() + " /etc/mx-snapshot.conf").toAscii());
+    system((gui_editor.fileName() + " " + config_file.fileName()).toAscii());
     setup();
     this->show();
 }
@@ -617,7 +611,7 @@ void mxsnapshot::on_buttonEditExclude_clicked()
 {
     this->hide();
     checkEditor();
-    system((gui_editor.fileName() + " /usr/lib/mx-snapshot/snapshot_exclude.list").toAscii());
+    system((gui_editor.fileName() + " " + snapshot_excludes.fileName()).toAscii());
     this->show();
 }
 

@@ -222,7 +222,7 @@ color: rgb(0, 0, 0);</string>
        <item>
         <widget class="QLabel" name="labelExclude">
          <property name="text">
-          <string>You can also exclude certain directories by ticking the common choices below, or by clicking on the button to directly edit /usr/lib/mx-snapshot/snapshot_exclude.list.</string>
+          <string>You can also exclude certain directories by ticking the common choices below, or by clicking on the button to directly edit /usr/lib/mx-snapshot/snapshot-exclude.list.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>

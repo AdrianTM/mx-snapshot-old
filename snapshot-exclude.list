@@ -27,8 +27,7 @@ var/lib/apt/lists/*
 var/cache/debconf/*-old
 var/lib/dpkg/*-old
 lost+found
-run/acpid.socket
-run/dbus/system_bus_socket
+run/*
 usr/share/doc/*
 
 # Entries below this can be edited by the user. If you have any large
