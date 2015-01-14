@@ -432,12 +432,12 @@ void mxsnapshot::createIso(QString filename)
 // clean up changes before exit
 void mxsnapshot::cleanUp()
 {
-//    ui->stackedWidget->setCurrentWidget(ui->outputPage);
-//    QDir::setCurrent("/");
-//    ui->outputLabel->setText(tr("Cleaning..."));
-//    if (work_dir.exists() && work_dir.absolutePath() != "/") {
-//        system("rm -rf " + work_dir.absolutePath().toAscii());
-//    }
+    ui->stackedWidget->setCurrentWidget(ui->outputPage);
+    QDir::setCurrent("/");
+    ui->outputLabel->setText(tr("Cleaning..."));
+    if (work_dir.exists() && work_dir.absolutePath() != "/") {
+        system("rm -rf " + work_dir.absolutePath().toAscii());
+    }
 
     // remove linux-init-mx
     if (snapshot_persist == "yes") {
