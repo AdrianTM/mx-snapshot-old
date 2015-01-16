@@ -56,6 +56,7 @@ public:
     void addRemoveExclusion(bool add, QString exclusion);
     QSettings settings;
 
+    bool live;
     QFile config_file;
     QDir work_dir;
     QDir snapshot_dir;

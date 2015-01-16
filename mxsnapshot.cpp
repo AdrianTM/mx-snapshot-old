@@ -65,7 +65,10 @@ void mxsnapshot::setup()
     // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     if (system("mountpoint -q /live/aufs") == 0 ) { // if running from a live environment
+        live = true;
         snapshot_dir.setPath("/live/boot-dev/snapshot");
+    } else {
+        live = false;
     }
     ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot-exclude.list").toString());
@@ -144,8 +147,13 @@ QString mxsnapshot::getSnapshotSize()
 // List the info regarding the free space on drives
 void mxsnapshot::listDiskSpace()
 {
+    QString cmd;
     QString path = snapshot_dir.absolutePath().remove("/snapshot");
-    QString cmd = QString("df -h  / | awk 'NR==2 {print $3}'");
+    if (live == true) {
+        cmd = QString("df -h  /live/linux | awk 'NR==2 {print $3}'");
+    } else {
+        cmd = QString("df -h  / | awk 'NR==2 {print $3}'");
+    }
     QString out = "\n- " + tr("Used space on / (root): ") + getCmdOut(cmd);
     if (system("mountpoint -q /home") == 0 ) {
         cmd = QString("df -h  /home | awk 'NR==2 {print $3}'");
