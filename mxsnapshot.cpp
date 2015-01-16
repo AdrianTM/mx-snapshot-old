@@ -71,8 +71,7 @@ void mxsnapshot::setup()
     make_md5sum = settings.value("make_md5sum", "no").toString();
     make_isohybrid = settings.value("make_isohybrid", "yes").toString();
     mksq_opt = settings.value("mksq_opt", "-comp xz").toString();
-    edit_boot_menu = settings.value("edit_boot_menu", "no").toString();
-    iso_dir = settings.value("iso_dir", "/usr/lib/mx-snapshot/new-iso").toString();
+    edit_boot_menu = settings.value("edit_boot_menu", "no").toString();    
     lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();
     gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
     stamp = settings.value("stamp", "datetime").toString();
@@ -274,20 +273,18 @@ void mxsnapshot::copyNewIso()
     ui->outputBox->clear();
 
     ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
-    QString cmd = "rsync -a " + iso_dir +  "/ " + work_dir.absolutePath() + "/new-iso/";
+    QDir::setCurrent(work_dir.absolutePath());
+    QString cmd = "tar xf /usr/lib/mx-snapshot/new-iso.tar.gz";
     getCmdOut2(cmd);
-
 
     cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
     getCmdOut2(cmd);
 
     QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");
-    openInitrd(iso_dir + "/antiX/initrd.gz", initrd_dir);
+    openInitrd(work_dir.absolutePath() + "/new-iso/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
-        //cmd = "rm -r " + mod_dir + "/*";
-        //getCmdOut2(cmd);
         copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
         closeInitrd(initrd_dir, work_dir.absolutePath() + "/new-iso/antiX/initrd.gz");
     }

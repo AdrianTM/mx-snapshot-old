@@ -67,7 +67,6 @@ public:
     QString make_md5sum;
     QString make_isohybrid;
     QString edit_boot_menu;
-    QString iso_dir;
     QDir lib_mod_dir;
     QFile gui_editor;
     QString kernel_used;
