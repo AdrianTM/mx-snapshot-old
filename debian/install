@@ -1,9 +1,9 @@
-mx-snapshot 		 usr/bin
-mx-snapshot.desktop	 usr/share/applications/mx
-mx-snapshot.conf	 etc
-snapshot-exclude.list	 usr/lib/mx-snapshot
-initrd-modules.list	 usr/lib/mx-snapshot
-new-iso.tar.gz		 usr/lib/mx-snapshot
-translations/*.qm 	 usr/share/mx-snapshot/locale
+mx-snapshot 		usr/bin
+mx-snapshot.desktop	usr/share/applications/mx
+mx-snapshot.conf	etc
+snapshot-exclude.list	usr/lib/mx-snapshot
+initrd-modules.list	usr/lib/mx-snapshot
+iso-template.tar.gz	usr/lib/mx-snapshot
+translations/*.qm 	usr/share/mx-snapshot/locale
 mx-snapshot.png	usr/share/pixmaps/mx
-icons/*                 usr/share/mx-snapshot/icons
+icons/*			usr/share/mx-snapshot/icons

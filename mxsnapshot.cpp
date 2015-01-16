@@ -64,6 +64,9 @@ void mxsnapshot::setup()
 
     // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
+    if (system("mountpoint -q /live/aufs") == 0 ) { // if running from a live environment
+        snapshot_dir = "/live/boot.dev/snapshot";
+    }
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot-exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
     snapshot_persist = settings.value("snapshot_persist", "no").toString();
@@ -71,7 +74,7 @@ void mxsnapshot::setup()
     make_md5sum = settings.value("make_md5sum", "no").toString();
     make_isohybrid = settings.value("make_isohybrid", "yes").toString();
     mksq_opt = settings.value("mksq_opt", "-comp xz").toString();
-    edit_boot_menu = settings.value("edit_boot_menu", "no").toString();    
+    edit_boot_menu = settings.value("edit_boot_menu", "no").toString();
     lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();
     gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
     stamp = settings.value("stamp", "datetime").toString();
@@ -267,26 +270,27 @@ void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
     system(cmd.toAscii());
 }
 
-// Copying the new-iso filesystem
+// Copying the iso-template filesystem
 void mxsnapshot::copyNewIso()
 {
     ui->outputBox->clear();
 
     ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
     QDir::setCurrent(work_dir.absolutePath());
-    QString cmd = "tar xf /usr/lib/mx-snapshot/new-iso.tar.gz";
+    QString cmd = "tar xf /usr/lib/mx-snapshot/iso-template.tar.gz";
     getCmdOut2(cmd);
 
-    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/new-iso/antiX/vmlinuz";
+    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/iso-template/antiX/vmlinuz";
     getCmdOut2(cmd);
+    makeMd5sum(work_dir.absolutePath() + "/iso-template/antiX", "vmlinuz");
 
     QString initrd_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXX");
-    openInitrd(work_dir.absolutePath() + "/new-iso/antiX/initrd.gz", initrd_dir);
+    openInitrd(work_dir.absolutePath() + "/iso-template/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
         copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
-        closeInitrd(initrd_dir, work_dir.absolutePath() + "/new-iso/antiX/initrd.gz");
+        closeInitrd(initrd_dir, work_dir.absolutePath() + "/iso-template/antiX/initrd.gz");
     }
 }
 
@@ -367,7 +371,7 @@ void mxsnapshot::mkDir(QString filename)
 {
     QDir dir;
     filename.chop(4); //remove ".iso" string
-    dir.setPath(work_dir.absolutePath() + "/new-iso/" + filename);
+    dir.setPath(work_dir.absolutePath() + "/iso-template/" + filename);
     dir.mkpath(dir.absolutePath());
 }
 
@@ -375,7 +379,7 @@ void mxsnapshot::mkDir(QString filename)
 void mxsnapshot::savePackageList(QString filename)
 {
     filename.chop(4); //remove .iso
-    filename = work_dir.absolutePath() + "/new-iso/" + filename + "/package_list";
+    filename = work_dir.absolutePath() + "/iso-template/" + filename + "/package_list";
     QString cmd = "dpkg -l | grep \"ii\" | awk '{ print $2 }' >" + filename;
     system(cmd.toAscii());
 }
@@ -394,9 +398,10 @@ void mxsnapshot::createIso(QString filename)
 
     // squash the filesystem copy
     QDir::setCurrent(work_dir.absolutePath());
-    cmd = "mksquashfs / new-iso/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
+    cmd = "mksquashfs / iso-template/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     getCmdOut2(cmd);
+    makeMd5sum("iso-template/antiX", "linuxfs");
 
     // umount empty fstab file
     cmd = QString("umount /etc/fstab");
@@ -406,7 +411,7 @@ void mxsnapshot::createIso(QString filename)
     system(cmd.toAscii());
 
     // create the iso file
-    QDir::setCurrent(work_dir.absolutePath() + "/new-iso");
+    QDir::setCurrent(work_dir.absolutePath() + "/iso-template");
     cmd = "genisoimage -allow-limited-size -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
     ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     getCmdOut2(cmd);
@@ -420,10 +425,16 @@ void mxsnapshot::createIso(QString filename)
 
     // make md5sum
     if (make_md5sum == "yes") {
-        ui->outputLabel->setText(tr("Making md5sum"));
-        cmd = "md5sum " + snapshot_dir.absolutePath() + "/" + filename + " > " + snapshot_dir.absolutePath() + "/" + filename + ".md5";
-        getCmdOut2(cmd);
+        makeMd5sum(snapshot_dir.absolutePath(), filename);
     }
+}
+
+// create md5sum for different files
+void mxsnapshot::makeMd5sum(QString folder, QString filename)
+{
+    ui->outputLabel->setText(tr("Making md5sum"));
+    QString cmd = "md5sum " + folder + "/" + filename + " > " + folder + "/" + filename + ".md5";
+    getCmdOut2(cmd);
 }
 
 // clean up changes before exit
@@ -566,7 +577,7 @@ void mxsnapshot::on_buttonNext_clicked()
                                      QMessageBox::Yes | QMessageBox::No);
             if (ans == QMessageBox::Yes) {
                 this->hide();
-                QString cmd = gui_editor.fileName() + " " + work_dir.absolutePath() + "/new-iso/boot/isolinux/isolinux.cfg";
+                QString cmd = gui_editor.fileName() + " " + work_dir.absolutePath() + "/iso-template/boot/isolinux/isolinux.cfg";
                 system(cmd.toAscii());
                 this->show();
             }

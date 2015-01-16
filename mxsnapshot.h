@@ -94,6 +94,7 @@ public:
     void savePackageList(QString filename);
     void createIso(QString filename);
     void cleanUp();
+    void makeMd5sum(QString folder, QString filename);
 
 public slots:
     void procStart();
