@@ -65,8 +65,9 @@ void mxsnapshot::setup()
     // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     if (system("mountpoint -q /live/aufs") == 0 ) { // if running from a live environment
-        snapshot_dir = "/live/boot.dev/snapshot";
+        snapshot_dir.setPath("/live/boot.dev/snapshot");
     }
+    ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot-exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
     snapshot_persist = settings.value("snapshot_persist", "no").toString();
