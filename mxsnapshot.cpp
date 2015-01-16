@@ -149,8 +149,8 @@ void mxsnapshot::listDiskSpace()
 {
     QString cmd;
     QString path = snapshot_dir.absolutePath().remove("/snapshot");
-    if (live == true) {
-        cmd = QString("df -h  /live/linux | awk 'NR==2 {print $3}'");
+    if (live) {
+        cmd = QString("df -h  /live/aufs | awk 'NR==2 {print $3}'");
     } else {
         cmd = QString("df -h  / | awk 'NR==2 {print $3}'");
     }
