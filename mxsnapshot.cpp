@@ -150,16 +150,16 @@ void mxsnapshot::listDiskSpace()
     QString cmd;
     QString path = snapshot_dir.absolutePath().remove("/snapshot");
     if (live) {
-        cmd = QString("df -h  /live/aufs | awk 'NR==2 {print $3}'");
+        cmd = QString("df /live/boot-dev | awk 'NR==2 {print $3}'");
     } else {
-        cmd = QString("df -h  / | awk 'NR==2 {print $3}'");
+        cmd = QString("df / | awk 'NR==2 {print $3}'");
     }
     QString out = "\n- " + tr("Used space on / (root): ") + getCmdOut(cmd);
     if (system("mountpoint -q /home") == 0 ) {
-        cmd = QString("df -h  /home | awk 'NR==2 {print $3}'");
+        cmd = QString("df /home | awk 'NR==2 {print $3}'");
         out.append("\n- " + tr("Used space on /home: ") + getCmdOut(cmd));
     }
-    cmd = QString("df -h %1 | awk 'NR==2 {print $4}'").arg(path);
+    cmd = QString("df %1 | awk 'NR==2 {print $4}'").arg(path);
     out.append("\n- " + tr("Free space on %1, where snapshot folder is placed: ").arg(path) + getCmdOut(cmd) + "\n");
     ui->labelDiskSpace->setText(out);
     ui->labelDiskSpaceHelp->setText(tr("The free space should be sufficient to hold the compressed data from / and /home\n\n"
