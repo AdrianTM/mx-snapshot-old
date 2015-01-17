@@ -250,7 +250,7 @@ void mxsnapshot::checkDirectories()
     // Create work_dir if it doesn't exist
     work_dir.setPath(getCmdOut("mktemp -d " + snapshot_dir.absolutePath() + "/work-XXXXXXXX"));
     // exclude work directory name
-    QString name = work_dir.absolutePath().remove(snapshot_dir.absolutePath()) + "/*";
+    QString name = "/snapshot" + work_dir.absolutePath().remove(snapshot_dir.absolutePath()) + "/*";
     addRemoveExclusion(true, name);
 }
 
