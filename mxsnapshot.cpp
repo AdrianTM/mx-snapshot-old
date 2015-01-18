@@ -66,7 +66,10 @@ void mxsnapshot::setup()
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     if (system("mountpoint -q /live/aufs") == 0 ) { // if running from a live environment
         live = true;
-        snapshot_dir.setPath("/live/boot-dev/snapshot");
+        // if the /live/boot-dev is not read-only mount point
+        if (system("grep /live/boot-dev /proc/mounts | grep -q '\\sro[\\s,]'") != 0) {
+            snapshot_dir.setPath("/live/boot-dev/snapshot");
+        }
     } else {
         live = false;
     }
