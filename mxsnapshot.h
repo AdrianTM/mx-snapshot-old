@@ -76,7 +76,8 @@ public:
     QString session_excludes;
 
     void setup();
-    void listDiskSpace();
+    void listUsedSpace();
+    void listFreeSpace();
     int getSnapshotCount();
     QString getSnapshotSize();
     void checkEditor();

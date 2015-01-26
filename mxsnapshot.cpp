@@ -32,6 +32,7 @@
 
 //#include <QDebug>
 
+
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::mxsnapshot)
@@ -86,7 +87,8 @@ void mxsnapshot::setup()
     gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
     stamp = settings.value("stamp", "datetime").toString();
 
-    listDiskSpace();
+    listUsedSpace();
+    listFreeSpace();
 }
 
 // Util function for getting bash command output
@@ -147,13 +149,17 @@ QString mxsnapshot::getSnapshotSize()
     return "0";
 }
 
-// List the info regarding the free space on drives
-void mxsnapshot::listDiskSpace()
+// List used space
+void mxsnapshot::listUsedSpace()
 {
+    this->show();
+    ui->buttonNext->setDisabled(true);
+    ui->buttonCancel->setDisabled(true);
     QString cmd;
     QString path = snapshot_dir.absolutePath().remove("/snapshot");
     if (live) {
-        cmd = QString("df -h --total /live/boot-dev /live/aufs | awk 'NR==4 {print $3}'");
+        ui->labelUsedSpace->setText("\n " + QString("Calculating used disk space..."));
+        cmd = QString("du --exclude-from=/usr/lib/mx-snapshot/snapshot-exclude.list -sch / 2>/dev/null | tail -n1 | cut -f1");
     } else {
         cmd = QString("df -h / | awk 'NR==2 {print $3}'");
     }
@@ -162,9 +168,22 @@ void mxsnapshot::listDiskSpace()
         cmd = QString("df -h /home | awk 'NR==2 {print $3}'");
         out.append("\n- " + tr("Used space on /home: ") + getCmdOut(cmd));
     }
+    ui->buttonNext->setEnabled(true);
+    ui->buttonCancel->setEnabled(true);
+    ui->labelUsedSpace->setText(out);
+}
+
+
+// List free space on drives
+void mxsnapshot::listFreeSpace()
+{
+    QString cmd;
+    QString out;
+    QString path = snapshot_dir.absolutePath().remove("/snapshot");
     cmd = QString("df -h %1 | awk 'NR==2 {print $4}'").arg(path);
-    out.append("\n- " + tr("Free space on %1, where snapshot folder is placed: ").arg(path) + getCmdOut(cmd) + "\n");
-    ui->labelDiskSpace->setText(out);
+    ui->labelFreeSpace->clear();
+    out.append("- " + tr("Free space on %1, where snapshot folder is placed: ").arg(path) + getCmdOut(cmd) + "\n");
+    ui->labelFreeSpace->setText(out);
     ui->labelDiskSpaceHelp->setText(tr("The free space should be sufficient to hold the compressed data from / and /home\n\n"
                                        "      If necessary, you can create more available space\n"
                                        "      by removing previous snapshots and saved copies:\n"
@@ -706,6 +725,6 @@ void mxsnapshot::on_buttonSelectSnapshot_clicked()
     if (selected.exists()) {
         snapshot_dir.setPath(selected.absolutePath() + "/snapshot");
         ui->labelSnapshot->setText(tr("The snapshot will be placed in ") + snapshot_dir.absolutePath());
-        listDiskSpace();
+        listFreeSpace();
     }
 }
