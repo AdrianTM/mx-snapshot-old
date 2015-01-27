@@ -42,9 +42,12 @@ mxsnapshot::mxsnapshot(QWidget *parent) :
     timer = new QTimer(this);
     proc->setReadChannel(QProcess::StandardOutput);
     proc->setReadChannelMode(QProcess::MergedChannels);
+
     this->setWindowTitle(tr("MX Snapshot"));
     ui->buttonBack->setHidden(true);
     ui->buttonSelectSnapshot->setHidden(true);
+    ui->stackedWidget->setCurrentIndex(0);
+
     checkLive();
     listUsedSpace();
     setup();
