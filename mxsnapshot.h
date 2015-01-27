@@ -51,7 +51,7 @@ public:
     ~mxsnapshot();
 
     QString getCmdOut(QString cmd);
-    QString getCmdOut2(QString cmd);
+    void runCmd(QString cmd);
     QString getVersion(QString name);
     void addRemoveExclusion(bool add, QString exclusion);
     QSettings settings;
@@ -78,11 +78,11 @@ public:
     void setup();
     void listUsedSpace();
     void listFreeSpace();
+    void checkLive();
     int getSnapshotCount();
     QString getSnapshotSize();
     void checkEditor();
-    void installLiveInitMx();
-    bool installLeafpad();
+    bool installPackage(QString package);
     bool checkInstalled(QString package);
     void checkDirectories();
     void checkInitrdModules();
@@ -102,7 +102,8 @@ public slots:
     void procStart();
     void procTime();
     void procDone(int);
-    void setConnections(QTimer* timer, QProcess* proc);
+    void setConnections();
+    void disconnectAll();
     void onStdoutAvailable();
 
 private slots:
@@ -117,6 +118,7 @@ private slots:
     void on_excludePictures_toggled(bool checked);
     void on_excludeMusic_toggled(bool checked);
     void on_excludeVideos_toggled(bool checked);
+    void on_excludeDesktop_toggled(bool checked);
     void on_buttonSelectSnapshot_clicked();
 
 private:

@@ -49,9 +49,9 @@ home/*/.recently-used
 home/*/.recently-used.xbel
 home/*/.VirtualBox
 home/*/VirtualBox VMs
-home/*/Desktop/*
 
 # Examples:
+# home/*/Desktop/*
 # home/*/Downloads/*
 # home/*/Music/*
 # home/*/Pictures/*

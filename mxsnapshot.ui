@@ -17,7 +17,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="selectionPage">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -295,20 +295,6 @@ color: rgb(0, 0, 0);</string>
           <number>1</number>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="excludeMusic">
-            <property name="text">
-             <string>Music</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="excludePictures">
-            <property name="text">
-             <string>Pictures</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <widget class="QCheckBox" name="excludeDownloads">
             <property name="text">
@@ -323,17 +309,38 @@ color: rgb(0, 0, 0);</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
-           <widget class="QCheckBox" name="excludeVideos">
-            <property name="text">
-             <string>Videos</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
+          <item row="4" column="0">
            <widget class="QCheckBox" name="excludeAll">
             <property name="text">
              <string>All of the above</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="excludePictures">
+            <property name="text">
+             <string>Pictures</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="excludeMusic">
+            <property name="text">
+             <string>Music</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QCheckBox" name="excludeDesktop">
+            <property name="text">
+             <string>Desktop</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="excludeVideos">
+            <property name="text">
+             <string>Videos</string>
             </property>
            </widget>
           </item>
@@ -591,18 +598,18 @@ color: rgb(0, 0, 0);</string>
  <resources/>
  <connections>
   <connection>
-   <sender>buttonCancel</sender>
-   <signal>pressed()</signal>
-   <receiver>mxsnapshot</receiver>
-   <slot>close()</slot>
+   <sender>excludeAll</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>excludeDesktop</receiver>
+   <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>723</x>
-     <y>519</y>
+     <x>144</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
-     <x>388</x>
-     <y>272</y>
+     <x>632</x>
+     <y>192</y>
     </hint>
    </hints>
   </connection>
@@ -683,6 +690,22 @@ color: rgb(0, 0, 0);</string>
     <hint type="destinationlabel">
      <x>632</x>
      <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>mxsnapshot</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>479</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>252</y>
     </hint>
    </hints>
   </connection>
