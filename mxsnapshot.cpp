@@ -667,7 +667,7 @@ void mxsnapshot::cleanUp()
     }
 
     // remove live-init-mx
-    if (snapshot_persist == "yes") {
+    if (snapshot_persist == "yes" && !live) {
         ui->outputLabel->setText(tr("Removing live-init-mx"));
         runCmd("apt-get purge live-init-mx");
     }
