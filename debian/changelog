@@ -1,5 +1,11 @@
+mx-snapshot (0.15.2) mx; urgency=medium
+
+  * Added respin option (reset root and demo passwords)
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 01 Feb 2015 19:42:33 -0500
+
 mx-snapshot (0.14.3) mx; urgency=medium
 
-  * initial relese
+  * initial release
 
  -- Adrian <adrian@mxlinux.org>  Sun, 14 Dec 2014 13:18:14 -0500

@@ -57,33 +57,34 @@ public:
     QSettings settings;
 
     bool live;
-    QFile config_file;
+    bool respin;
     QDir work_dir;
     QDir snapshot_dir;
+    QDir lib_mod_dir;
+    QFile config_file;
     QFile snapshot_excludes;
     QFile initrd_modules_file;
+    QFile gui_editor;
     QString snapshot_persist;
     QString stamp;
     QString snapshot_basename;
     QString make_md5sum;
     QString make_isohybrid;
     QString edit_boot_menu;
-    QDir lib_mod_dir;
-    QFile gui_editor;
     QString kernel_used;
     QString save_message;
     QString mksq_opt;
     QString session_excludes;
 
+    int getSnapshotCount();
+    bool installPackage(QString package);
+    bool checkInstalled(QString package);
+    bool replaceStringInFile(QString oldtext, QString newtext, QString filepath);
     void setup();
     void listUsedSpace();
     void listFreeSpace();
     void checkLive();
-    int getSnapshotCount();
-    QString getSnapshotSize();
     void checkEditor();
-    bool installPackage(QString package);
-    bool checkInstalled(QString package);
     void checkDirectories();
     void checkInitrdModules();
     void checkSaveWork();
@@ -91,12 +92,17 @@ public:
     void closeInitrd(QString initrd_dir, QString file);
     void copyModules(QString to, QString form);
     void copyNewIso();
-    QString getFilename();
     void mkDir(QString filename);
     void savePackageList(QString filename);
+    void setupEnv();
+    void resetAccount(QString user);
+    void resetOtherAccounts(QStringList users);
     void createIso(QString filename);
     void cleanUp();
     void makeMd5sum(QString folder, QString filename);
+    QString getSnapshotSize();
+    QString getFilename();
+    QStringList listUsers();
 
 public slots:
     void procStart();
@@ -120,6 +126,7 @@ private slots:
     void on_excludeVideos_toggled(bool checked);
     void on_excludeDesktop_toggled(bool checked);
     void on_buttonSelectSnapshot_clicked();
+    void on_radioRespin_clicked(bool checked);
 
 private:
     Ui::mxsnapshot *ui;
