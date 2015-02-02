@@ -58,13 +58,13 @@ public:
 
     bool live;
     bool respin;
-    QDir work_dir;
     QDir snapshot_dir;
     QDir lib_mod_dir;
     QFile config_file;
     QFile snapshot_excludes;
     QFile initrd_modules_file;
     QFile gui_editor;
+    QString work_dir;
     QString snapshot_persist;
     QString stamp;
     QString snapshot_basename;
@@ -97,6 +97,7 @@ public:
     void setupEnv();
     void resetAccount(QString user);
     void resetOtherAccounts(QStringList users);
+    void createUser1000();
     void createIso(QString filename);
     void cleanUp();
     void makeMd5sum(QString folder, QString filename);

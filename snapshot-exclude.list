@@ -18,6 +18,7 @@ etc/udev/rules.d/70-persistent-net.rules
 etc/mtab
 home/snapshot
 root/.bash_history
+var/tmp/*
 var/log/*.log
 var/log/*.gz
 var/log/*.old

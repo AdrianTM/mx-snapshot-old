@@ -30,7 +30,7 @@
 #include <QScrollBar>
 #include <QTextStream>
 
-#include <QDebug>
+//#include <QDebug>
 
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
@@ -281,7 +281,7 @@ void mxsnapshot::checkDirectories()
     }
 
     // Create a work_dir
-    work_dir.setPath(getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXXXX"));
+    work_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXXXX");
 }
 
 void mxsnapshot::checkInitrdModules()
@@ -318,21 +318,21 @@ void mxsnapshot::copyNewIso()
     ui->outputBox->clear();
 
     ui->outputLabel->setText(tr("Copying the new-iso filesystem..."));
-    QDir::setCurrent(work_dir.absolutePath());
+    QDir::setCurrent(work_dir);
     QString cmd = "tar xf /usr/lib/mx-snapshot/iso-template.tar.gz";
     runCmd(cmd);
 
-    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir.absolutePath() + "/iso-template/antiX/vmlinuz";
+    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir + "/iso-template/antiX/vmlinuz";
     runCmd(cmd);
-    makeMd5sum(work_dir.absolutePath() + "/iso-template/antiX", "vmlinuz");
+    makeMd5sum(work_dir + "/iso-template/antiX", "vmlinuz");
 
-    QString initrd_dir = work_dir.absolutePath() + "/initrd";
-    openInitrd(work_dir.absolutePath() + "/iso-template/antiX/initrd.gz", initrd_dir);
+    QString initrd_dir = work_dir + "/initrd";
+    openInitrd(work_dir + "/iso-template/antiX/initrd.gz", initrd_dir);
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
         copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
-        closeInitrd(initrd_dir, work_dir.absolutePath() + "/iso-template/antiX/initrd.gz");
+        closeInitrd(initrd_dir, work_dir + "/iso-template/antiX/initrd.gz");
     }
 }
 
@@ -413,7 +413,7 @@ void mxsnapshot::mkDir(QString filename)
 {
     QDir dir;
     filename.chop(4); //remove ".iso" string
-    dir.setPath(work_dir.absolutePath() + "/iso-template/" + filename);
+    dir.setPath(work_dir + "/iso-template/" + filename);
     dir.mkpath(dir.absolutePath());
 }
 
@@ -421,7 +421,7 @@ void mxsnapshot::mkDir(QString filename)
 void mxsnapshot::savePackageList(QString filename)
 {
     filename.chop(4); //remove .iso
-    filename = work_dir.absolutePath() + "/iso-template/" + filename + "/package_list";
+    filename = work_dir + "/iso-template/" + filename + "/package_list";
     QString cmd = "dpkg -l | grep \"ii\" | awk '{ print $2 }' >" + filename;
     system(cmd.toAscii());
 }
@@ -429,51 +429,67 @@ void mxsnapshot::savePackageList(QString filename)
 // setup the environment before taking the snapshot
 void mxsnapshot::setupEnv()
 {
+    // checks if work_dir looks OK
+    if (!work_dir.startsWith("/tmp/mx-snapshot")) {
+        return;
+    }
     QDir dir;
-    QString wdir = work_dir.absolutePath();
     // create an empty fstab file
-    system("touch " + wdir.toAscii() + "/fstabdummy");
+    system("touch " + work_dir.toAscii() + "/fstabdummy");
     // mount empty fstab file
-    system("mount --bind " + wdir.toAscii() + "/fstabdummy /etc/fstab");
+    system("mount --bind " + work_dir.toAscii() + "/fstabdummy /etc/fstab");
 
     // setup environment if creating a respin (reset root/demo, remove personal accounts)
     if (respin) {
         // copy files that need to be edited to work_dir
-        system("cp /etc/passwd " + wdir.toAscii());
-        system("cp /etc/shadow " + wdir.toAscii());
-        system("cp /etc/gshadow " + wdir.toAscii());
-        system("cp /etc/group " + wdir.toAscii());
-        system("cp /etc/lightdm/lightdm.conf " + wdir.toAscii());
+        system("cp /etc/passwd " + work_dir.toAscii());
+        system("cp /etc/shadow " + work_dir.toAscii());
+        system("cp /etc/gshadow " + work_dir.toAscii());
+        system("cp /etc/group " + work_dir.toAscii());
+        system("cp /etc/lightdm/lightdm.conf " + work_dir.toAscii());
 
         // mount root partition to work directory
-        dir.mkpath(wdir + "/ro_root");
-        system(("mount --bind / " + wdir + "/ro_root").toAscii());
+        dir.mkpath(work_dir + "/ro_root");
+        system(("mount --bind / " + work_dir + "/ro_root").toAscii());
         // make it read-only
-        system(("mount -o remount,ro,bind " + wdir + "/ro_root").toAscii());
+        system(("mount -o remount,ro,bind " + work_dir + "/ro_root").toAscii());
+        // mount home partition
+        system(("mount --bind /home " + work_dir + "/ro_root/home").toAscii());
+        // mount empty fstab file
+        system("mount --bind " + work_dir.toAscii() + "/fstabdummy " + work_dir.toAscii() + "/ro_root/etc/fstab");
 
         // detect additional users
         QStringList users = listUsers();
 
         // recreate /home/demo
-        if (!QDir(wdir + "/ro_root/home/demo").exists()) {
+        QDir dir(work_dir + "/ro_root/home/demo");
+        if (!dir.exists()) {
             // create dummy dummyhome/demo
-            dir.mkpath(wdir + "/dummyhome/demo");
+            dir.mkpath(work_dir + "/dummyhome/demo");
+            // own demo by uid=1000
+            system("chown 1000 " + work_dir.toAscii() + "/dummyhome/demo");
+
             // mount dummy home/demo on ro_root/home
-            system(("mount --bind " + wdir + "/dummyhome " + wdir + "/ro_root/home").toAscii());
-            // mount /etc/skel on ../home/demo
-            system(("mount --bind /etc/skel " + wdir + "/ro_root/home/demo").toAscii());
+            system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
+
+            // copy /etc/skel on ../home/demo
+            system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/ro_root/home/demo/");
+            // fix permission
+            system("chown -R 1000 " + work_dir.toAscii() + "/ro_root/home/demo");
         }
 
         // reset user accounts
-        resetAccount("root");
+        createUser1000(); // checks if user with UID=1000 exists if not creates it to be used as "demo"
         resetAccount("demo");
+        resetAccount("root");
         resetOtherAccounts(users);
 
         // mount files over
-        system(("mount --bind " + wdir + "/passwd " + wdir + "/ro_root/etc/passwd").toAscii());
-        system(("mount --bind " + wdir + "/shadow " + wdir + "/ro_root/etc/shadow").toAscii());
-        system(("mount --bind " + wdir + "/gshadow " + wdir + "/ro_root/etc/gshadow").toAscii());
-        system(("mount --bind " + wdir + "/lightdm.conf " + wdir + "/ro_root/etc/lightdm/lightdm.conf").toAscii());
+        system(("mount --bind " + work_dir + "/passwd " + work_dir + "/ro_root/etc/passwd").toAscii());
+        system(("mount --bind " + work_dir + "/shadow " + work_dir + "/ro_root/etc/shadow").toAscii());
+        system(("mount --bind " + work_dir + "/gshadow " + work_dir + "/ro_root/etc/gshadow").toAscii());
+        system(("mount --bind " + work_dir + "/group " + work_dir + "/ro_root/etc/group").toAscii());
+        system(("mount --bind " + work_dir + "/lightdm.conf " + work_dir + "/ro_root/etc/lightdm/lightdm.conf").toAscii());
     }
 }
 
@@ -481,27 +497,30 @@ void mxsnapshot::setupEnv()
 void mxsnapshot::resetAccount(QString user)
 {
     QString cmd;
-    QString sfile = work_dir.absolutePath() + "/shadow";
-    QString pfile = work_dir.absolutePath() + "/passwd";
-    QString gfile = work_dir.absolutePath() + "/gshadow";
-    QString grfile = work_dir.absolutePath() + "/group";
-    QString lfile = work_dir.absolutePath() + "/lightdm.conf";
+    QString sfile = work_dir + "/shadow";
+    QString pfile = work_dir + "/passwd";
+    QString gfile = work_dir + "/gshadow";
+    QString grfile = work_dir + "/group";
+    QString lfile = work_dir + "/lightdm.conf";
 
     // replaces user with UID=1000 with "demo"
     if (user == "demo") {
         QString user1000 = getCmdOut("grep 1000 " + pfile + "| cut -f1 -d':'");
-        replaceStringInFile(user1000, "demo", sfile);
-        replaceStringInFile(user1000, "demo", pfile);
-        replaceStringInFile(user1000, "demo", gfile);
-        replaceStringInFile(user1000, "demo", grfile);
-        replaceStringInFile(user1000, "demo", lfile);
-        system("sed -i -r '/autologin-user=demo/ s/^#+//' " + lfile.toAscii());
+        if (user1000 != "") {
+            replaceStringInFile(user1000, "demo", sfile);
+            replaceStringInFile(user1000, "demo", pfile);
+            replaceStringInFile(user1000, "demo", gfile);
+            replaceStringInFile(user1000, "demo", grfile);
+            replaceStringInFile(user1000, "demo", lfile);
+            system("sed -i -r '/autologin-user=demo/ s/^#+//' " + lfile.toAscii());
+            // activate demo if deactivated
+            replaceStringInFile("demo:!", "demo:*", gfile);
+        }
     }
+    // replace password in shadow file
     QString pass = getCmdOut("mkpasswd -m sha-512 " + user);
-    // write to .tmp file
-    cmd = QString("cat " + sfile + "|awk -F\":\" 'BEGIN{OFS=\":\"}{if ($1 == \"%1\") $2=\"%2\"; print}' >" + sfile + ".tmp").arg(user).arg(pass);
+    cmd = QString("awk -F\":\" 'BEGIN{OFS=\":\"}{if ($1 == \"%1\") $2=\"%2\"; print}' " + sfile + ">" + sfile + ".tmp").arg(user).arg(pass);
     system(cmd.toAscii());
-    // replace shadow file
     system("mv " + sfile.toAscii() + ".tmp " + sfile.toAscii());
 }
 
@@ -510,16 +529,18 @@ QStringList mxsnapshot::listUsers()
 {
     QStringList userList;
     QStringList result;
-    QString pfile = work_dir.absolutePath() + "/passwd";
+    QString pfile = work_dir + "/passwd";
     // list all folders in /home with the exception of user uid 1000, demo, and snapshot
     QString user1000 = getCmdOut("grep 1000 " + pfile + "| cut -f1 -d':'");
     QString users = getCmdOut("ls /home | grep -v lost+found | grep -v " + user1000 + " | grep -v demo | grep -v snapshot | grep [a-zA-Z0-9]");
     userList = users.split("\n");
     for (int i = 0; i < userList.size(); ++i) {
-        // check if the found user has a regular log in shell
-        QString out = getCmdOut("grep " + userList.at(i) + "  " + pfile + "| cut -f7 -d:");
-        if (out == "/bin/sh" || out == "/bin/bash") {
-            result << userList.at(i);
+        if (userList.at(i) != "") {
+            // check if the found user has a regular log in shell
+            QString out = getCmdOut("grep " + userList.at(i) + "  " + pfile + "| cut -f7 -d:");
+            if (out.endsWith("sh")) {
+                result << userList.at(i);
+            }
         }
     }
     return result;
@@ -529,10 +550,10 @@ QStringList mxsnapshot::listUsers()
 void mxsnapshot::resetOtherAccounts(QStringList users)
 {
     QString cmd;
-    QString sfile = work_dir.absolutePath() + "/shadow";
-    QString pfile = work_dir.absolutePath() + "/passwd";
-    QString gfile = work_dir.absolutePath() + "/gshadow";
-    QString grfile = work_dir.absolutePath() + "/group";
+    QString sfile = work_dir + "/shadow";
+    QString pfile = work_dir + "/passwd";
+    QString gfile = work_dir + "/gshadow";
+    QString grfile = work_dir + "/group";
 
     // remove users from the files
     for (int i = 0; i < users.size(); ++i) {
@@ -547,6 +568,23 @@ void mxsnapshot::resetOtherAccounts(QStringList users)
     }
 }
 
+// create a demo user with UID=1000 and copies the passwd/shadow files
+void mxsnapshot::createUser1000()
+{
+    QString pfile = work_dir + "/passwd";
+    QString user1000 = getCmdOut("grep 1000 " + pfile + "| cut -f1 -d':'");
+    if (user1000 == "") {
+        // create demo user with UID=1000
+        if (system("adduser --disabled-login --uid=1000 --no-create-home --gecos demo demo") == 0) {
+            // copy needed files to work directory
+            system("cp /etc/passwd " + work_dir.toAscii());
+            system("cp /etc/shadow " + work_dir.toAscii());
+            system("cp /etc/gshadow " + work_dir.toAscii());
+            system("cp /etc/group " + work_dir.toAscii());
+            system("deluser demo");
+        }
+    }
+}
 
 // create squashfs and then the iso
 void mxsnapshot::createIso(QString filename)
@@ -556,10 +594,10 @@ void mxsnapshot::createIso(QString filename)
     addRemoveExclusion(true, snapshot_dir.absolutePath());
 
     // squash the filesystem copy
-    QDir::setCurrent(work_dir.absolutePath());
+    QDir::setCurrent(work_dir);
     QString source_path = "/";
     if (respin) {
-        source_path = work_dir.absolutePath() + "/ro_root";
+        source_path = work_dir + "/ro_root";
     }
     cmd = "mksquashfs " + source_path + " iso-template/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
@@ -567,7 +605,7 @@ void mxsnapshot::createIso(QString filename)
     makeMd5sum("iso-template/antiX", "linuxfs");
 
     // create the iso file
-    QDir::setCurrent(work_dir.absolutePath() + "/iso-template");
+    QDir::setCurrent(work_dir + "/iso-template");
     cmd = "genisoimage -allow-limited-size -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
     ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     runCmd(cmd);
@@ -597,33 +635,35 @@ void mxsnapshot::makeMd5sum(QString folder, QString filename)
 void mxsnapshot::cleanUp()
 {
     QString cmd;
-    QString wdir = work_dir.absolutePath();
     ui->stackedWidget->setCurrentWidget(ui->outputPage);
     ui->outputLabel->setText(tr("Cleaning..."));
     QDir::setCurrent("/");
 
     // umount empty fstab file
-    cmd = QString("umount /etc/fstab");
-    system(cmd.toAscii());
-    // remove dummy fstab file
-    cmd = "rm " + work_dir.absolutePath() + "/fstabdummy";
-    system(cmd.toAscii());
+    system("umount /etc/fstab");
 
-    // clean mount points if doing a respin
-    if (respin) {
-        system("umount " + wdir.toAscii() + "/ro_root/etc/passwd");
-        system("umount " + wdir.toAscii() + "/ro_root/etc/shadow");
-        system("umount " + wdir.toAscii() + "/ro_root/etc/gshadow");
-        system("umount " + wdir.toAscii() + "/ro_root/etc/lightdm/lightdm.conf");
-        system("umount " + wdir.toAscii() + "/ro_root/home/demo");
-        system("umount " + wdir.toAscii() + "/ro_root/home");
-        if (system("umount " + wdir.toAscii() + "/ro_root") != 0) {
-            return; // exit if it cannot unmount /ro_root
+    // checks if work_dir looks OK
+    if (work_dir.startsWith("/tmp/mx-snapshot")) {
+        // clean mount points if doing a respin
+        if (respin) {
+            system("umount " + work_dir.toAscii() + "/ro_root/etc/passwd >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/etc/shadow >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/etc/gshadow >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/etc/lightdm/lightdm.conf >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/home/demo >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/home >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/etc/fstab >/dev/null 2>&1");
+            if (system("umount -l " + work_dir.toAscii() + "/ro_root") != 0) {
+                return; // exit if it cannot unmount /ro_root
+            }
         }
-    }
 
-    if (work_dir.exists() && wdir != "/") {
-        system("rm -rf " + wdir.toAscii());
+        // remove dummy fstab file
+        system("rm " + work_dir.toAscii() + "/fstabdummy");
+
+        if (work_dir != "/") {
+            system("rm -r " + work_dir.toAscii());
+        }
     }
 
     // remove live-init-mx
@@ -770,7 +810,7 @@ void mxsnapshot::on_buttonNext_clicked()
                                      QMessageBox::Yes | QMessageBox::No);
             if (ans == QMessageBox::Yes) {
                 this->hide();
-                QString cmd = gui_editor.fileName() + " " + work_dir.absolutePath() + "/iso-template/boot/isolinux/isolinux.cfg";
+                QString cmd = gui_editor.fileName() + " " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg";
                 system(cmd.toAscii());
                 this->show();
             }
