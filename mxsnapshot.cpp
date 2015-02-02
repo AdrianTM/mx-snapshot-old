@@ -565,9 +565,9 @@ void mxsnapshot::resetOtherAccounts(QStringList users)
         system(cmd.toAscii());
         cmd = QString("sed -i '/^%1:/d' " + grfile).arg(users.at(i));
         system(cmd.toAscii());
-        cmd = QString("sed -i 's/%1,/d' " + grfile).arg(users.at(i));
+        cmd = QString("sed -i 's/%1,//' " + grfile).arg(users.at(i));
         system(cmd.toAscii());
-        cmd = QString("sed -i 's/,%1/d' " + grfile).arg(users.at(i));
+        cmd = QString("sed -i 's/,%1//' " + grfile).arg(users.at(i));
         system(cmd.toAscii());
     }
 }
