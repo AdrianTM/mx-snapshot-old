@@ -385,7 +385,7 @@ color: rgb(0, 0, 0);</string>
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passswords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>Respin (for distribution to others)</string>
+             <string>Resetting accounts (for distribution to others)</string>
             </property>
            </widget>
           </item>
@@ -399,7 +399,7 @@ color: rgb(0, 0, 0);</string>
           <item row="1" column="0">
            <widget class="QRadioButton" name="radioPersonal">
             <property name="text">
-             <string>Personal (backup)</string>
+             <string>Preserving accounts (for personal backup)</string>
             </property>
             <property name="checked">
              <bool>true</bool>
