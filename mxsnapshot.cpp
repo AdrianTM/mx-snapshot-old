@@ -629,7 +629,7 @@ void mxsnapshot::createIso(QString filename)
 void mxsnapshot::makeMd5sum(QString folder, QString filename)
 {
     ui->outputLabel->setText(tr("Making md5sum"));
-    QString cmd = "md5sum " + folder + "/" + filename + " > " + folder + "/" + filename + ".md5";
+    QString cmd = "cat " + folder + "/" + filename + " | md5sum >" + folder + "/" + filename + ".md5";
     runCmd(cmd);
 }
 
