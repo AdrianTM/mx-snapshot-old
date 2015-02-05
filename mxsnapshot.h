@@ -57,7 +57,7 @@ public:
     QSettings settings;
 
     bool live;
-    bool respin;
+    bool reset_accounts;
     QDir snapshot_dir;
     QDir lib_mod_dir;
     QFile config_file;

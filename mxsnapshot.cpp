@@ -49,7 +49,7 @@ mxsnapshot::mxsnapshot(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
 
     checkLive();
-    respin = false;
+    reset_accounts = false;
     listUsedSpace();
     setup();
 }
@@ -440,7 +440,7 @@ void mxsnapshot::setupEnv()
     system("mount --bind " + work_dir.toAscii() + "/fstabdummy /etc/fstab");
 
     // setup environment if creating a respin (reset root/demo, remove personal accounts)
-    if (respin) {
+    if (reset_accounts) {
         // copy files that need to be edited to work_dir
         system("cp /etc/passwd " + work_dir.toAscii());
         system("cp /etc/shadow " + work_dir.toAscii());
@@ -460,23 +460,6 @@ void mxsnapshot::setupEnv()
 
         // detect additional users
         QStringList users = listUsers();
-
-        // recreate /home/demo
-        QDir dir(work_dir + "/ro_root/home/demo");
-        if (!dir.exists()) {
-            // create dummy dummyhome/demo
-            dir.mkpath(work_dir + "/dummyhome/demo");
-            // own demo by uid=1000
-            system("chown 1000 " + work_dir.toAscii() + "/dummyhome/demo");
-
-            // mount dummy home/demo on ro_root/home
-            system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
-
-            // copy /etc/skel on ../home/demo
-            system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/ro_root/home/demo/");
-            // fix permission
-            system("chown -R 1000 " + work_dir.toAscii() + "/ro_root/home/demo");
-        }
 
         // reset user accounts
         createUser1000(); // checks if user with UID=1000 exists if not creates it to be used as "demo"
@@ -598,7 +581,7 @@ void mxsnapshot::createIso(QString filename)
     // squash the filesystem copy
     QDir::setCurrent(work_dir);
     QString source_path = "/";
-    if (respin) {
+    if (reset_accounts) {
         source_path = work_dir + "/ro_root";
     }
     cmd = "mksquashfs " + source_path + " iso-template/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
@@ -646,8 +629,8 @@ void mxsnapshot::cleanUp()
 
     // checks if work_dir looks OK
     if (work_dir.startsWith("/tmp/mx-snapshot")) {
-        // clean mount points if doing a respin
-        if (respin) {
+        // clean mount points if resetting accounts
+        if (reset_accounts) {
             system("umount " + work_dir.toAscii() + "/ro_root/etc/passwd >/dev/null 2>&1");
             system("umount " + work_dir.toAscii() + "/ro_root/etc/shadow >/dev/null 2>&1");
             system("umount " + work_dir.toAscii() + "/ro_root/etc/gshadow >/dev/null 2>&1");
@@ -908,7 +891,7 @@ void mxsnapshot::on_excludeDesktop_toggled(bool checked)
 void mxsnapshot::on_radioRespin_clicked(bool checked)
 {
     if (checked) {
-        respin = true;
+        reset_accounts = true;
         if (!ui->excludeAll->isChecked()) {
             ui->excludeAll->click();
         }
