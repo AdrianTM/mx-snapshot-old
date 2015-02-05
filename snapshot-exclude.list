@@ -10,8 +10,8 @@ mnt/*
 sys/*
 proc/*
 tmp/*
-tmp/.ICE-unix/*
-tmp/.X11-unix/*
+tmp/.ICE-unix
+tmp/.X11-unix
 live/*
 boot/grub/menu.lst
 boot/grub/device.map
@@ -30,10 +30,22 @@ var/cache/apt/archives/*.deb
 var/cache/apt/*.bin
 var/lib/apt/lists/*
 var/cache/debconf/*-old
+var/cache/lightdm
 var/lib/dpkg/*-old
+var/lib/nfs/rpc_pipefs/*
+var/lib/sudo/*
+var/lib/udisks/*
+var/lib/urandom/*
+var/log/ConsoleKit/*
+var/log/fsck/*
+var/log/lightdm
+var/log/live
 lost+found
 run/*
 home/demo
+root/.dbus
+root/.gconf
+root/.gnome2
 
 # Entries below this can be edited by the user. If you have any large
 # files or directories, you should exclude them from being copied
