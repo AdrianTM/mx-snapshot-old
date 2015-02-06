@@ -77,12 +77,6 @@ void mxsnapshot::setup()
 
     // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
-    if (live) {
-        // if the /live/boot-dev is not read-only mount point
-        if (system("grep /live/boot-dev /proc/mounts | grep -q '\\sro[\\s,]'") != 0) {
-            snapshot_dir.setPath("/live/boot-dev/snapshot");
-        }
-    }
     ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot-exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
@@ -276,6 +270,7 @@ void mxsnapshot::checkDirectories()
     if (!snapshot_dir.exists()) {
         snapshot_dir.mkpath(snapshot_dir.absolutePath());
         QString path = snapshot_dir.absolutePath();
+
         QString cmd = QString("chmod 777 %1").arg(path);
         system(cmd.toAscii());
     }
