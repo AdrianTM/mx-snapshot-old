@@ -448,14 +448,15 @@ void mxsnapshot::setupEnv()
         system(("mount --bind / " + work_dir + "/ro_root").toAscii());
         // make it read-only
         system(("mount -o remount,ro,bind " + work_dir + "/ro_root").toAscii());
-        // mount home partition
-        system(("mount --bind /home " + work_dir + "/ro_root/home").toAscii());
+        // create dummyhome
+        dir.mkpath(work_dir + "/dummyhome");
+        // mount dummy home on ro_root/home
+        system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
         // mount empty fstab file
         system("mount --bind " + work_dir.toAscii() + "/fstabdummy " + work_dir.toAscii() + "/ro_root/etc/fstab");
 
         // detect additional users
         QStringList users = listUsers();
-
         // reset user accounts
         createUser1000(); // checks if user with UID=1000 exists if not creates it to be used as "demo"
         resetAccount("demo");

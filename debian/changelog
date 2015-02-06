@@ -1,3 +1,9 @@
+mx-snapshot (15.2.1) UNRELEASED; urgency=medium
+
+  * Changed "reset accounts" to not copy anything from /home
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 06 Feb 2015 15:21:34 -0500
+
 mx-snapshot (15.2) mx; urgency=medium
 
   * Added translations
