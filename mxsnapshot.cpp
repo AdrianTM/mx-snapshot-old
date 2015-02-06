@@ -448,15 +448,23 @@ void mxsnapshot::setupEnv()
         system(("mount --bind / " + work_dir + "/ro_root").toAscii());
         // make it read-only
         system(("mount -o remount,ro,bind " + work_dir + "/ro_root").toAscii());
-        // create dummyhome
-        dir.mkpath(work_dir + "/dummyhome");
-        // mount dummy home on ro_root/home
-        system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
         // mount empty fstab file
         system("mount --bind " + work_dir.toAscii() + "/fstabdummy " + work_dir.toAscii() + "/ro_root/etc/fstab");
 
+        // create dummy dummyhome/demo
+        dir.mkpath(work_dir + "/dummyhome/demo");
+        // own demo by uid=1000
+        system("chown 1000 " + work_dir.toAscii() + "/dummyhome/demo");
+        // mount dummy home/demo on ro_root/home
+        system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
+        // copy /etc/skel on ../home/demo
+        system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/ro_root/home/demo/");
+        // fix permission
+        system("chown -R 1000 " + work_dir.toAscii() + "/ro_root/home/demo");
+
         // detect additional users
         QStringList users = listUsers();
+
         // reset user accounts
         createUser1000(); // checks if user with UID=1000 exists if not creates it to be used as "demo"
         resetAccount("demo");
@@ -648,9 +656,9 @@ void mxsnapshot::cleanUp()
     }
 
     // remove live-init-mx
-    if (snapshot_persist == "yes" && !live) {
+    if (!live && snapshot_persist == "yes") {
         ui->outputLabel->setText(tr("Removing live-init-mx"));
-        runCmd("apt-get purge live-init-mx");
+        runCmd("apt-get -y purge live-init-mx");
     }
     ui->outputLabel->clear();
 }

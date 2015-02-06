@@ -23,9 +23,7 @@ home/snapshot
 root/.bash_history
 var/tmp/*
 var/lib/dhcp/*
-var/log/*.log
-var/log/*.gz
-var/log/*.old
+var/log
 var/cache/apt/archives/*.deb
 var/cache/apt/*.bin
 var/lib/apt/lists/*
@@ -42,7 +40,6 @@ var/log/lightdm
 var/log/live
 lost+found
 run/*
-home/demo
 root/.dbus
 root/.gconf
 root/.gnome2
