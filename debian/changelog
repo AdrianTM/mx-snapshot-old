@@ -1,4 +1,10 @@
-mx-snapshot (15.2.1) UNRELEASED; urgency=medium
+mx-snapshot (15.2.2) mx; urgency=medium
+
+  * added installer icon on Desktop on resetting accounts
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 08 Feb 2015 17:05:20 -0500
+
+mx-snapshot (15.2.1) mx; urgency=medium
 
   * Changed "reset accounts" to not copy anything from /home
 

@@ -436,6 +436,11 @@ void mxsnapshot::setupEnv()
 
     // setup environment if creating a respin (reset root/demo, remove personal accounts)
     if (reset_accounts) {
+        // install mx-installer if absent
+        if (!checkInstalled("mx-installer")) {
+            runCmd("apt-get install mx-installer");
+        }
+
         // copy files that need to be edited to work_dir
         system("cp /etc/passwd " + work_dir.toAscii());
         system("cp /etc/shadow " + work_dir.toAscii());
@@ -459,6 +464,8 @@ void mxsnapshot::setupEnv()
         system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
         // copy /etc/skel on ../home/demo
         system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/ro_root/home/demo/");
+        // copy mx-install on Desktop
+        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/ro_root/home/demo/Desktop");
         // fix permission
         system("chown -R 1000 " + work_dir.toAscii() + "/ro_root/home/demo");
 
