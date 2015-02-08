@@ -464,6 +464,8 @@ void mxsnapshot::setupEnv()
         system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
         // copy /etc/skel on ../home/demo
         system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/ro_root/home/demo/");
+        // make sure demo/Desktop exits
+        system("mkdir " + work_dir.toAscii() + "/ro_root/home/demo/Desktop");
         // copy mx-install on Desktop
         system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/ro_root/home/demo/Desktop");
         // fix permission
