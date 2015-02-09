@@ -305,6 +305,7 @@ void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
     QDir::setCurrent(initrd_dir);
     QString cmd = "(find . | cpio -o -H newc --owner root:root | gzip -9) >" + file;
     system(cmd.toAscii());
+    makeMd5sum(work_dir + "/iso-template/antiX", "initrd.gz");
 }
 
 // Copying the iso-template filesystem
@@ -436,11 +437,16 @@ void mxsnapshot::setupEnv()
 
     // setup environment if creating a respin (reset root/demo, remove personal accounts)
     if (reset_accounts) {
-        // install mx-installer if absent
-        if (!checkInstalled("mx-installer")) {
-            runCmd("apt-get install mx-installer");
+        // install mx-installer and live-init-mx if absent
+        if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
+            runCmd("apt-get update");
+            if (!checkInstalled("mx-installer")) {
+                runCmd("apt-get install mx-installer");
+            }
+            if (!checkInstalled("live-init-mx")) {
+                runCmd("apt-get install live-init-mx");
+            }
         }
-
         // copy files that need to be edited to work_dir
         system("cp /etc/passwd " + work_dir.toAscii());
         system("cp /etc/shadow " + work_dir.toAscii());
@@ -453,23 +459,23 @@ void mxsnapshot::setupEnv()
         system(("mount --bind / " + work_dir + "/ro_root").toAscii());
         // make it read-only
         system(("mount -o remount,ro,bind " + work_dir + "/ro_root").toAscii());
+
         // mount empty fstab file
         system("mount --bind " + work_dir.toAscii() + "/fstabdummy " + work_dir.toAscii() + "/ro_root/etc/fstab");
 
-        // create dummy dummyhome/demo
-        dir.mkpath(work_dir + "/dummyhome/demo");
-        // own demo by uid=1000
-        system("chown 1000 " + work_dir.toAscii() + "/dummyhome/demo");
-        // mount dummy home/demo on ro_root/home
+        // create work_dir/skel/Desktop
+        system("mkdir -p " + work_dir.toAscii() + "/skel/Desktop");
+        // copy /etc/skel on work_dir/skel
+        system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/skel/");
+        // copy minstall.desktop to work_dir/skel/Desktop/
+        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop");
+        // mount ro_root/etc/skel
+        system("mount --bind " + work_dir.toAscii() + "/skel " + work_dir.toAscii() + "/ro_root/etc/skel");
+
+        // create dummyhome
+        dir.mkpath(work_dir + "/dummyhome");
+        // mount dummyhome on ro_root/home
         system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
-        // copy /etc/skel on ../home/demo
-        system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/ro_root/home/demo/");
-        // make sure demo/Desktop exits
-        system("mkdir " + work_dir.toAscii() + "/ro_root/home/demo/Desktop");
-        // copy mx-install on Desktop
-        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/ro_root/home/demo/Desktop");
-        // fix permission
-        system("chown -R 1000 " + work_dir.toAscii() + "/ro_root/home/demo");
 
         // detect additional users
         QStringList users = listUsers();
@@ -651,6 +657,7 @@ void mxsnapshot::cleanUp()
             system("umount " + work_dir.toAscii() + "/ro_root/home/demo >/dev/null 2>&1");
             system("umount " + work_dir.toAscii() + "/ro_root/home >/dev/null 2>&1");
             system("umount " + work_dir.toAscii() + "/ro_root/etc/fstab >/dev/null 2>&1");
+            system("umount " + work_dir.toAscii() + "/ro_root/etc/skel >/dev/null 2>&1");
             if (system("umount -l " + work_dir.toAscii() + "/ro_root") != 0) {
                 return; // exit if it cannot unmount /ro_root
             }
@@ -665,7 +672,7 @@ void mxsnapshot::cleanUp()
     }
 
     // remove live-init-mx
-    if (!live && snapshot_persist == "yes") {
+    if (!live && (snapshot_persist == "yes" || reset_accounts)) {
         ui->outputLabel->setText(tr("Removing live-init-mx"));
         runCmd("apt-get -y purge live-init-mx");
     }
