@@ -25,7 +25,7 @@ root/.bash_history
 root/.dbus
 root/.gconf
 root/.gnome2
-var/tmp/*
+var/tmp
 var/lib/dhcp/*
 var/log
 var/cache/apt/archives/*.deb
@@ -42,6 +42,8 @@ var/log/ConsoleKit/*
 var/log/fsck/*
 var/log/lightdm
 var/log/live
+var/mail/*
+var/spool/mail/*
 
 # Entries below this can be edited by the user. If you have any large
 # files or directories, you should exclude them from being copied

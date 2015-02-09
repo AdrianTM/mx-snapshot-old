@@ -468,7 +468,8 @@ void mxsnapshot::setupEnv()
         // copy /etc/skel on work_dir/skel
         system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/skel/");
         // copy minstall.desktop to work_dir/skel/Desktop/
-        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop");
+        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop 2>/dev/null");
+        system("cp /usr/share/applications/mx/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop 2>/dev/null");
         // mount ro_root/etc/skel
         system("mount --bind " + work_dir.toAscii() + "/skel " + work_dir.toAscii() + "/ro_root/etc/skel");
 
