@@ -447,6 +447,9 @@ void mxsnapshot::setupEnv()
                 runCmd("apt-get install live-init-mx");
             }
         }
+        // exlude /grub
+        addRemoveExclusion(true, "/grub/*");
+
         // copy files that need to be edited to work_dir
         system("cp /etc/passwd " + work_dir.toAscii());
         system("cp /etc/shadow " + work_dir.toAscii());
