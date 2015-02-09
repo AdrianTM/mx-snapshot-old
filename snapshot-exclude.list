@@ -9,8 +9,7 @@ swapfile
 mnt/*
 sys/*
 proc/*
-tmp/*
-tmp/.*
+tmp
 live/*
 boot/grub/menu.lst
 boot/grub/device.map
