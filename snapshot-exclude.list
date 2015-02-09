@@ -10,8 +10,7 @@ mnt/*
 sys/*
 proc/*
 tmp/*
-tmp/.ICE-unix
-tmp/.X11-unix
+tmp/.*
 live/*
 boot/grub/menu.lst
 boot/grub/device.map
@@ -20,7 +19,13 @@ etc/udev/rules.d/70-persistent-net.rules
 etc/mtab
 etc/resolv.conf
 home/snapshot
+lost+found
+grub/*
+run/*
 root/.bash_history
+root/.dbus
+root/.gconf
+root/.gnome2
 var/tmp/*
 var/lib/dhcp/*
 var/log
@@ -38,11 +43,6 @@ var/log/ConsoleKit/*
 var/log/fsck/*
 var/log/lightdm
 var/log/live
-lost+found
-run/*
-root/.dbus
-root/.gconf
-root/.gnome2
 
 # Entries below this can be edited by the user. If you have any large
 # files or directories, you should exclude them from being copied
