@@ -446,7 +446,7 @@ void mxsnapshot::setupEnv()
             if (!checkInstalled("live-init-mx")) {
                 runCmd("apt-get install live-init-mx");
                 // fix antiX-init start-up
-                system("update-rc.d antiX-init defaults");
+                system("update-rc.d antiX-init defaults >/dev/null 2>&1");
             }
         }
         // copy files that need to be edited to work_dir
