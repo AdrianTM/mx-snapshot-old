@@ -48,6 +48,7 @@ var/lib/urandom/*
 var/log/ConsoleKit/*
 var/log/fsck/*
 var/log/lightdm/.cache
+var/log/lightdm/.Xauthority
 var/log/live
 var/mail/*
 var/spool/mail/*
