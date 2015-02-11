@@ -47,7 +47,7 @@ var/lib/udisks/*
 var/lib/urandom/*
 var/log/ConsoleKit/*
 var/log/fsck/*
-var/log/lightdm
+var/log/lightdm/.cache
 var/log/live
 var/mail/*
 var/spool/mail/*
