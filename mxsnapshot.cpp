@@ -470,9 +470,9 @@ void mxsnapshot::setupEnv()
         // copy /etc/skel on work_dir/skel
         system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/skel/");
         // copy minstall.desktop to work_dir/skel/Desktop/
-        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop 2>/dev/null");
-        system("cp /usr/share/applications/mx/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop 2>/dev/null");
-        system("chmod +x " + work_dir.toAscii() + "/skel/Desktop/minstall.desktop");
+        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop/Installer.desktop 2>/dev/null");
+        system("cp /usr/share/applications/mx/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop/Installer.desktop 2>/dev/null");
+        system("chmod +x " + work_dir.toAscii() + "/skel/Desktop/Installer.desktop");
         // mount ro_root/etc/skel
         system("mount --bind " + work_dir.toAscii() + "/skel " + work_dir.toAscii() + "/ro_root/etc/skel");
 
@@ -519,8 +519,6 @@ void mxsnapshot::resetAccount(QString user)
             replaceStringInFile(user1000, "demo", grfile);
             replaceStringInFile(user1000, "demo", lfile);
             system("sed -i -r '/autologin-user=demo/ s/^#+//' " + lfile.toAscii());
-            // activate demo if deactivated
-            replaceStringInFile("demo:!", "demo:*", gfile);
         }
     }
     // replace password in shadow file
