@@ -489,6 +489,7 @@ void mxsnapshot::setupEnv()
         resetAccount("demo");
         resetAccount("root");
         resetOtherAccounts(users);
+        fixPermissions();
 
         // mount files over
         system(("mount --bind " + work_dir + "/passwd " + work_dir + "/ro_root/etc/passwd").toAscii());
@@ -497,6 +498,13 @@ void mxsnapshot::setupEnv()
         system(("mount --bind " + work_dir + "/group " + work_dir + "/ro_root/etc/group").toAscii());
         system(("mount --bind " + work_dir + "/lightdm.conf " + work_dir + "/ro_root/etc/lightdm/lightdm.conf").toAscii());
     }
+}
+
+// fix some permissions
+void mxsnapshot::fixPermissions()
+{
+    system("chgrp shadow " + work_dir.toAscii() + "/shadow");
+    system("chgrp shadow " + work_dir.toAscii() + "/gshadow");
 }
 
 // generates pair root/root and demo/demo passwords and replaces them in ../etc/shadow

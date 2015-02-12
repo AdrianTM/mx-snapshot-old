@@ -101,6 +101,7 @@ public:
     void createIso(QString filename);
     void cleanUp();
     void makeMd5sum(QString folder, QString filename);
+    void fixPermissions();
     QString getSnapshotSize();
     QString getFilename();
     QStringList listUsers();
