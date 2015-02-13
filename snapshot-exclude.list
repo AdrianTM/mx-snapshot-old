@@ -45,7 +45,8 @@ var/lib/nfs/rpc_pipefs/*
 var/lib/sudo/*
 var/lib/udisks/*
 var/lib/urandom/*
-var/log/*
+var/log/!(samba)
+var/log/samba/*
 var/mail/*
 var/spool/mail/*
 
