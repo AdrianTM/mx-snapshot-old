@@ -1,5 +1,5 @@
 # rsync excludes file for mx-snapshot
-# version 0.4 (1.11.2015)
+# version 15.2.13
 
 # Do NOT edit this entry block unless you know what you are doing
 dev/*
@@ -31,9 +31,8 @@ root/.config/Trolltech.conf
 root/.dbus
 root/.gconf
 root/.gnome2
-var/tmp
+var/tmp/*
 var/lib/dhcp/*
-var/log
 var/cache/apt/archives/*.deb
 var/cache/apt/*.bin
 var/lib/apt/lists/*
@@ -46,10 +45,7 @@ var/lib/nfs/rpc_pipefs/*
 var/lib/sudo/*
 var/lib/udisks/*
 var/lib/urandom/*
-var/log/ConsoleKit/*
-var/log/fsck/*
-var/log/lightdm
-var/log/live
+var/log/*
 var/mail/*
 var/spool/mail/*
 
