@@ -1,3 +1,9 @@
+mx-snapshot (15.2.4) mx; urgency=medium
+
+  * corrected URL
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 15 Feb 2015 18:02:58 -0500
+
 mx-snapshot (15.2.3) mx; urgency=medium
 
   * changed manual location, fixed displaying version
