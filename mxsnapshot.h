@@ -64,6 +64,7 @@ public:
     QFile snapshot_excludes;
     QFile initrd_modules_file;
     QFile gui_editor;
+    QString version;
     QString work_dir;
     QString snapshot_persist;
     QString stamp;

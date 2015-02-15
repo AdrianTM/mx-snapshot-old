@@ -1,3 +1,9 @@
+mx-snapshot (15.2.3) mx; urgency=medium
+
+  * changed manual location, fixed displaying version
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 15 Feb 2015 09:57:19 -0500
+
 mx-snapshot (15.2.2) mx; urgency=medium
 
   * added installer icon on Desktop on resetting accounts

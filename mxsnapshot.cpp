@@ -48,6 +48,7 @@ mxsnapshot::mxsnapshot(QWidget *parent) :
     ui->buttonSelectSnapshot->setHidden(true);
     ui->stackedWidget->setCurrentIndex(0);
 
+    version = getVersion("mx-snapshot");
     checkLive();
     reset_accounts = false;
     listUsedSpace();
@@ -934,7 +935,7 @@ void mxsnapshot::on_buttonAbout_clicked()
     QMessageBox msgBox(QMessageBox::NoIcon,
                        tr("About MX Snapshot"), "<p align=\"center\"><b><h2>" +
                        tr("MX Snapshot") + "</h2></b></p><p align=\"center\">" + tr("Version: ") +
-                       getVersion("mx-snapshot") + "</p><p align=\"center\"><h3>" +
+                       version + "</p><p align=\"center\"><h3>" +
                        tr("Program for creating a live-CD from the running system for MX Linux") + "</h3></p><p align=\"center\"><a href=\"http://www.mepiscommunity.org/mx\">http://www.mepiscommunity.org/mx</a><br /></p><p align=\"center\">" +
                        tr("Copyright (c) MX Linux") + "<br /><br /></p>", 0, this);
     msgBox.addButton(tr("Cancel"), QMessageBox::AcceptRole); // because we want to display the buttons in reverse order we use counter-intuitive roles.
@@ -946,7 +947,7 @@ void mxsnapshot::on_buttonAbout_clicked()
 // Help button clicked
 void mxsnapshot::on_buttonHelp_clicked()
 {
-    system("mx-viewer http://www.mepiscommunity.org/doc_mx/mxapps.html#snapshot 'MX Snapshot Help'");
+    system("mx-viewer http://www.mepiscommunity.org/public_html/user_manual_mx15/mxum.html#snapshot 'MX Snapshot Help'");
 }
 
 // Select snapshot directory
