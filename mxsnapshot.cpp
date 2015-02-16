@@ -641,9 +641,13 @@ void mxsnapshot::createIso(QString filename)
 // create md5sum for different files
 void mxsnapshot::makeMd5sum(QString folder, QString filename)
 {
+    QDir dir;
+    QString current = dir.currentPath();
+    dir.setCurrent(folder);
     ui->outputLabel->setText(tr("Making md5sum"));
-    QString cmd = "cat " + folder + "/" + filename + " | md5sum >" + folder + "/" + filename + ".md5";
+    QString cmd = "md5sum " + filename + ">" + folder + "/" + filename + ".md5";
     runCmd(cmd);
+    dir.setCurrent(current);
 }
 
 // clean up changes before exit
