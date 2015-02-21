@@ -17,5 +17,7 @@ override_dh_auto_install:
 override_dh_builddeb:
 	dh_builddeb -- -Z xz
 
+override_dh_usrlocal:
+
 %:
 	dh $@ --parallel 

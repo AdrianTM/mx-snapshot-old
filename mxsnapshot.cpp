@@ -79,7 +79,7 @@ void mxsnapshot::setup()
     // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
-    snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/lib/mx-snapshot/snapshot-exclude.list").toString());
+    snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/local/share/excludes/mx-snapshot-exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
     snapshot_persist = settings.value("snapshot_persist", "no").toString();
     snapshot_basename = settings.value("snapshot_basename", "snapshot").toString();
@@ -176,7 +176,7 @@ void mxsnapshot::listUsedSpace()
     QString cmd;
     QString path = snapshot_dir.absolutePath().remove("/snapshot");
     if (live) {
-        cmd = QString("du --exclude-from=/usr/lib/mx-snapshot/snapshot-exclude.list -sch / 2>/dev/null | tail -n1 | cut -f1");
+        cmd = QString("du --exclude-from=%1 -sch / 2>/dev/null | tail -n1 | cut -f1").arg(snapshot_excludes.fileName());
     } else {
         cmd = QString("df -h / | awk 'NR==2 {print $3}'");
     }

@@ -1,3 +1,9 @@
+mx-snapshot (15.2.5) mx; urgency=medium
+
+  * changed location exclue file
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 20 Feb 2015 19:43:59 -0500
+
 mx-snapshot (15.2.4) mx; urgency=medium
 
   * corrected URL
