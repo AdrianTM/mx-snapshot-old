@@ -81,6 +81,7 @@ public:
     bool installPackage(QString package);
     bool checkInstalled(QString package);
     bool replaceStringInFile(QString oldtext, QString newtext, QString filepath);
+    void loadSettings();
     void setup();
     void listUsedSpace();
     void listFreeSpace();

@@ -50,9 +50,9 @@ mxsnapshot::mxsnapshot(QWidget *parent) :
 
     version = getVersion("mx-snapshot");
     checkLive();
+    setup();
     reset_accounts = false;
     listUsedSpace();
-    setup();
 }
 
 mxsnapshot::~mxsnapshot()
@@ -60,23 +60,13 @@ mxsnapshot::~mxsnapshot()
     delete ui;
 }
 
-// setup versious items first time program runs
-void mxsnapshot::setup()
+// load settings or use the default value
+void mxsnapshot::loadSettings()
 {
-    this->show();
-    this->setWindowTitle(tr("MX Snapshot"));
-    ui->buttonBack->setHidden(true);
-    ui->buttonSelectSnapshot->setHidden(false);
-    qApp->processEvents();
     config_file.setFileName("/etc/mx-snapshot.conf");
     QSettings settings(config_file.fileName(), QSettings::IniFormat);
 
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->buttonCancel->setEnabled(true);
-    ui->buttonNext->setEnabled(true);
     session_excludes = "";
-
-    // Load settings or use the default value
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/local/share/excludes/mx-snapshot-exclude.list").toString());
@@ -90,7 +80,21 @@ void mxsnapshot::setup()
     lib_mod_dir = settings.value("lib_mod_dir", "/lib/modules/").toString();
     gui_editor.setFileName(settings.value("gui_editor", "/usr/bin/leafpad").toString());
     stamp = settings.value("stamp", "datetime").toString();
+}
 
+// setup/refresh versious items first time program runs
+void mxsnapshot::setup()
+{
+    qApp->processEvents();
+    this->show();
+    this->setWindowTitle(tr("MX Snapshot"));
+    ui->buttonBack->setHidden(true);
+    ui->buttonSelectSnapshot->setHidden(false);
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->buttonCancel->setEnabled(true);
+    ui->buttonNext->setEnabled(true);
+
+    loadSettings();
     listFreeSpace();
 }
 
@@ -173,8 +177,8 @@ void mxsnapshot::listUsedSpace()
     this->show();
     ui->buttonNext->setDisabled(true);
     ui->buttonCancel->setDisabled(true);
+    ui->buttonSelectSnapshot->setDisabled(true);
     QString cmd;
-    QString path = snapshot_dir.absolutePath().remove("/snapshot");
     if (live) {
         cmd = QString("du --exclude-from=%1 -sch / 2>/dev/null | tail -n1 | cut -f1").arg(snapshot_excludes.fileName());
     } else {
@@ -190,6 +194,7 @@ void mxsnapshot::listUsedSpace()
     }
     ui->buttonNext->setEnabled(true);
     ui->buttonCancel->setEnabled(true);
+    ui->buttonSelectSnapshot->setEnabled(true);
     ui->labelUsedSpace->setText(out);
 }
 
