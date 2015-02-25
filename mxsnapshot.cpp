@@ -622,7 +622,7 @@ void mxsnapshot::createIso(QString filename)
     cmd = "mksquashfs " + source_path + " iso-template/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     runCmd(cmd);
-    makeMd5sum("iso-template/antiX", "linuxfs");
+    makeMd5sum(work_dir + "/iso-template/antiX", "linuxfs");
 
     // create the iso file
     QDir::setCurrent(work_dir + "/iso-template");

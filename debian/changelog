@@ -1,3 +1,9 @@
+mx-snapshot (15.2.6) UNRELEASED; urgency=medium
+
+  * small fix, creating md5sum for linuxfs file
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 25 Feb 2015 12:59:39 -0500
+
 mx-snapshot (15.2.5) mx; urgency=medium
 
   * changed location exclue file
