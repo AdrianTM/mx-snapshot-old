@@ -441,6 +441,13 @@ void mxsnapshot::setupEnv()
     // mount empty fstab file
     system("mount --bind " + work_dir.toAscii() + "/fstabdummy /etc/fstab");
 
+    if (!live && !reset_accounts) {
+        // copy minstall.desktop to Desktop on all accounts
+        system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/antix/minstall.desktop 2>/dev/null");
+        system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/mx/minstall.desktop 2>/dev/null");
+        system("chmod +x /home/*/Desktop/minstall.desktop");
+    }
+
     // setup environment if creating a respin (reset root/demo, remove personal accounts)
     if (reset_accounts) {
         // install mx-installer and live-init-mx if absent
@@ -451,9 +458,15 @@ void mxsnapshot::setupEnv()
             }
             if (!checkInstalled("live-init-mx")) {
                 runCmd("apt-get install live-init-mx");
+                if (!checkInstalled("live-init-mx")) {
+                    QMessageBox::critical(0, tr("Error"), tr("Could not install ") + "live-init-mx");
+                    cleanUp();
+                    return qApp->exit(2);
+                }
                 // fix antiX-init start-up
                 system("update-rc.d antiX-init defaults >/dev/null 2>&1");
             }
+
         }
         // copy files that need to be edited to work_dir
         system("cp /etc/passwd " + work_dir.toAscii());
@@ -690,11 +703,14 @@ void mxsnapshot::cleanUp()
             system("rm -r " + work_dir.toAscii());
         }
     }
-
     // remove live-init-mx
     if (!live && (snapshot_persist == "yes" || reset_accounts)) {
         ui->outputLabel->setText(tr("Removing live-init-mx"));
         runCmd("apt-get -y purge live-init-mx");
+    }
+    // remove installer icon
+    if (!live) {
+        system("rm /home/*/Desktop/minstall.desktop");
     }
     ui->outputLabel->clear();
 }
@@ -705,12 +721,12 @@ void mxsnapshot::addRemoveExclusion(bool add, QString exclusion)
     exclusion.remove(0, 1); // remove training slash
     if (add) {
         if ( session_excludes == "" ) {
-            session_excludes.append("-e " + exclusion + " ");
+            session_excludes.append("-e '" + exclusion + "'");
         } else {
-            session_excludes.append(" " + exclusion + " ");
+            session_excludes.append(" '" + exclusion + "'");
         }
     } else {
-        session_excludes.remove(" " + exclusion + " ");
+        session_excludes.remove(" '" + exclusion + "'");
         if ( session_excludes == "-e" ) {
             session_excludes = "";
         }
@@ -921,7 +937,7 @@ void mxsnapshot::on_excludeVideos_toggled(bool checked)
 
 void mxsnapshot::on_excludeDesktop_toggled(bool checked)
 {
-    QString exclusion = "/home/*/Desktop/*";
+    QString exclusion = "/home/*/Desktop/!(minstall.desktop)";
     addRemoveExclusion(checked, exclusion);
     if (!checked) {
         ui->excludeAll->setChecked(false);
