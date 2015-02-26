@@ -463,11 +463,11 @@ void mxsnapshot::setupEnv()
                     cleanUp();
                     return qApp->exit(2);
                 }
-                // fix antiX-init start-up
-                system("update-rc.d antiX-init defaults >/dev/null 2>&1");
             }
-
         }
+        // fix antiX-init start-up
+        system("update-rc.d antiX-init defaults >/dev/null 2>&1");
+
         // copy files that need to be edited to work_dir
         system("cp /etc/passwd " + work_dir.toAscii());
         system("cp /etc/shadow " + work_dir.toAscii());
