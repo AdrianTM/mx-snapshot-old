@@ -32,7 +32,6 @@
 #include <QSettings>
 
 #include <QDir>
-#include <QTime>
 
 namespace Ui {
 class mxsnapshot;

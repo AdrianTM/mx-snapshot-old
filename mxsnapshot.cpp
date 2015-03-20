@@ -972,7 +972,7 @@ void mxsnapshot::on_buttonAbout_clicked()
 // Help button clicked
 void mxsnapshot::on_buttonHelp_clicked()
 {
-    system("mx-viewer http://www.mepiscommunity.org/user_manual_mx15/mxum.html#snapshot 'MX Snapshot Help'");
+    system("mx-viewer http://mepiscommunity.org/doc_mx/snapshot.html 'MX Snapshot Help'");
 }
 
 // Select snapshot directory
