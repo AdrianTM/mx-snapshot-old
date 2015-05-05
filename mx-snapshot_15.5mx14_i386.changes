@@ -15,14 +15,14 @@ Changes:
  .
    * used the new init.rd from MX14.4
 Checksums-Sha1: 
- 8a132045b4f276dc8c7437cfe030b843883fac94 625 mx-snapshot_15.5mx14.dsc
- 4521f3080718797ffecfdd1d4f1816af218d0c00 5559379 mx-snapshot_15.5mx14.tar.gz
- 8b482da5e3e7c81ba8219b50e1a3f5837c7c1420 5567630 mx-snapshot_15.5mx14_i386.deb
+ fa0d9806ea12272710552f7719de142dc811d877 625 mx-snapshot_15.5mx14.dsc
+ 46dd0c4f86c61737d0da82397a64ad20da6e7d5f 5560457 mx-snapshot_15.5mx14.tar.gz
+ e2ee32d94eb091177c2a2c663cbe5bda0ebb7d24 5568152 mx-snapshot_15.5mx14_i386.deb
 Checksums-Sha256: 
- efd4dfad5afd3cdf7164595ef6dec53c88a6f2d1a3e175c2cebd2e1dd5002b51 625 mx-snapshot_15.5mx14.dsc
- 20b2866b52eb5268c3496137bcaaeaaf0d2e04d62de3f2a7d04978aa046abd2a 5559379 mx-snapshot_15.5mx14.tar.gz
- f62d0e12c96836a6076dbccf4af8a4fb63c37d260c82bc0429c79d9e85187594 5567630 mx-snapshot_15.5mx14_i386.deb
+ 16ec30045d3c3b835a8ea494b570c695f41f5f831534ab071a1c42152ab27f3f 625 mx-snapshot_15.5mx14.dsc
+ 31ed8f9e0297445bca09a4fa210b354ec4afe8bcdab041e973e9e59db81d57fa 5560457 mx-snapshot_15.5mx14.tar.gz
+ 2a6331a956c844f42debca3afdec7e2aafb486f37022f3ba918579176023bd16 5568152 mx-snapshot_15.5mx14_i386.deb
 Files: 
- fb59f377ec939f90359bf00c30fb950a 625 admin optional mx-snapshot_15.5mx14.dsc
- 785cf510c9635dd711a423729e6b1e64 5559379 admin optional mx-snapshot_15.5mx14.tar.gz
- b96b463f320816199495e462cb4f02d6 5567630 admin optional mx-snapshot_15.5mx14_i386.deb
+ 8547edef36d32922e78f6082b15daf9e 625 admin optional mx-snapshot_15.5mx14.dsc
+ 3fc37197725806e007c6ce55b4734eb5 5560457 admin optional mx-snapshot_15.5mx14.tar.gz
+ 0bd9c8bb0b939e98873a9a25d35a9839 5568152 admin optional mx-snapshot_15.5mx14_i386.deb
