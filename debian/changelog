@@ -1,3 +1,9 @@
+mx-snapshot (15.5mx14) mx; urgency=medium
+
+  * used the new init.rd from MX14.4
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 05 May 2015 08:40:27 -0400
+
 mx-snapshot (15.4mx14) mx; urgency=medium
 
   * added translation

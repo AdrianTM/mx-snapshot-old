@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Tue, 05 May 2015 08:40:27 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source i386
+Version: 15.5mx14
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description: 
+ mx-snapshot - MX Snapshot
+Changes: 
+ mx-snapshot (15.5mx14) mx; urgency=medium
+ .
+   * used the new init.rd from MX14.4
+Checksums-Sha1: 
+ 8a132045b4f276dc8c7437cfe030b843883fac94 625 mx-snapshot_15.5mx14.dsc
+ 4521f3080718797ffecfdd1d4f1816af218d0c00 5559379 mx-snapshot_15.5mx14.tar.gz
+ 8b482da5e3e7c81ba8219b50e1a3f5837c7c1420 5567630 mx-snapshot_15.5mx14_i386.deb
+Checksums-Sha256: 
+ efd4dfad5afd3cdf7164595ef6dec53c88a6f2d1a3e175c2cebd2e1dd5002b51 625 mx-snapshot_15.5mx14.dsc
+ 20b2866b52eb5268c3496137bcaaeaaf0d2e04d62de3f2a7d04978aa046abd2a 5559379 mx-snapshot_15.5mx14.tar.gz
+ f62d0e12c96836a6076dbccf4af8a4fb63c37d260c82bc0429c79d9e85187594 5567630 mx-snapshot_15.5mx14_i386.deb
+Files: 
+ fb59f377ec939f90359bf00c30fb950a 625 admin optional mx-snapshot_15.5mx14.dsc
+ 785cf510c9635dd711a423729e6b1e64 5559379 admin optional mx-snapshot_15.5mx14.tar.gz
+ b96b463f320816199495e462cb4f02d6 5567630 admin optional mx-snapshot_15.5mx14_i386.deb
