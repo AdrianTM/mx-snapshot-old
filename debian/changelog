@@ -1,3 +1,9 @@
+mx-snapshot (15.5.1mx14) mx; urgency=medium
+
+  * used the new syslinux/isolinux config files
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 05 May 2015 15:52:00 -0400
+
 mx-snapshot (15.5mx14) mx; urgency=medium
 
   * used the new init.rd from MX14.4
