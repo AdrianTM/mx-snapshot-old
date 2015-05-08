@@ -6,12 +6,14 @@ MAKE_OPTS  = QMAKE=qmake-qt4 LRELEASE=lrelease-qt4 QMAKE_OPTS="$(QMAKE_OPTS)"
 override_dh_auto_clean:
 	dh_auto_clean
 	rm -f src/translations/*.qm
+	rm -f iso-template.tar.gz
 
 override_dh_auto_build:
 	lrelease-qt4 mx-snapshot.pro
 	dh_auto_build -- $(MAKE_OPTS)
 
 override_dh_auto_install:
+	tar -cvzf iso-template.tar.gz iso-template
 	dh_auto_install -- $(MAKE_OPTS)
 
 override_dh_builddeb:
