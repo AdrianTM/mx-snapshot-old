@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Wed, 03 Jun 2015 13:09:36 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source i386
+Version: 15.6mx14
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description: 
+ mx-snapshot - MX Snapshot
+Changes: 
+ mx-snapshot (15.6mx14) mx; urgency=medium
+ .
+   * changed documentation URL
+Checksums-Sha1: 
+ 6562e3086c0dea4ef413e08551548e1bcab35001 625 mx-snapshot_15.6mx14.dsc
+ ced75ccc5703fe72dc7a5f858d65e717103393fa 5577498 mx-snapshot_15.6mx14.tar.gz
+ 625c8f38026e1bbf255e434523321b1edc982aa6 5566352 mx-snapshot_15.6mx14_i386.deb
+Checksums-Sha256: 
+ 957ccd93d5505d6acbcd7f865993fb58cad99202a14852f96d1ab010451a9eee 625 mx-snapshot_15.6mx14.dsc
+ 0df8beb75354d1aa281b9eab2bb15273b845442e5291b899826e0fec65bca174 5577498 mx-snapshot_15.6mx14.tar.gz
+ 3675fe8c1ae32270408eb466966d3a2de625cbefac641816ab8127217818c886 5566352 mx-snapshot_15.6mx14_i386.deb
+Files: 
+ 90afc522c1800ebf674965ce24b5702e 625 admin optional mx-snapshot_15.6mx14.dsc
+ 31f066b40a87677e5cdc7c668c868371 5577498 admin optional mx-snapshot_15.6mx14.tar.gz
+ 5a0c6035409a546ae6cfe89e605e8562 5566352 admin optional mx-snapshot_15.6mx14_i386.deb
