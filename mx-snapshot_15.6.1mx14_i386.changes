@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Tue, 16 Jun 2015 15:55:48 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source i386
+Version: 15.6.1mx14
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description: 
+ mx-snapshot - MX Snapshot
+Changes: 
+ mx-snapshot (15.6.1mx14) mx; urgency=medium
+ .
+   * removed home/demo exlusion
+Checksums-Sha1: 
+ 62c14670c28541fb58901c5e29715d9fe7a6c902 633 mx-snapshot_15.6.1mx14.dsc
+ 1cd6abf8b2dcca24cd0ea123a11a90f684977767 5577585 mx-snapshot_15.6.1mx14.tar.gz
+ f42afb5d607d4a46ed39580571ddbca7a1a6c34c 5566388 mx-snapshot_15.6.1mx14_i386.deb
+Checksums-Sha256: 
+ 4364cd9bb0cd2327f0610cedf49b3ab8edded9aaf35915f5b88d2690b66d2b35 633 mx-snapshot_15.6.1mx14.dsc
+ a3b7eb883b60f8e459d33c4a56969094097bbbcbab1e8fffd008e18558093a73 5577585 mx-snapshot_15.6.1mx14.tar.gz
+ 1133b49d2c820eacd8f232b8ae769d0f1b5e7735bb878ff7005b456d84ad5134 5566388 mx-snapshot_15.6.1mx14_i386.deb
+Files: 
+ e1312443fb87aa83071406abede3f5d5 633 admin optional mx-snapshot_15.6.1mx14.dsc
+ 39bb0c2cd6e8a479a3e82a8e0cf46db5 5577585 admin optional mx-snapshot_15.6.1mx14.tar.gz
+ 2a61398d433e73d6935ddeb66db63312 5566388 admin optional mx-snapshot_15.6.1mx14_i386.deb

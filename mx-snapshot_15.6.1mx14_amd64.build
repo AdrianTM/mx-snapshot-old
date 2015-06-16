@@ -1,0 +1,254 @@
+ dpkg-buildpackage -rfakeroot -d -us -uc -aamd64
+dpkg-buildpackage: source package mx-snapshot
+dpkg-buildpackage: source version 15.6.1mx14
+dpkg-buildpackage: source changed by Adrian <adrian@mxlinux.org>
+dpkg-architecture: warning: specified GNU system type x86_64-linux-gnu does not match gcc system type i486-linux-gnu, try setting a correct CC environment variable
+ dpkg-source --before-build build
+dpkg-buildpackage: host architecture amd64
+ fakeroot debian/rules clean
+dh clean --parallel 
+   dh_testdir -O--parallel
+   debian/rules override_dh_auto_clean
+make[1]: Entering directory `/home/adrian/build'
+dh_auto_clean
+make[2]: Entering directory `/home/adrian/build'
+rm -f moc_mxsnapshot.cpp
+rm -f ui_mxsnapshot.h
+rm -f main.o mxsnapshot.o moc_mxsnapshot.o
+rm -f *~ core *.core
+rm -f mx-snapshot 
+rm -f Makefile
+make[2]: Leaving directory `/home/adrian/build'
+rm -f src/translations/*.qm
+rm -f iso-template.tar.gz
+make[1]: Leaving directory `/home/adrian/build'
+   dh_clean -O--parallel
+ dpkg-source -b build
+dpkg-source: info: using source format `3.0 (native)'
+dpkg-source: info: building mx-snapshot in mx-snapshot_15.6.1mx14.tar.gz
+dpkg-source: info: building mx-snapshot in mx-snapshot_15.6.1mx14.dsc
+ debian/rules build
+dh build --parallel 
+   dh_testdir -O--parallel
+   dh_auto_configure -O--parallel
+   debian/rules override_dh_auto_build
+make[1]: Entering directory `/home/adrian/build'
+lrelease-qt4 mx-snapshot.pro
+Updating '/home/adrian/build/translations/mx-snapshot_ca.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+Updating '/home/adrian/build/translations/mx-snapshot_de.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+Updating '/home/adrian/build/translations/mx-snapshot_el.qm'...
+    Generated 22 translation(s) (22 finished and 0 unfinished)
+    Ignored 53 untranslated source text(s)
+Updating '/home/adrian/build/translations/mx-snapshot_es.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+Updating '/home/adrian/build/translations/mx-snapshot_fr.qm'...
+    Generated 45 translation(s) (45 finished and 0 unfinished)
+    Ignored 30 untranslated source text(s)
+Updating '/home/adrian/build/translations/mx-snapshot_it.qm'...
+    Generated 53 translation(s) (53 finished and 0 unfinished)
+    Ignored 22 untranslated source text(s)
+Updating '/home/adrian/build/translations/mx-snapshot_ja.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+Updating '/home/adrian/build/translations/mx-snapshot_nl.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+Updating '/home/adrian/build/translations/mx-snapshot_pl.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+Updating '/home/adrian/build/translations/mx-snapshot_sv.qm'...
+    Generated 75 translation(s) (75 finished and 0 unfinished)
+dh_auto_build -- QMAKE=qmake-qt4 LRELEASE=lrelease-qt4 QMAKE_OPTS="DEFINES+=NO_DEBUG_ON_CONSOLE"
+make[2]: Entering directory `/home/adrian/build'
+/usr/lib/i386-linux-gnu/qt4/bin/uic mxsnapshot.ui -o ui_mxsnapshot.h
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_WEBKIT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -o main.o main.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_WEBKIT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -o mxsnapshot.o mxsnapshot.cpp
+/usr/lib/i386-linux-gnu/qt4/bin/moc -DQT_WEBKIT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. mxsnapshot.h -o moc_mxsnapshot.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_WEBKIT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -o moc_mxsnapshot.o moc_mxsnapshot.cpp
+g++ -Wl,-O1 -o mx-snapshot main.o mxsnapshot.o moc_mxsnapshot.o    -L/usr/lib/i386-linux-gnu -lQtGui -lQtCore -lpthread 
+make[2]: Leaving directory `/home/adrian/build'
+make[1]: Leaving directory `/home/adrian/build'
+   dh_auto_test -O--parallel
+ fakeroot debian/rules binary
+dh binary --parallel 
+   dh_testroot -O--parallel
+   dh_prep -O--parallel
+   dh_installdirs -O--parallel
+   debian/rules override_dh_auto_install
+make[1]: Entering directory `/home/adrian/build'
+tar -cvzf iso-template.tar.gz iso-template
+iso-template/
+iso-template/antiX/
+iso-template/antiX/antiX
+iso-template/antiX/initrd.gz
+iso-template/boot/
+iso-template/boot/isolinux/
+iso-template/boot/isolinux/16x16.fnt
+iso-template/boot/isolinux/README
+iso-template/boot/isolinux/ar.tr
+iso-template/boot/isolinux/back.jpg
+iso-template/boot/isolinux/base.men
+iso-template/boot/isolinux/bg.tr
+iso-template/boot/isolinux/breakpt.men
+iso-template/boot/isolinux/ca.tr
+iso-template/boot/isolinux/cs.tr
+iso-template/boot/isolinux/da.tr
+iso-template/boot/isolinux/de.tr
+iso-template/boot/isolinux/el.tr
+iso-template/boot/isolinux/en.hlp
+iso-template/boot/isolinux/en.tr
+iso-template/boot/isolinux/es.tr
+iso-template/boot/isolinux/et.tr
+iso-template/boot/isolinux/eu.tr
+iso-template/boot/isolinux/fa.tr
+iso-template/boot/isolinux/fi.tr
+iso-template/boot/isolinux/fr.tr
+iso-template/boot/isolinux/full.men
+iso-template/boot/isolinux/gfxboot.c32
+iso-template/boot/isolinux/gfxboot.cfg
+iso-template/boot/isolinux/hi.tr
+iso-template/boot/isolinux/hr.tr
+iso-template/boot/isolinux/hu.tr
+iso-template/boot/isolinux/init
+iso-template/boot/isolinux/is.tr
+iso-template/boot/isolinux/isolinux.bin
+iso-template/boot/isolinux/isolinux.cat
+iso-template/boot/isolinux/isolinux.cfg
+iso-template/boot/isolinux/isolinux.msg
+iso-template/boot/isolinux/it.tr
+iso-template/boot/isolinux/ja.tr
+iso-template/boot/isolinux/ko.tr
+iso-template/boot/isolinux/languages
+iso-template/boot/isolinux/lt.tr
+iso-template/boot/isolinux/mk.tr
+iso-template/boot/isolinux/mount.men
+iso-template/boot/isolinux/nb.tr
+iso-template/boot/isolinux/nl.tr
+iso-template/boot/isolinux/pl.tr
+iso-template/boot/isolinux/pt.tr
+iso-template/boot/isolinux/pt_BR.tr
+iso-template/boot/isolinux/ro.tr
+iso-template/boot/isolinux/ru.tr
+iso-template/boot/isolinux/sk.tr
+iso-template/boot/isolinux/sl.tr
+iso-template/boot/isolinux/sq.tr
+iso-template/boot/isolinux/sr.tr
+iso-template/boot/isolinux/sv.tr
+iso-template/boot/isolinux/timer_a.jpg
+iso-template/boot/isolinux/tr.tr
+iso-template/boot/isolinux/uk.tr
+iso-template/boot/isolinux/vesamenu.c32
+iso-template/boot/isolinux/zh_CN.tr
+iso-template/boot/isolinux/zh_TW.tr
+iso-template/boot/syslinux/
+iso-template/boot/syslinux/16x16.fnt
+iso-template/boot/syslinux/README
+iso-template/boot/syslinux/ar.tr
+iso-template/boot/syslinux/back.jpg
+iso-template/boot/syslinux/base.men
+iso-template/boot/syslinux/bg.tr
+iso-template/boot/syslinux/breakpt.men
+iso-template/boot/syslinux/ca.tr
+iso-template/boot/syslinux/cs.tr
+iso-template/boot/syslinux/da.tr
+iso-template/boot/syslinux/de.tr
+iso-template/boot/syslinux/el.tr
+iso-template/boot/syslinux/en.hlp
+iso-template/boot/syslinux/en.tr
+iso-template/boot/syslinux/es.tr
+iso-template/boot/syslinux/et.tr
+iso-template/boot/syslinux/eu.tr
+iso-template/boot/syslinux/fa.tr
+iso-template/boot/syslinux/fi.tr
+iso-template/boot/syslinux/fr.tr
+iso-template/boot/syslinux/full.men
+iso-template/boot/syslinux/gfxboot.c32
+iso-template/boot/syslinux/gfxboot.cfg
+iso-template/boot/syslinux/gfxsave.on
+iso-template/boot/syslinux/hi.tr
+iso-template/boot/syslinux/hr.tr
+iso-template/boot/syslinux/hu.tr
+iso-template/boot/syslinux/init
+iso-template/boot/syslinux/is.tr
+iso-template/boot/syslinux/isolinux.bin
+iso-template/boot/syslinux/isolinux.cat
+iso-template/boot/syslinux/isolinux.msg
+iso-template/boot/syslinux/it.tr
+iso-template/boot/syslinux/ja.tr
+iso-template/boot/syslinux/ko.tr
+iso-template/boot/syslinux/languages
+iso-template/boot/syslinux/lt.tr
+iso-template/boot/syslinux/mk.tr
+iso-template/boot/syslinux/mount.men
+iso-template/boot/syslinux/nb.tr
+iso-template/boot/syslinux/nl.tr
+iso-template/boot/syslinux/pl.tr
+iso-template/boot/syslinux/pt.tr
+iso-template/boot/syslinux/pt_BR.tr
+iso-template/boot/syslinux/ro.tr
+iso-template/boot/syslinux/ru.tr
+iso-template/boot/syslinux/sk.tr
+iso-template/boot/syslinux/sl.tr
+iso-template/boot/syslinux/sq.tr
+iso-template/boot/syslinux/sr.tr
+iso-template/boot/syslinux/sv.tr
+iso-template/boot/syslinux/syslinux.cfg
+iso-template/boot/syslinux/timer_a.jpg
+iso-template/boot/syslinux/tr.tr
+iso-template/boot/syslinux/uk.tr
+iso-template/boot/syslinux/vesamenu.c32
+iso-template/boot/syslinux/zh_CN.tr
+iso-template/boot/syslinux/zh_TW.tr
+iso-template/boot/memtest
+iso-template/cdrom.ico
+dh_auto_install -- QMAKE=qmake-qt4 LRELEASE=lrelease-qt4 QMAKE_OPTS="DEFINES+=NO_DEBUG_ON_CONSOLE"
+make[1]: Leaving directory `/home/adrian/build'
+   dh_install -O--parallel
+   dh_installdocs -O--parallel
+   dh_installchangelogs -O--parallel
+   dh_installexamples -O--parallel
+   dh_installman -O--parallel
+   dh_installcatalogs -O--parallel
+   dh_installcron -O--parallel
+   dh_installdebconf -O--parallel
+   dh_installemacsen -O--parallel
+   dh_installifupdown -O--parallel
+   dh_installinfo -O--parallel
+   dh_pysupport -O--parallel
+dh_pysupport: This program is deprecated, you should use dh_python2 instead. Migration guide: http://deb.li/dhs2p
+   dh_installinit -O--parallel
+   dh_installmenu -O--parallel
+   dh_installmime -O--parallel
+   dh_installmodules -O--parallel
+   dh_installlogcheck -O--parallel
+   dh_installlogrotate -O--parallel
+   dh_installpam -O--parallel
+   dh_installppp -O--parallel
+   dh_installudev -O--parallel
+   dh_installwm -O--parallel
+   dh_installxfonts -O--parallel
+   dh_installgsettings -O--parallel
+   dh_bugfiles -O--parallel
+   dh_ucf -O--parallel
+   dh_lintian -O--parallel
+   dh_gconf -O--parallel
+   dh_icons -O--parallel
+   dh_perl -O--parallel
+   dh_link -O--parallel
+   dh_compress -O--parallel
+   dh_fixperms -O--parallel
+   dh_strip -O--parallel
+   dh_makeshlibs -O--parallel
+   dh_shlibdeps -O--parallel
+   dh_installdeb -O--parallel
+   dh_gencontrol -O--parallel
+dpkg-gencontrol: warning: File::FcntlLock not available; using flock which is not NFS-safe
+   dh_md5sums -O--parallel
+   debian/rules override_dh_builddeb
+make[1]: Entering directory `/home/adrian/build'
+dh_builddeb -- -Z xz
+dpkg-deb: building package `mx-snapshot' in `../mx-snapshot_15.6.1mx14_amd64.deb'.
+make[1]: Leaving directory `/home/adrian/build'
+ dpkg-genchanges  >../mx-snapshot_15.6.1mx14_amd64.changes
+dpkg-genchanges: including full source code in upload
+ dpkg-source --after-build build
+dpkg-buildpackage: full upload; Debian-native package (full source is included)

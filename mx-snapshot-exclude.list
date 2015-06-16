@@ -22,7 +22,6 @@ etc/mtab
 etc/udev/rules.d/70-persistent-cd.rules
 etc/udev/rules.d/70-persistent-net.rules
 etc/resolv.conf
-home/demo
 home/snapshot
 lost+found
 grub/*
