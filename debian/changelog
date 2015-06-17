@@ -1,3 +1,9 @@
+mx-snapshot (15.6.2mx14) mx; urgency=medium
+
+  * added some error checking
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 17 Jun 2015 16:24:58 -0400
+
 mx-snapshot (15.6.1mx14) mx; urgency=medium
 
   * removed home/demo exlusion

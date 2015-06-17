@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Wed, 17 Jun 2015 16:24:58 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source amd64
+Version: 15.6.2mx14
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description: 
+ mx-snapshot - MX Snapshot
+Changes: 
+ mx-snapshot (15.6.2mx14) mx; urgency=medium
+ .
+   * added some error checking
+Checksums-Sha1: 
+ c9dacef1c7da616d30f424a3c0fef04eb858c18e 633 mx-snapshot_15.6.2mx14.dsc
+ 784b34769f17183440c75b2ad2adacd61aa6337e 5582037 mx-snapshot_15.6.2mx14.tar.gz
+ 48375233ba740e4e517d26efa08223b82844cd5c 5566786 mx-snapshot_15.6.2mx14_amd64.deb
+Checksums-Sha256: 
+ f2f334344e6503c32d3acdaac881c4bbd42b3f9e841500ccad244f7649b7d427 633 mx-snapshot_15.6.2mx14.dsc
+ 403cc0230ce74b1d58e23db13151919ceeef10e458b98aea710329c5807734d2 5582037 mx-snapshot_15.6.2mx14.tar.gz
+ 9c5fb374381332367ffdfc9fb7e752f7d84dda7c3a4a28ab8efaf060dba68aa6 5566786 mx-snapshot_15.6.2mx14_amd64.deb
+Files: 
+ 151fc89b13d249fab2888f78e1c2fefa 633 admin optional mx-snapshot_15.6.2mx14.dsc
+ 364fcd49f29ae5fb4327cb3ea450d216 5582037 admin optional mx-snapshot_15.6.2mx14.tar.gz
+ 80903b15faa59c753b9fd9c444e021f0 5566786 admin optional mx-snapshot_15.6.2mx14_amd64.deb

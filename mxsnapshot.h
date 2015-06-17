@@ -50,7 +50,7 @@ public:
     ~mxsnapshot();
 
     QString getCmdOut(QString cmd);
-    void runCmd(QString cmd);
+    int runCmd(QString cmd);
     QString getVersion(QString name);
     void addRemoveExclusion(bool add, QString exclusion);
     QSettings settings;
@@ -80,6 +80,7 @@ public:
     bool installPackage(QString package);
     bool checkInstalled(QString package);
     bool replaceStringInFile(QString oldtext, QString newtext, QString filepath);
+    bool createIso(QString filename);
     void loadSettings();
     void setup();
     void listUsedSpace();
@@ -98,8 +99,7 @@ public:
     void setupEnv();
     void resetAccount(QString user);
     void resetOtherAccounts(QStringList users);
-    void createUser1000();
-    void createIso(QString filename);
+    void createUser1000();    
     void cleanUp();
     void makeMd5sum(QString folder, QString filename);
     void fixPermissions();

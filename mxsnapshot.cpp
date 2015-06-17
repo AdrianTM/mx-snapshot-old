@@ -110,7 +110,7 @@ QString mxsnapshot::getCmdOut(QString cmd)
 }
 
 // Util function for running bash commands with progress bar and output in output box
-void mxsnapshot::runCmd(QString cmd)
+int mxsnapshot::runCmd(QString cmd)
 {
     QEventLoop loop;
     setConnections();
@@ -118,6 +118,7 @@ void mxsnapshot::runCmd(QString cmd)
     proc->start("/bin/bash", QStringList() << "-c" << cmd);
     loop.exec();
     disconnectAll();
+    return proc->exitCode();
 }
 
 // Util function for replacing strings in files
@@ -620,7 +621,7 @@ void mxsnapshot::createUser1000()
 }
 
 // create squashfs and then the iso
-void mxsnapshot::createIso(QString filename)
+bool mxsnapshot::createIso(QString filename)
 {
     QString cmd;
     // add exclusions snapshot dir
@@ -634,14 +635,20 @@ void mxsnapshot::createIso(QString filename)
     }
     cmd = "mksquashfs " + source_path + " iso-template/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
-    runCmd(cmd);
+    if (runCmd(cmd) != 0) {
+        QMessageBox::critical(0, tr("Error"), tr("Could not create linuxfs file, please check whether you have enough space on the root."));
+        return false;
+    }
     makeMd5sum(work_dir + "/iso-template/antiX", "linuxfs");
 
     // create the iso file
     QDir::setCurrent(work_dir + "/iso-template");
     cmd = "genisoimage -allow-limited-size -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
-    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
-    runCmd(cmd);
+    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));    
+    if (runCmd(cmd) != 0) {
+        QMessageBox::critical(0, tr("Error"), tr("Could not create ISO file, please check whether you have enough space on the destination partition."));
+        return false;
+    }
 
     // make it isohybrid
     if (make_isohybrid == "yes") {
@@ -654,6 +661,7 @@ void mxsnapshot::createIso(QString filename)
     if (make_md5sum == "yes") {
         makeMd5sum(snapshot_dir.absolutePath(), filename);
     }
+    return true;
 }
 
 // create md5sum for different files
@@ -857,9 +865,12 @@ void mxsnapshot::on_buttonNext_clicked()
             }
         }
         setupEnv();
-        createIso(filename);
+        bool success = createIso(filename);
         cleanUp();
-        QMessageBox::information(this, tr("Success"),tr("All finished!"), QMessageBox::Ok);
+        if (success) {
+            QMessageBox::information(this, tr("Success"),tr("All finished!"), QMessageBox::Ok);
+            ui->buttonCancel->setText(tr("Close"));
+        }
     } else {
         return qApp->quit();
     }
@@ -966,13 +977,13 @@ void mxsnapshot::on_buttonAbout_clicked()
     msgBox.addButton(tr("Cancel"), QMessageBox::AcceptRole); // because we want to display the buttons in reverse order we use counter-intuitive roles.
     msgBox.addButton(tr("License"), QMessageBox::RejectRole);
     if (msgBox.exec() == QMessageBox::RejectRole)
-        system("mx-viewer http://www.mepiscommunity.org/doc_mx/mx-snapshot-license.html 'MX Snapshot License'");
+        system("mx-viewer http://www.mepiscommunity.org/doc_mx/mx-snapshot-license.html '" + tr("MX Snapshot License").toAscii() + "'");
 }
 
 // Help button clicked
 void mxsnapshot::on_buttonHelp_clicked()
 {
-    system("mx-viewer http://mepiscommunity.org/wiki/help-files/help-mx-save-system-iso-snapshot 'MX Snapshot Help'");
+    system("mx-viewer http://mepiscommunity.org/wiki/help-files/help-mx-save-system-iso-snapshot '" + tr("MX Snapshot Help").toAscii() + "'");
 }
 
 // Select snapshot directory
