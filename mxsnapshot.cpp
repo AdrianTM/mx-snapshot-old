@@ -703,13 +703,8 @@ void mxsnapshot::cleanUp()
                 return; // exit if it cannot unmount /ro_root
             }
         }
-
-        // remove dummy fstab file
         system("rm " + work_dir.toAscii() + "/fstabdummy");
-
-        if (work_dir != "/") {
-            system("rm -r " + work_dir.toAscii());
-        }
+        system("rm -r " + work_dir.toAscii());
     }
     // remove live-init-mx
     if (!live && (snapshot_persist == "yes" || reset_accounts)) {
