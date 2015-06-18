@@ -283,7 +283,7 @@ void mxsnapshot::checkDirectories()
     }
 
     // Create a work_dir
-    work_dir = getCmdOut("mktemp -d /tmp/mx-snapshot-XXXXXXXX");
+    work_dir = getCmdOut("mktemp -d " + snapshot_dir.absolutePath() + "/mx-snapshot-XXXXXXXX");
 }
 
 void mxsnapshot::checkInitrdModules()
@@ -433,7 +433,7 @@ void mxsnapshot::savePackageList(QString filename)
 void mxsnapshot::setupEnv()
 {
     // checks if work_dir looks OK
-    if (!work_dir.startsWith("/tmp/mx-snapshot")) {
+    if (!work_dir.contains("/mx-snapshot")) {
         return;
     }
     QDir dir;
@@ -636,7 +636,7 @@ bool mxsnapshot::createIso(QString filename)
     cmd = "mksquashfs " + source_path + " iso-template/antiX/linuxfs " + mksq_opt + " -wildcards -ef " + snapshot_excludes.fileName() + " " + session_excludes;
     ui->outputLabel->setText(tr("Squashing filesystem..."));
     if (runCmd(cmd) != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Could not create linuxfs file, please check whether you have enough space on the root."));
+        QMessageBox::critical(0, tr("Error"), tr("Could not create linuxfs file, please check whether you have enough space on the destination partition."));
         return false;
     }
     makeMd5sum(work_dir + "/iso-template/antiX", "linuxfs");
@@ -644,7 +644,7 @@ bool mxsnapshot::createIso(QString filename)
     // create the iso file
     QDir::setCurrent(work_dir + "/iso-template");
     cmd = "genisoimage -allow-limited-size -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
-    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));    
+    ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     if (runCmd(cmd) != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Could not create ISO file, please check whether you have enough space on the destination partition."));
         return false;
@@ -688,7 +688,7 @@ void mxsnapshot::cleanUp()
     system("umount /etc/fstab");
 
     // checks if work_dir looks OK
-    if (work_dir.startsWith("/tmp/mx-snapshot")) {
+    if (work_dir.contains("/mx-snapshot")) {
         // clean mount points if resetting accounts
         if (reset_accounts) {
             system("umount " + work_dir.toAscii() + "/ro_root/etc/passwd >/dev/null 2>&1");

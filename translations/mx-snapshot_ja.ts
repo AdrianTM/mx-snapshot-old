@@ -286,7 +286,7 @@ leafpad をインストールし、それを使います。</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="639"/>
-        <source>Could not create linuxfs file, please check whether you have enough space on the root.</source>
+        <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
