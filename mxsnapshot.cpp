@@ -71,7 +71,6 @@ void mxsnapshot::loadSettings()
     ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/local/share/excludes/mx-snapshot-exclude.list").toString());
     initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
-    snapshot_persist = settings.value("snapshot_persist", "no").toString();
     snapshot_basename = settings.value("snapshot_basename", "snapshot").toString();
     make_md5sum = settings.value("make_md5sum", "no").toString();
     make_isohybrid = settings.value("make_isohybrid", "yes").toString();
@@ -449,23 +448,24 @@ void mxsnapshot::setupEnv()
         system("chmod +x /home/*/Desktop/minstall.desktop");
     }
 
-    // setup environment if creating a respin (reset root/demo, remove personal accounts)
-    if (reset_accounts) {
-        // install mx-installer and live-init-mx if absent
-        if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
-            runCmd("apt-get update");
-            if (!checkInstalled("mx-installer")) {
-                runCmd("apt-get install mx-installer");
-            }
+    // install mx-installer and live-init-mx if absent
+    if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
+        runCmd("apt-get update");
+        if (!checkInstalled("mx-installer")) {
+            runCmd("apt-get install mx-installer");
+        }
+        if (!checkInstalled("live-init-mx")) {
+            runCmd("apt-get install live-init-mx");
             if (!checkInstalled("live-init-mx")) {
-                runCmd("apt-get install live-init-mx");
-                if (!checkInstalled("live-init-mx")) {
-                    QMessageBox::critical(0, tr("Error"), tr("Could not install ") + "live-init-mx");
-                    cleanUp();
-                    return qApp->exit(2);
-                }
+                QMessageBox::critical(0, tr("Error"), tr("Could not install ") + "live-init-mx");
+                cleanUp();
+                return qApp->exit(2);
             }
         }
+    }
+
+    // setup environment if creating a respin (reset root/demo, remove personal accounts)
+    if (reset_accounts) {
         // fix antiX-init start-up
         system("update-rc.d antiX-init defaults >/dev/null 2>&1");
 
@@ -706,13 +706,11 @@ void mxsnapshot::cleanUp()
         system("rm " + work_dir.toAscii() + "/fstabdummy");
         system("rm -r " + work_dir.toAscii());
     }
-    // remove live-init-mx
-    if (!live && (snapshot_persist == "yes" || reset_accounts)) {
+    if (!live) {
+        // remove live-init-mx
         ui->outputLabel->setText(tr("Removing live-init-mx"));
         runCmd("apt-get -y purge live-init-mx");
-    }
-    // remove installer icon
-    if (!live) {
+        // remove installer icon
         system("rm /home/*/Desktop/minstall.desktop");
     }
     ui->outputLabel->clear();
@@ -808,15 +806,6 @@ void mxsnapshot::on_buttonNext_clicked()
         ui->buttonBack->setEnabled(true);
         if (edit_boot_menu == "yes") {
             checkEditor();
-        }
-        if (snapshot_persist == "yes") {
-              if (!checkInstalled("live-init-mx")) {
-                ui->stackedWidget->setCurrentWidget(ui->outputPage);
-                installPackage("live-init-mx");
-                ui->buttonNext->setEnabled(true);
-                ui->buttonBack->setEnabled(true);
-                ui->stackedWidget->setCurrentWidget(ui->settingsPage);
-              }
         }
         checkInitrdModules();
         kernel_used = getCmdOut("uname -r");

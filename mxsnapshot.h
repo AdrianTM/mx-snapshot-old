@@ -65,7 +65,6 @@ public:
     QFile gui_editor;
     QString version;
     QString work_dir;
-    QString snapshot_persist;
     QString stamp;
     QString snapshot_basename;
     QString make_md5sum;
@@ -99,7 +98,7 @@ public:
     void setupEnv();
     void resetAccount(QString user);
     void resetOtherAccounts(QStringList users);
-    void createUser1000();    
+    void createUser1000();
     void cleanUp();
     void makeMd5sum(QString folder, QString filename);
     void fixPermissions();

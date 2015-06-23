@@ -10,8 +10,8 @@ Build-Depends: qt4-qmake, debhelper (>= 7.0.50~)
 Package-List: 
  mx-snapshot deb admin optional
 Checksums-Sha1: 
- 0b5ac7a6e9866963a26299cf7a3f88d4d3f4de19 5580077 mx-snapshot_15.6.2mx14.tar.gz
+ 8f3cf22bbb9ff1c24ddbe7f818ad21af7e26d27a 16748286 mx-snapshot_15.6.2mx14.tar.gz
 Checksums-Sha256: 
- 22ce308c50577171602ed388096d5c8d1d854afb2795cb9aecf87da3307309c1 5580077 mx-snapshot_15.6.2mx14.tar.gz
+ 43c903b73cb1573808e6da12c5e8f6569bb4665ddd527088ae7f6cf353c98474 16748286 mx-snapshot_15.6.2mx14.tar.gz
 Files: 
- ea510e05aa291add44f9081a3f6949a7 5580077 mx-snapshot_15.6.2mx14.tar.gz
+ b9c1dc3261c916a18e28337188068430 16748286 mx-snapshot_15.6.2mx14.tar.gz

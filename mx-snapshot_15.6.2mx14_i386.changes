@@ -15,14 +15,14 @@ Changes:
  .
    * added some error checking
 Checksums-Sha1: 
- 626c5638c48653e2e672522dc848c933c37302ef 633 mx-snapshot_15.6.2mx14.dsc
- 6e0c1702febf12382f6d0e1e3da607f13347b481 5584550 mx-snapshot_15.6.2mx14.tar.gz
- cf289ac3f22425f2c65c70d20fe27fa2bd2564dc 5566590 mx-snapshot_15.6.2mx14_i386.deb
+ 5f08ce9a23b623c482b5e1f846a7a92dae4a63dd 636 mx-snapshot_15.6.2mx14.dsc
+ 1badafd32ba0fe4de30da35470ea7c34d1d434a8 16752370 mx-snapshot_15.6.2mx14.tar.gz
+ beb55684f3dbe36034c5ae8e1f6c4860bfc94ce6 5572658 mx-snapshot_15.6.2mx14_i386.deb
 Checksums-Sha256: 
- 625a826a900b0a3cffe0f6d952b462b8c95dcf6af6af69098f2bbf4d4671b38c 633 mx-snapshot_15.6.2mx14.dsc
- 94a902e638c4fb9ff5c2a1d35a61790041c5fde3f6d973c56ed8e4b470a49c8f 5584550 mx-snapshot_15.6.2mx14.tar.gz
- b4147af14c0596df95dbbd4cba26a44be5f72aff622ddf18a899a3da3a36f55d 5566590 mx-snapshot_15.6.2mx14_i386.deb
+ 1f6bd3a5929f832499f1802dd3535c34ff09d2803af582d7b26895f397bb9bb3 636 mx-snapshot_15.6.2mx14.dsc
+ 1982635ccac49e92b73d1d88b4db06342070bd239d25af78bacab5caaf239bc6 16752370 mx-snapshot_15.6.2mx14.tar.gz
+ 1c964ffc5cb74e8ebc0f329d8c99bb47130952a50cfbb8fce37291d306826caf 5572658 mx-snapshot_15.6.2mx14_i386.deb
 Files: 
- 7522d2e62e494012e3a6bb0d3ab0e91e 633 admin optional mx-snapshot_15.6.2mx14.dsc
- 606187fb92863a4c10fdd56bbf240cd6 5584550 admin optional mx-snapshot_15.6.2mx14.tar.gz
- 2dc9066d3a9a16faf6bfe147945fc8d9 5566590 admin optional mx-snapshot_15.6.2mx14_i386.deb
+ 5a1442ee11457db105e8cc7574acd5b4 636 admin optional mx-snapshot_15.6.2mx14.dsc
+ 1cf655b5b40507bdb72e4033707eef97 16752370 admin optional mx-snapshot_15.6.2mx14.tar.gz
+ c7002871bbfdcf0109bf62e130f01115 5572658 admin optional mx-snapshot_15.6.2mx14_i386.deb

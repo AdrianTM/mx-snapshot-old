@@ -14,9 +14,9 @@
     <message>
         <location filename="../mxsnapshot.ui" line="14"/>
         <location filename="../mxsnapshot.cpp" line="46"/>
-        <location filename="../mxsnapshot.cpp" line="90"/>
-        <location filename="../mxsnapshot.cpp" line="876"/>
-        <location filename="../mxsnapshot.cpp" line="968"/>
+        <location filename="../mxsnapshot.cpp" line="89"/>
+        <location filename="../mxsnapshot.cpp" line="865"/>
+        <location filename="../mxsnapshot.cpp" line="957"/>
         <source>MX Snapshot</source>
         <translation>MX Snapshot </translation>
     </message>
@@ -123,7 +123,7 @@
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="517"/>
-        <location filename="../mxsnapshot.cpp" line="972"/>
+        <location filename="../mxsnapshot.cpp" line="961"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
@@ -183,22 +183,22 @@
         <translation>La instantània es desarà per omissió a </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="191"/>
+        <location filename="../mxsnapshot.cpp" line="190"/>
         <source>Used space on / (root): </source>
         <translation>Espai usat a / (arrel): </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="194"/>
+        <location filename="../mxsnapshot.cpp" line="193"/>
         <source>Used space on /home: </source>
         <translation>Espai usat a /home: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="211"/>
+        <location filename="../mxsnapshot.cpp" line="210"/>
         <source>Free space on %1, where snapshot folder is placed: </source>
         <translation>Espai lliure a %1, on es desarà la instantània: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="213"/>
+        <location filename="../mxsnapshot.cpp" line="212"/>
         <source>The free space should be sufficient to hold the compressed data from / and /home
 
       If necessary, you can create more available space
@@ -213,7 +213,7 @@
 </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="225"/>
+        <location filename="../mxsnapshot.cpp" line="224"/>
         <source>The graphical text editor is set to %1, but it is not installed. Edit %2 and set the gui_editor variable to the editor of your choice. (examples: /usr/bin/gedit, /usr/bin/leafpad)
 
 Will install leafpad and use it this time.</source>
@@ -222,48 +222,48 @@ Will install leafpad and use it this time.</source>
 Aquest cop s&apos;instal·larà i usarà leafpad.</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="249"/>
+        <location filename="../mxsnapshot.cpp" line="248"/>
         <source>Installing </source>
         <translation>Instal·lant </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="264"/>
-        <location filename="../mxsnapshot.cpp" line="294"/>
-        <location filename="../mxsnapshot.cpp" line="359"/>
-        <location filename="../mxsnapshot.cpp" line="463"/>
+        <location filename="../mxsnapshot.cpp" line="263"/>
+        <location filename="../mxsnapshot.cpp" line="293"/>
+        <location filename="../mxsnapshot.cpp" line="358"/>
+        <location filename="../mxsnapshot.cpp" line="460"/>
         <location filename="../mxsnapshot.cpp" line="639"/>
         <location filename="../mxsnapshot.cpp" line="649"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="264"/>
-        <location filename="../mxsnapshot.cpp" line="463"/>
+        <location filename="../mxsnapshot.cpp" line="263"/>
+        <location filename="../mxsnapshot.cpp" line="460"/>
         <source>Could not install </source>
         <translation>No s&apos;ha pogut instal·lar </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="292"/>
+        <location filename="../mxsnapshot.cpp" line="291"/>
         <source>Could not find list of modules to put into the initrd</source>
         <translation>No s&apos;ha trobat la llista de mòduls per posar a initrd </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="293"/>
+        <location filename="../mxsnapshot.cpp" line="292"/>
         <source>Missing file:</source>
         <translation>Manca el fitxer: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="323"/>
+        <location filename="../mxsnapshot.cpp" line="322"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Copiant el sistema de fitxers del nou-iso: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="359"/>
+        <location filename="../mxsnapshot.cpp" line="358"/>
         <source>Could not open file: </source>
         <translation>No s&apos;ha pogut obrir el fitxer: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="381"/>
+        <location filename="../mxsnapshot.cpp" line="380"/>
         <source>Copying %1 modules into the initrd</source>
         <translation>Copiant %1 mòduls al initrd </translation>
     </message>
@@ -308,132 +308,132 @@ Aquest cop s&apos;instal·larà i usarà leafpad.</translation>
         <translation>Eliminant live-init-mx </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="756"/>
+        <location filename="../mxsnapshot.cpp" line="754"/>
         <source>Please wait.</source>
         <translation>Espereu, si us plau. </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="758"/>
+        <location filename="../mxsnapshot.cpp" line="756"/>
         <source>Please wait. Calculating used disk space...</source>
         <translation>Espereu, si us plau. Calculant l&apos;espai de disc usat...</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="805"/>
+        <location filename="../mxsnapshot.cpp" line="803"/>
         <source>Settings</source>
         <translation>Paràmetres </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="824"/>
+        <location filename="../mxsnapshot.cpp" line="813"/>
         <source>Snapshot will use the following settings:*</source>
         <translation>La instantània usarà aquests paràmetres:*</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="826"/>
+        <location filename="../mxsnapshot.cpp" line="815"/>
         <source>- Snapshot directory:</source>
         <translation>- Directori de la instantània: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="827"/>
+        <location filename="../mxsnapshot.cpp" line="816"/>
         <source>- Kernel to be used:</source>
         <translation>- Kernel a usar: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="828"/>
+        <location filename="../mxsnapshot.cpp" line="817"/>
         <source>*These settings can be changed by editing: </source>
         <translation>*Aquests paràmetres es poden canviar editant: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="833"/>
+        <location filename="../mxsnapshot.cpp" line="822"/>
         <source>Final chance</source>
         <translation>Darrera oportunitat </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="834"/>
+        <location filename="../mxsnapshot.cpp" line="823"/>
         <source>Snapshot now has all the information it needs to create an ISO from your running system.</source>
         <translation>La instantània ara té tota la informació necessària per crear una ISO a partir del vostre sistema en execució. </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="835"/>
+        <location filename="../mxsnapshot.cpp" line="824"/>
         <source>It will take some time to finish, depending on the size of the installed system and the capacity of your computer.</source>
         <translation>Cal un cert temps per acabar, depenent de la mida del vostre sistema instal·lat i de la potència de l&apos;ordinador. </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="836"/>
+        <location filename="../mxsnapshot.cpp" line="825"/>
         <source>OK to start?</source>
         <translation>D&apos;acord per començar?</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="844"/>
+        <location filename="../mxsnapshot.cpp" line="833"/>
         <source>Output</source>
         <translation>Sortida </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="852"/>
+        <location filename="../mxsnapshot.cpp" line="841"/>
         <source>Edit Boot Menu</source>
         <translation>Edita el Menú d&apos;Arrencada </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="853"/>
+        <location filename="../mxsnapshot.cpp" line="842"/>
         <source>The program will now pause to allow you to edit any files in the work directory. Select Yes to edit the boot menu or select No to bypass this step and continue creating the snapshot.</source>
         <translation>El programa ara farà una pausa per permetre-us editar fitxers al directori de treball. Trieu Sí per editar el menú d&apos;arrencada, o No per saltar aquest pas i continuar creant la instantània. </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="866"/>
+        <location filename="../mxsnapshot.cpp" line="855"/>
         <source>Success</source>
         <translation>Èxit</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="866"/>
+        <location filename="../mxsnapshot.cpp" line="855"/>
         <source>All finished!</source>
         <translation>Finalitzat!</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="867"/>
+        <location filename="../mxsnapshot.cpp" line="856"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="967"/>
+        <location filename="../mxsnapshot.cpp" line="956"/>
         <source>About MX Snapshot</source>
         <translation>Quant a MX Snapshot </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="968"/>
+        <location filename="../mxsnapshot.cpp" line="957"/>
         <source>Version: </source>
         <translation>Versió: </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="970"/>
+        <location filename="../mxsnapshot.cpp" line="959"/>
         <source>Program for creating a live-CD from the running system for MX Linux</source>
         <translation>Programa de MX Linux per crear un CD autònom a partir del sistema en execució </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="971"/>
+        <location filename="../mxsnapshot.cpp" line="960"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="973"/>
+        <location filename="../mxsnapshot.cpp" line="962"/>
         <source>License</source>
         <translation>Llicència</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="975"/>
+        <location filename="../mxsnapshot.cpp" line="964"/>
         <source>MX Snapshot License</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="981"/>
+        <location filename="../mxsnapshot.cpp" line="970"/>
         <source>MX Snapshot Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="989"/>
+        <location filename="../mxsnapshot.cpp" line="978"/>
         <source>Select Snapshot Directory</source>
         <translation>Trieu el directori de la instantània </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.cpp" line="992"/>
+        <location filename="../mxsnapshot.cpp" line="981"/>
         <source>The snapshot will be placed in </source>
         <translation>La instantània es desarà a </translation>
     </message>
