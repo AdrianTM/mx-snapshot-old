@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -95,11 +93,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passswords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ta opcja zresetuje hasła użytkowników &amp;quot;demo&amp;quot; i &amp;quot;root&amp;quot; do domyślnych haseł MX Linux i nie dokona kopii zapasowych jakichkolwiek danych prywatnych utworzonych użytkowników.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
@@ -274,7 +268,7 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="639"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="647"/>
@@ -284,7 +278,7 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="649"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="655"/>
@@ -389,7 +383,7 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="856"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="956"/>
@@ -419,12 +413,12 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="964"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="970"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="978"/>

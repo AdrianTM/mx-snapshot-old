@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ja">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ja" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -112,11 +110,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passswords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;このオプションは MX Linux のデフォルトになっている &amp;quot;demo&amp;quot; と &amp;quot;root&amp;quot; のパスワードをリセットし、作成されている個人アカウントのコピーは行いません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
@@ -291,7 +285,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="639"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="647"/>
@@ -301,7 +295,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="649"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="655"/>
@@ -406,7 +400,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="856"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="956"/>
@@ -436,12 +430,12 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="964"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="970"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="978"/>

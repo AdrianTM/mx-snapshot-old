@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="el">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -23,59 +21,59 @@
     <message>
         <location filename="../mxsnapshot.ui" line="33"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snapshot is a utility that creates a bootable image (ISO) of your working system that you can use for storage or distribution. You can continue working with undemanding applications while it is running.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snapshot είναι ένα βοηθητικό πρόγραμμα που δημιουργεί μια εικόνα εκκίνησης (ISO) του συστήματος εργασίας σας που μπορείτε να χρησιμοποιήσετε για αποθήκευση ή διανομή. Μπορείτε να συνεχίσετε να εργάζεστε με απαιτητικών εφαρμογών, ενώ βρίσκεται σε λειτουργία.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="43"/>
         <source>Used space on / (root) and /home partitions:</source>
-        <translation type="unfinished"></translation>
+        <translation>Χώρο που χρησιμοποιείται για την / (root) και /home:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="83"/>
         <source>Select a different snapshot directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιλέξτε ένα διαφορετικό κατάλογο </translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="182"/>
         <location filename="../mxsnapshot.ui" line="200"/>
         <location filename="../mxsnapshot.ui" line="233"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="246"/>
         <source>Edit Configuration File</source>
-        <translation type="unfinished"></translation>
+        <translation>Ρυθμίσεις ώς Root</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="276"/>
         <source>You can also exclude certain directories by ticking the common choices below, or by clicking on the button to directly edit /usr/lib/mx-snapshot/snapshot-exclude.list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Μπορείτε επίσης να εξαιρεθούν ορισμένες καταλόγους τσεκάροντας τις κοινές επιλογές παρακάτω, ή κάνοντας κλικ στο κουμπί για να επεξεργαστείτε άμεσα /usr/lib/mx-snapshot/snapshot-exclude.list</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="301"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Λήψεις</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="308"/>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;Εγγραφα</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="315"/>
         <source>All of the above</source>
-        <translation type="unfinished"></translation>
+        <translation>Ολα τα παραπανω</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="322"/>
         <source>Pictures</source>
-        <translation type="unfinished"></translation>
+        <translation>Εικόνες</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="329"/>
         <source>Music</source>
-        <translation type="unfinished"></translation>
+        <translation>Μουσική</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="336"/>
@@ -85,32 +83,32 @@
     <message>
         <location filename="../mxsnapshot.ui" line="343"/>
         <source>Videos</source>
-        <translation type="unfinished"></translation>
+        <translation>βίντεο</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="359"/>
         <source>Edit Exclusion File</source>
-        <translation type="unfinished"></translation>
+        <translation>Επεξεργασία αρχείων Exclude</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Η επιλογή αυτή θα επαναφέρει τα passwords &quot;demo&quot; και &quot;root&quot; στις προεπιλογές του MX Linux και δεν θα αντιγράψει τις προσωπικές τους λογαριασμούς που δημιουργούνται.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
         <source>Resetting accounts (for distribution to others)</source>
-        <translation type="unfinished"></translation>
+        <translation>Επαναφορά λογαριασμούς (για διανομή στους άλλους)</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="395"/>
         <source>Type of snapshot:</source>
-        <translation type="unfinished"></translation>
+        <translation>Τύπος snapshot:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="402"/>
         <source>Preserving accounts (for personal backup)</source>
-        <translation type="unfinished"></translation>
+        <translation>Διατήρηση λογαριασμών (για προσωπική δημιουργία αντιγράφων ασφαλείας)</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="514"/>
@@ -176,22 +174,22 @@
     <message>
         <location filename="../mxsnapshot.cpp" line="71"/>
         <source>The snapshot will be placed by default in </source>
-        <translation type="unfinished"></translation>
+        <translation>Το snapshot θα τοποθετηθεί από προεπιλογή σε</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="190"/>
         <source>Used space on / (root): </source>
-        <translation type="unfinished"></translation>
+        <translation>Χώρο που χρησιμοποιείται για την / (root):</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="193"/>
         <source>Used space on /home: </source>
-        <translation type="unfinished"></translation>
+        <translation>Χώρο που χρησιμοποιείται για την /</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="210"/>
         <source>Free space on %1, where snapshot folder is placed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ελεύθερος χώρος στο% 1, όπου το φάκελο σnapshot τοποθετείται:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="212"/>
@@ -201,19 +199,25 @@
       by removing previous snapshots and saved copies:
       %1 snapshots are taking up %2 of disk space.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ο ελεύθερος χώρος πρέπει να είναι επαρκής για να κρατήσει τα συμπιεσμένα δεδομένα από / και /home
+
+Εάν είναι απαραίτητο, μπορείτε να δημιουργήσετε περισσότερα διαθέσιμα space
+αφαιρώντας τα προηγούμενα στιγμιότυπα και αποθηκεύονται αντίγραφα:
+%1 snapshots καταλαμβάνουν %2 του χώρου στο δίσκο</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="224"/>
         <source>The graphical text editor is set to %1, but it is not installed. Edit %2 and set the gui_editor variable to the editor of your choice. (examples: /usr/bin/gedit, /usr/bin/leafpad)
 
 Will install leafpad and use it this time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το γραφικό επεξεργαστή κειμένου έχει οριστεί σε %1, αλλά δεν έχει εγκατασταθεί. Κάντε επεξεργασία %2 και ρυθμίστε την μεταβλητή gui_editor στο συντάκτη της επιλογής σας. (Παραδείγματα: /usr/bin/gedit, /usr/bin/leafpad)
+ 
+Θα εγκαταστήσει το leafpad και να το χρησιμοποιήσετε αυτή τη φορά.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="248"/>
         <source>Installing </source>
-        <translation type="unfinished"></translation>
+        <translation>Εγκατάσταση </translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="263"/>
@@ -229,82 +233,82 @@ Will install leafpad and use it this time.</source>
         <location filename="../mxsnapshot.cpp" line="263"/>
         <location filename="../mxsnapshot.cpp" line="460"/>
         <source>Could not install </source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η εγκατάσταση</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="291"/>
         <source>Could not find list of modules to put into the initrd</source>
-        <translation type="unfinished"></translation>
+        <translation>Δε βρεθηκε η λίστα των ενοτήτων για να μπει στο initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="292"/>
         <source>Missing file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Λείπει το αρχείο:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="322"/>
         <source>Copying the new-iso filesystem...</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγράφοντας το filesystem new-iso...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="358"/>
         <source>Could not open file: </source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατό το άνοιγμα του αρχείου:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="380"/>
         <source>Copying %1 modules into the initrd</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντιγραφή %1 ενοτήτων στο initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="637"/>
         <source>Squashing filesystem...</source>
-        <translation type="unfinished"></translation>
+        <translation>Συμπίεση αρχείων ...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="639"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η δημιουργία του αρχείου linuxfs, ελέγξτε αν έχετε αρκετό χώρο στο προορισμενο διαμέρισμα.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="647"/>
         <source>Creating CD/DVD image file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Δημιουργία CD/DVD αρχείο εικόνας ...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="649"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η δημιουργία του αρχείου ISO, ελέγξτε αν έχετε αρκετό χώρο στο προορισμενο διαμέρισμα.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="655"/>
         <source>Making hybrid iso</source>
-        <translation type="unfinished"></translation>
+        <translation>Κάνοντας υβριδικο ISO</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="673"/>
         <source>Making md5sum</source>
-        <translation type="unfinished"></translation>
+        <translation>Κάνοντας md5sum</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="684"/>
         <source>Cleaning...</source>
-        <translation type="unfinished"></translation>
+        <translation>Γίνεται εκκαθάριση</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="711"/>
         <source>Removing live-init-mx</source>
-        <translation type="unfinished"></translation>
+        <translation>Αφαίρεση του live-init-mx</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="754"/>
         <source>Please wait.</source>
-        <translation type="unfinished"></translation>
+        <translation>Παρακαλώ περιμένετε.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="756"/>
         <source>Please wait. Calculating used disk space...</source>
-        <translation type="unfinished"></translation>
+        <translation>Παρακαλώ περιμένετε. Υπολογισμός χώρο που χρησιμοποιείται στο δίσκο ...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="803"/>
@@ -314,57 +318,57 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="813"/>
         <source>Snapshot will use the following settings:*</source>
-        <translation type="unfinished"></translation>
+        <translation>Snapshot θα χρησιμοποιήσει τις παρακάτω ρυθμίσεις:*</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="815"/>
         <source>- Snapshot directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>- Κατάλογο Snapshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="816"/>
         <source>- Kernel to be used:</source>
-        <translation type="unfinished"></translation>
+        <translation>- Πυρήνα που θα χρησιμοποιηθεί:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="817"/>
         <source>*These settings can be changed by editing: </source>
-        <translation type="unfinished"></translation>
+        <translation>* Οι ρυθμίσεις αυτές μπορούν να τροποποιηθούν από την επεξεργασία:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="822"/>
         <source>Final chance</source>
-        <translation type="unfinished"></translation>
+        <translation>Τελευταία ευκαιρία</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="823"/>
         <source>Snapshot now has all the information it needs to create an ISO from your running system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Snapshot έχει όλες τις πληροφορίες που χρειάζεται για να δημιουργήσει ένα ISO από λειτουργία του συστήματός σας.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="824"/>
         <source>It will take some time to finish, depending on the size of the installed system and the capacity of your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Θα πάρει κάποιο χρόνο για να ολοκληρωθεί, ανάλογα με το μέγεθος του εγκατεστημένου συστήματος και την ικανότητα του υπολογιστή σας.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="825"/>
         <source>OK to start?</source>
-        <translation type="unfinished"></translation>
+        <translation>OK για να ξεκινήσετε;</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="833"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Έξοδος</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="841"/>
         <source>Edit Boot Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Επεξεργασία μενού Boot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="842"/>
         <source>The program will now pause to allow you to edit any files in the work directory. Select Yes to edit the boot menu or select No to bypass this step and continue creating the snapshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το πρόγραμμα τώρα θα σταματήσει να σας επιτρέψει να επεξεργαστείτε τα αρχεία στον κατάλογο εργασίας. Επιλέξτε Ναι για να επεξεργαστείτε το μενού εκκίνησης ή επιλέξτε Όχι για να παρακάμψετε αυτό το βήμα και να συνεχίσετε τη δημιουργία του snapshot.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="855"/>
@@ -374,12 +378,12 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="855"/>
         <source>All finished!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ολοκλήρωση</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="856"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Κλείσιμο</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="956"/>
@@ -394,7 +398,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="959"/>
         <source>Program for creating a live-CD from the running system for MX Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόγραμμα για τη δημιουργία ενός live-CD από το σύστημα λειτουργίας για το MX Linux</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="960"/>
@@ -409,22 +413,22 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="964"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδεια tου MX Snapshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="970"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Βοήθεια του MX Snapshot </translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="978"/>
         <source>Select Snapshot Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιλέξτε Κατάλογος Snpshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="981"/>
         <source>The snapshot will be placed in </source>
-        <translation type="unfinished"></translation>
+        <translation>Το snapshot θα τοποθετηθε </translation>
     </message>
 </context>
 </TS>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="nl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -95,11 +93,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passswords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deze optie zal &amp;quot;demo&amp;quot; en &amp;quot;root&amp;quot; wachtwoorden resetten naar de standaardwaarden van MX Linux en zal geen persoonlijke accounts die gecreëerd zijn kopieëren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deze optie zal &amp;quot;demo&amp;quot; en &amp;quot;root&amp;quot; wachtwoorden resetten naar de standaardwaarden van MX Linux en zal geen persoonlijke accounts die gecreëerd zijn kopieëren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
@@ -276,7 +270,7 @@ Zal leafpad installeren en dit keer gebruiken.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="639"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon geen linuxfs bestand creëren, controleer aub of u genoeg ruimte op de doelpartitie heeft.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="647"/>
@@ -286,7 +280,7 @@ Zal leafpad installeren en dit keer gebruiken.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="649"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon geen ISO bestand creëren, controleer aub of u genoeg ruimte op de doelpartitie heeft.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="655"/>
@@ -391,7 +385,7 @@ Zal leafpad installeren en dit keer gebruiken.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="856"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="956"/>
@@ -421,12 +415,12 @@ Zal leafpad installeren en dit keer gebruiken.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="964"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Snapshot Licentie</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="970"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Snapshot Hulp</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="978"/>

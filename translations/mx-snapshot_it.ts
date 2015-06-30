@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -23,7 +21,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="33"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snapshot is a utility that creates a bootable image (ISO) of your working system that you can use for storage or distribution. You can continue working with undemanding applications while it is running.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Snapshot è un utility che crea un immagine (ISO) avviabile del tuo attuale sistema che potrai conservare come copia di sicurezza o distribuire. Puoi continuare a lavorare con applicazioni leggere mentre il programma va avanti.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="43"/>
@@ -33,14 +31,14 @@
     <message>
         <location filename="../mxsnapshot.ui" line="83"/>
         <source>Select a different snapshot directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona una directory diversa per snapshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="182"/>
         <location filename="../mxsnapshot.ui" line="200"/>
         <location filename="../mxsnapshot.ui" line="233"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="246"/>
@@ -50,7 +48,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="276"/>
         <source>You can also exclude certain directories by ticking the common choices below, or by clicking on the button to directly edit /usr/lib/mx-snapshot/snapshot-exclude.list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Puoi escludere alcune directory barrando le scelte comuni qui sotto, oppure cliccando sul pulsante per editare direttamente il file /usr/lib/mx-snapshot/snapshot-exclude.list.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="301"/>
@@ -95,17 +93,17 @@
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Questa opzione resetterà le passwords &amp;quot;demo&amp;quot; e &amp;quot;root&amp;quot; a quelle di default di MX Linux e non copierà alcun accounts personale creato da te.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
         <source>Resetting accounts (for distribution to others)</source>
-        <translation type="unfinished"></translation>
+        <translation>Resettaggio degli accounts (per distribuire ad altri)</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="395"/>
         <source>Type of snapshot:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo di snapshot:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="402"/>
@@ -176,7 +174,7 @@
     <message>
         <location filename="../mxsnapshot.cpp" line="71"/>
         <source>The snapshot will be placed by default in </source>
-        <translation type="unfinished"></translation>
+        <translation>Snapshot verrà salvata di default in</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="190"/>
@@ -191,7 +189,7 @@
     <message>
         <location filename="../mxsnapshot.cpp" line="210"/>
         <source>Free space on %1, where snapshot folder is placed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Spazio libero su %1, dove la cartella della snapshot è localizzata: </translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="212"/>
@@ -201,14 +199,21 @@
       by removing previous snapshots and saved copies:
       %1 snapshots are taking up %2 of disk space.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Lo spazio libero dovrebbe essere sufficiente per contenere i dati compressi da / e da /home
+
+Se necessario, puoi creare più spazio disponibile
+rimuovendo precedenti snapshots e copie salvate:
+%1 snapshots occupano circa %2 di spazio del disco.
+</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="224"/>
         <source>The graphical text editor is set to %1, but it is not installed. Edit %2 and set the gui_editor variable to the editor of your choice. (examples: /usr/bin/gedit, /usr/bin/leafpad)
 
 Will install leafpad and use it this time.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;editor grafico di testo è impostato su %1, ma non è installato. Edita %2 e imposta la variabile gui_editor con l&apos;editor di tua scelta. (esempi: /usr/bin/gedit, /usr/bin/leafpad)
+
+Verrà installato leafpad e usato per questa volta.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="248"/>
@@ -234,7 +239,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="291"/>
         <source>Could not find list of modules to put into the initrd</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è stato possibile trovare una lista di moduli da inserire in initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="292"/>
@@ -244,7 +249,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="322"/>
         <source>Copying the new-iso filesystem...</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia del filesystem della nuova-iso ...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="358"/>
@@ -254,17 +259,17 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="380"/>
         <source>Copying %1 modules into the initrd</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia di %1 moduli in initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="637"/>
         <source>Squashing filesystem...</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressione del filesystem...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="639"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare il file linuxfs, verifica di avere spazio a sufficienza sulla partizione di destinazione.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="647"/>
@@ -274,7 +279,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="649"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare il file ISO, verifica di avere spazio a sufficienza sulla partizione di destinazione.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="655"/>
@@ -304,7 +309,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="756"/>
         <source>Please wait. Calculating used disk space...</source>
-        <translation type="unfinished"></translation>
+        <translation>Prego attendi. Calcolo dello spazio usato sul disco...</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="803"/>
@@ -319,7 +324,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="815"/>
         <source>- Snapshot directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>- Snapshot directory:</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="816"/>
@@ -339,12 +344,12 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="823"/>
         <source>Snapshot now has all the information it needs to create an ISO from your running system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Snapshot ha ora tutte le informazioni necessarie per creare una ISO del tuo attuale sistema in uso.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="824"/>
         <source>It will take some time to finish, depending on the size of the installed system and the capacity of your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ci vorrà abbastanza tempo per finire, in funzione della dimensione del sistema installato e della velocità del tuo computer</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="825"/>
@@ -364,7 +369,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="842"/>
         <source>The program will now pause to allow you to edit any files in the work directory. Select Yes to edit the boot menu or select No to bypass this step and continue creating the snapshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il programma ora andrà in pausa per permetterti di editare alcuni files nella directory di lavoro. Seleziona Yes per editare il menù del boot o seleziona No per bypassare questa fase e continuare a creare la snapshot.</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="855"/>
@@ -379,7 +384,7 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="856"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="956"/>
@@ -409,22 +414,22 @@ Will install leafpad and use it this time.</source>
     <message>
         <location filename="../mxsnapshot.cpp" line="964"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation>Licenza MX Snapshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="970"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Guida MX Snapshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="978"/>
         <source>Select Snapshot Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona la directory di Snapshot</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="981"/>
         <source>The snapshot will be placed in </source>
-        <translation type="unfinished"></translation>
+        <translation>La snapshot verrà salvata in</translation>
     </message>
 </context>
 </TS>
