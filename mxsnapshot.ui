@@ -505,7 +505,7 @@ color: rgb(0, 0, 0);</string>
      <item row="0" column="10">
       <widget class="QPushButton" name="buttonCancel">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -531,7 +531,7 @@ color: rgb(0, 0, 0);</string>
      <item row="0" column="1">
       <widget class="QPushButton" name="buttonHelp">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -570,7 +570,7 @@ color: rgb(0, 0, 0);</string>
      <item row="0" column="0">
       <widget class="QPushButton" name="buttonAbout">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -618,10 +618,16 @@ color: rgb(0, 0, 0);</string>
      <item row="0" column="8">
       <widget class="QPushButton" name="buttonNext">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
        <property name="toolTip">
         <string>Start scanning for shares</string>
@@ -643,10 +649,16 @@ color: rgb(0, 0, 0);</string>
      <item row="0" column="7">
       <widget class="QPushButton" name="buttonBack">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
        <property name="text">
         <string>&lt; Back</string>

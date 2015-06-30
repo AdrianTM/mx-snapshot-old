@@ -124,7 +124,7 @@ int mxsnapshot::runCmd(QString cmd)
 bool mxsnapshot::replaceStringInFile(QString oldtext, QString newtext, QString filepath)
 {
     QString cmd = QString("sed -i 's/%1/%2/g' %3").arg(oldtext).arg(newtext).arg(filepath);
-    if (system(cmd.toAscii()) != 0) {
+    if (system(cmd.toUtf8()) != 0) {
         return false;
     }
     return true;
@@ -278,7 +278,7 @@ void mxsnapshot::checkDirectories()
         QString path = snapshot_dir.absolutePath();
 
         QString cmd = QString("chmod 777 %1").arg(path);
-        system(cmd.toAscii());
+        system(cmd.toUtf8());
     }
 
     // Create a work_dir
@@ -298,19 +298,19 @@ void mxsnapshot::checkInitrdModules()
 void mxsnapshot::openInitrd(QString file, QString initrd_dir)
 {
     QString cmd = "mkdir -p " + initrd_dir;
-    system(cmd.toAscii());
+    system(cmd.toUtf8());
     cmd = "chmod a+rx " + initrd_dir;
-    system(cmd.toAscii());
+    system(cmd.toUtf8());
     QDir::setCurrent(initrd_dir);
     cmd = QString("gunzip -c %1 | cpio -idum").arg(file);
-    system(cmd.toAscii());
+    system(cmd.toUtf8());
 }
 
 void mxsnapshot::closeInitrd(QString initrd_dir, QString file)
 {
     QDir::setCurrent(initrd_dir);
     QString cmd = "(find . | cpio -o -H newc --owner root:root | gzip -9) >" + file;
-    system(cmd.toAscii());
+    system(cmd.toUtf8());
     makeMd5sum(work_dir + "/iso-template/antiX", "initrd.gz");
 }
 
@@ -383,10 +383,10 @@ void mxsnapshot::copyModules(QString to, QString from)
     for (QStringList::Iterator it = file_list.begin(); it != file_list.end(); ++it) {
         QString sub_dir, file_name;
         cmd = QString("basename $(dirname %1)").arg(*it);
-        sub_dir = to + "/" + getCmdOut(cmd.toAscii());
+        sub_dir = to + "/" + getCmdOut(cmd.toUtf8());
         dir.mkpath(sub_dir);
         cmd = QString("basename %1").arg(*it);
-        file_name = getCmdOut(cmd.toAscii());
+        file_name = getCmdOut(cmd.toUtf8());
         QFile::copy(*it, sub_dir + "/" + file_name);
     }
 }
@@ -425,7 +425,7 @@ void mxsnapshot::savePackageList(QString filename)
     filename.chop(4); //remove .iso
     filename = work_dir + "/iso-template/" + filename + "/package_list";
     QString cmd = "dpkg -l | grep \"ii\" | awk '{ print $2 }' >" + filename;
-    system(cmd.toAscii());
+    system(cmd.toUtf8());
 }
 
 // setup the environment before taking the snapshot
@@ -437,9 +437,9 @@ void mxsnapshot::setupEnv()
     }
     QDir dir;
     // create an empty fstab file
-    system("touch " + work_dir.toAscii() + "/fstabdummy");
+    system("touch " + work_dir.toUtf8() + "/fstabdummy");
     // mount empty fstab file
-    system("mount --bind " + work_dir.toAscii() + "/fstabdummy /etc/fstab");
+    system("mount --bind " + work_dir.toUtf8() + "/fstabdummy /etc/fstab");
 
     if (!live && !reset_accounts) {
         // copy minstall.desktop to Desktop on all accounts
@@ -470,36 +470,36 @@ void mxsnapshot::setupEnv()
         system("update-rc.d antiX-init defaults >/dev/null 2>&1");
 
         // copy files that need to be edited to work_dir
-        system("cp /etc/passwd " + work_dir.toAscii());
-        system("cp /etc/shadow " + work_dir.toAscii());
-        system("cp /etc/gshadow " + work_dir.toAscii());
-        system("cp /etc/group " + work_dir.toAscii());
-        system("cp /etc/lightdm/lightdm.conf " + work_dir.toAscii());
+        system("cp /etc/passwd " + work_dir.toUtf8());
+        system("cp /etc/shadow " + work_dir.toUtf8());
+        system("cp /etc/gshadow " + work_dir.toUtf8());
+        system("cp /etc/group " + work_dir.toUtf8());
+        system("cp /etc/lightdm/lightdm.conf " + work_dir.toUtf8());
 
         // mount root partition to work directory
         dir.mkpath(work_dir + "/ro_root");
-        system(("mount --bind / " + work_dir + "/ro_root").toAscii());
+        system(("mount --bind / " + work_dir + "/ro_root").toUtf8());
         // make it read-only
-        system(("mount -o remount,ro,bind " + work_dir + "/ro_root").toAscii());
+        system(("mount -o remount,ro,bind " + work_dir + "/ro_root").toUtf8());
 
         // mount empty fstab file
-        system("mount --bind " + work_dir.toAscii() + "/fstabdummy " + work_dir.toAscii() + "/ro_root/etc/fstab");
+        system("mount --bind " + work_dir.toUtf8() + "/fstabdummy " + work_dir.toUtf8() + "/ro_root/etc/fstab");
 
         // create work_dir/skel/Desktop
-        system("mkdir -p " + work_dir.toAscii() + "/skel/Desktop");
+        system("mkdir -p " + work_dir.toUtf8() + "/skel/Desktop");
         // copy /etc/skel on work_dir/skel
-        system("rsync -a /etc/skel/ " + work_dir.toAscii() + "/skel/");
+        system("rsync -a /etc/skel/ " + work_dir.toUtf8() + "/skel/");
         // copy minstall.desktop to work_dir/skel/Desktop/
-        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop/Installer.desktop 2>/dev/null");
-        system("cp /usr/share/applications/mx/minstall.desktop " + work_dir.toAscii() + "/skel/Desktop/Installer.desktop 2>/dev/null");
-        system("chmod +x " + work_dir.toAscii() + "/skel/Desktop/Installer.desktop");
+        system("cp /usr/share/applications/antix/minstall.desktop " + work_dir.toUtf8() + "/skel/Desktop/Installer.desktop 2>/dev/null");
+        system("cp /usr/share/applications/mx/minstall.desktop " + work_dir.toUtf8() + "/skel/Desktop/Installer.desktop 2>/dev/null");
+        system("chmod +x " + work_dir.toUtf8() + "/skel/Desktop/Installer.desktop");
         // mount ro_root/etc/skel
-        system("mount --bind " + work_dir.toAscii() + "/skel " + work_dir.toAscii() + "/ro_root/etc/skel");
+        system("mount --bind " + work_dir.toUtf8() + "/skel " + work_dir.toUtf8() + "/ro_root/etc/skel");
 
         // create dummyhome
         dir.mkpath(work_dir + "/dummyhome");
         // mount dummyhome on ro_root/home
-        system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toAscii());
+        system(("mount --bind " + work_dir + "/dummyhome " + work_dir + "/ro_root/home").toUtf8());
 
         // detect additional users
         QStringList users = listUsers();
@@ -512,19 +512,19 @@ void mxsnapshot::setupEnv()
         fixPermissions();
 
         // mount files over
-        system(("mount --bind " + work_dir + "/passwd " + work_dir + "/ro_root/etc/passwd").toAscii());
-        system(("mount --bind " + work_dir + "/shadow " + work_dir + "/ro_root/etc/shadow").toAscii());
-        system(("mount --bind " + work_dir + "/gshadow " + work_dir + "/ro_root/etc/gshadow").toAscii());
-        system(("mount --bind " + work_dir + "/group " + work_dir + "/ro_root/etc/group").toAscii());
-        system(("mount --bind " + work_dir + "/lightdm.conf " + work_dir + "/ro_root/etc/lightdm/lightdm.conf").toAscii());
+        system(("mount --bind " + work_dir + "/passwd " + work_dir + "/ro_root/etc/passwd").toUtf8());
+        system(("mount --bind " + work_dir + "/shadow " + work_dir + "/ro_root/etc/shadow").toUtf8());
+        system(("mount --bind " + work_dir + "/gshadow " + work_dir + "/ro_root/etc/gshadow").toUtf8());
+        system(("mount --bind " + work_dir + "/group " + work_dir + "/ro_root/etc/group").toUtf8());
+        system(("mount --bind " + work_dir + "/lightdm.conf " + work_dir + "/ro_root/etc/lightdm/lightdm.conf").toUtf8());
     }
 }
 
 // fix some permissions
 void mxsnapshot::fixPermissions()
 {
-    system("chgrp shadow " + work_dir.toAscii() + "/shadow");
-    system("chgrp shadow " + work_dir.toAscii() + "/gshadow");
+    system("chgrp shadow " + work_dir.toUtf8() + "/shadow");
+    system("chgrp shadow " + work_dir.toUtf8() + "/gshadow");
 }
 
 // generates pair root/root and demo/demo passwords and replaces them in ../etc/shadow
@@ -546,14 +546,14 @@ void mxsnapshot::resetAccount(QString user)
             replaceStringInFile(user1000, "demo", gfile);
             replaceStringInFile(user1000, "demo", grfile);
             replaceStringInFile(user1000, "demo", lfile);
-            system("sed -i -r '/autologin-user=demo/ s/^#+//' " + lfile.toAscii());
+            system("sed -i -r '/autologin-user=demo/ s/^#+//' " + lfile.toUtf8());
         }
     }
     // replace password in shadow file
     QString pass = getCmdOut("mkpasswd -m sha-512 " + user);
     cmd = QString("awk -F\":\" 'BEGIN{OFS=\":\"}{if ($1 == \"%1\") $2=\"%2\"; print}' " + sfile + ">" + sfile + ".tmp").arg(user).arg(pass);
-    system(cmd.toAscii());
-    system("mv " + sfile.toAscii() + ".tmp " + sfile.toAscii());
+    system(cmd.toUtf8());
+    system("mv " + sfile.toUtf8() + ".tmp " + sfile.toUtf8());
 }
 
 // list users that are available in /home and have a login shell
@@ -590,15 +590,15 @@ void mxsnapshot::resetOtherAccounts(QStringList users)
     // remove users from the files
     for (int i = 0; i < users.size(); ++i) {
         cmd = QString("sed -i '/^%1:/d' " + sfile).arg(users.at(i));
-        system(cmd.toAscii());
+        system(cmd.toUtf8());
         cmd = QString("sed -i '/^%1:/d' " + pfile).arg(users.at(i));
-        system(cmd.toAscii());
+        system(cmd.toUtf8());
         cmd = QString("sed -i '/^%1:/d' " + gfile).arg(users.at(i));
-        system(cmd.toAscii());
+        system(cmd.toUtf8());
         cmd = QString("sed -i '/^%1:/d' " + grfile).arg(users.at(i));
-        system(cmd.toAscii());
+        system(cmd.toUtf8());
         cmd = QString("sed -i -r -e \"s/:%1(,|$)/:/\" -e \"s/,%1(,|$)/\\1/\" " + grfile).arg(users.at(i));
-        system(cmd.toAscii());
+        system(cmd.toUtf8());
     }
 }
 
@@ -611,10 +611,10 @@ void mxsnapshot::createUser1000()
         // create demo user with UID=1000
         if (system("adduser --disabled-login --uid=1000 --no-create-home --gecos demo demo") == 0) {
             // copy needed files to work directory
-            system("cp /etc/passwd " + work_dir.toAscii());
-            system("cp /etc/shadow " + work_dir.toAscii());
-            system("cp /etc/gshadow " + work_dir.toAscii());
-            system("cp /etc/group " + work_dir.toAscii());
+            system("cp /etc/passwd " + work_dir.toUtf8());
+            system("cp /etc/shadow " + work_dir.toUtf8());
+            system("cp /etc/gshadow " + work_dir.toUtf8());
+            system("cp /etc/group " + work_dir.toUtf8());
             system("deluser demo");
         }
     }
@@ -691,20 +691,20 @@ void mxsnapshot::cleanUp()
     if (work_dir.contains("/mx-snapshot")) {
         // clean mount points if resetting accounts
         if (reset_accounts) {
-            system("umount " + work_dir.toAscii() + "/ro_root/etc/passwd >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/etc/shadow >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/etc/gshadow >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/etc/lightdm/lightdm.conf >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/home/demo >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/home >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/etc/fstab >/dev/null 2>&1");
-            system("umount " + work_dir.toAscii() + "/ro_root/etc/skel >/dev/null 2>&1");
-            if (system("umount -l " + work_dir.toAscii() + "/ro_root") != 0) {
+            system("umount " + work_dir.toUtf8() + "/ro_root/etc/passwd >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/etc/shadow >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/etc/gshadow >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/etc/lightdm/lightdm.conf >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/home/demo >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/home >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/etc/fstab >/dev/null 2>&1");
+            system("umount " + work_dir.toUtf8() + "/ro_root/etc/skel >/dev/null 2>&1");
+            if (system("umount -l " + work_dir.toUtf8() + "/ro_root") != 0) {
                 return; // exit if it cannot unmount /ro_root
             }
         }
-        system("rm " + work_dir.toAscii() + "/fstabdummy");
-        system("rm -r " + work_dir.toAscii());
+        system("rm " + work_dir.toUtf8() + "/fstabdummy");
+        system("rm -r " + work_dir.toUtf8());
     }
     if (!live) {
         // remove live-init-mx
@@ -844,7 +844,7 @@ void mxsnapshot::on_buttonNext_clicked()
             if (ans == QMessageBox::Yes) {
                 this->hide();
                 QString cmd = gui_editor.fileName() + " " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg";
-                system(cmd.toAscii());
+                system(cmd.toUtf8());
                 this->show();
             }
         }
@@ -873,7 +873,7 @@ void mxsnapshot::on_buttonEditConfig_clicked()
 {
     this->hide();
     checkEditor();
-    system((gui_editor.fileName() + " " + config_file.fileName()).toAscii());
+    system((gui_editor.fileName() + " " + config_file.fileName()).toUtf8());
     setup();
 }
 
@@ -881,7 +881,7 @@ void mxsnapshot::on_buttonEditExclude_clicked()
 {
     this->hide();
     checkEditor();
-    system((gui_editor.fileName() + " " + snapshot_excludes.fileName()).toAscii());
+    system((gui_editor.fileName() + " " + snapshot_excludes.fileName()).toUtf8());
     this->show();
 }
 
@@ -961,13 +961,13 @@ void mxsnapshot::on_buttonAbout_clicked()
     msgBox.addButton(tr("Cancel"), QMessageBox::AcceptRole); // because we want to display the buttons in reverse order we use counter-intuitive roles.
     msgBox.addButton(tr("License"), QMessageBox::RejectRole);
     if (msgBox.exec() == QMessageBox::RejectRole)
-        system("mx-viewer http://www.mepiscommunity.org/doc_mx/mx-snapshot-license.html '" + tr("MX Snapshot License").toAscii() + "'");
+        system("mx-viewer http://www.mepiscommunity.org/doc_mx/mx-snapshot-license.html '" + tr("MX Snapshot License").toUtf8() + "'");
 }
 
 // Help button clicked
 void mxsnapshot::on_buttonHelp_clicked()
 {
-    system("mx-viewer http://mepiscommunity.org/wiki/help-files/help-mx-save-system-iso-snapshot '" + tr("MX Snapshot Help").toAscii() + "'");
+    system("mx-viewer http://mepiscommunity.org/wiki/help-files/help-mx-save-system-iso-snapshot '" + tr("MX Snapshot Help").toUtf8() + "'");
 }
 
 // Select snapshot directory

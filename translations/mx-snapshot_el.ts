@@ -1,8 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="el" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="el">
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../main.cpp" line="53"/>
+        <location filename="../main.cpp" line="52"/>
         <source>You must run this program as root.</source>
         <translation>Πρέπει να τρέξετε αυτή την εφαρμογή ως Root.</translation>
     </message>
@@ -157,17 +159,17 @@
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.ui" line="627"/>
+        <location filename="../mxsnapshot.ui" line="633"/>
         <source>Start scanning for shares</source>
         <translation>Ξεκινήστε τη σάρωση για τις μετοχές </translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.ui" line="630"/>
+        <location filename="../mxsnapshot.ui" line="636"/>
         <source>Next &gt;</source>
         <translation>Επόμενο &gt;</translation>
     </message>
     <message>
-        <location filename="../mxsnapshot.ui" line="652"/>
+        <location filename="../mxsnapshot.ui" line="664"/>
         <source>&lt; Back</source>
         <translation>&lt; Πίσω </translation>
     </message>
