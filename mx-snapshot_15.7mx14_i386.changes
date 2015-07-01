@@ -15,14 +15,14 @@ Changes:
  .
    * update to qt5
 Checksums-Sha1: 
- 69d8f9d44c58997b3de62532864123b7f31a030b 625 mx-snapshot_15.7mx14.dsc
- 61c3360a040055487645ba03d9891ad1be2185b0 5585819 mx-snapshot_15.7mx14.tar.gz
- b31ab7ecc2c1c62d0d6fd45e904cd1ab4bdc5a9a 5578492 mx-snapshot_15.7mx14_i386.deb
+ 87f1626747891152d234ca8f65f3e8c90bfca2ca 641 mx-snapshot_15.7mx14.dsc
+ a5fae693bff8d0e12d8c4276853ded2e845d8bd6 5586058 mx-snapshot_15.7mx14.tar.gz
+ f0fe8cd65715ef1e1f5503311f52c31badb795ef 5578474 mx-snapshot_15.7mx14_i386.deb
 Checksums-Sha256: 
- df6ae764acca45641298fc6139e0132ee4e1f2c4bad648f849ea5c9a8e6e2e46 625 mx-snapshot_15.7mx14.dsc
- 8bb709fd02f73542ca0423e8e36b5fb21e6a5bc15bb0277c3c9fb7ebb0330e7b 5585819 mx-snapshot_15.7mx14.tar.gz
- 39d3c5c915c8c433310df30c6d44cb8e039198d24e17491ce663c9421a0e46ad 5578492 mx-snapshot_15.7mx14_i386.deb
+ 81acccf83613bb557a49f62a7d66861e47fae1a5f4c55ee7855b6d70ea0a2b5d 641 mx-snapshot_15.7mx14.dsc
+ 2503217059417d762711e935afc67e158442a894cf9ffc688fdfd19614c89875 5586058 mx-snapshot_15.7mx14.tar.gz
+ ffcc00b1f61a66853b00ed3c1dade5ae6d41b43200297ba7eb40c43c979f0c51 5578474 mx-snapshot_15.7mx14_i386.deb
 Files: 
- 645522691a0f88a25494eade551ed7c8 625 admin optional mx-snapshot_15.7mx14.dsc
- 44f4dbbcb78aa92c9e09b160e6fe74da 5585819 admin optional mx-snapshot_15.7mx14.tar.gz
- 6a6408bd76ffd511fe4374247d466064 5578492 admin optional mx-snapshot_15.7mx14_i386.deb
+ 7c668cd4e0bd84bfed74969d99953c38 641 admin optional mx-snapshot_15.7mx14.dsc
+ 91d3bfd599d49e89be9412c143a5254d 5586058 admin optional mx-snapshot_15.7mx14.tar.gz
+ 38fc22ba806756a97ba7d2071746175c 5578474 admin optional mx-snapshot_15.7mx14_i386.deb
