@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Tue, 30 Jun 2015 14:23:08 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source i386
+Version: 15.7mx15
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-snapshot - MX Snapshot
+Changes:
+ mx-snapshot (15.7mx15) mx; urgency=medium
+ .
+   * update to qt5
+Checksums-Sha1:
+ 95c835bd11284f4123d41de1a84e0c4b0feacd48 630 mx-snapshot_15.7mx15.dsc
+ 90b758b39e61aa8189173ab08f5bd7d216bc3291 5195260 mx-snapshot_15.7mx15.tar.xz
+ 85426efafba4c5e3c3ee3b7ca73d848bb6b70f41 5578306 mx-snapshot_15.7mx15_i386.deb
+Checksums-Sha256:
+ 22568e2295750df6c154f74640ba04cbeadb8b02b8ff6c2adf9af9f51f9034f1 630 mx-snapshot_15.7mx15.dsc
+ 713a01759e77116e6dcae373b37495204bb124f2160ee05a5893357f4bb1e391 5195260 mx-snapshot_15.7mx15.tar.xz
+ 77f57311b21c04db94068a52453e1ffa6570a9ba9e9f322de4c585d15df7bfe6 5578306 mx-snapshot_15.7mx15_i386.deb
+Files:
+ 29c34e4134de80ce3b78ed52524c3e87 630 admin optional mx-snapshot_15.7mx15.dsc
+ 0db0467d45a8bafd6ac266a0b7872806 5195260 admin optional mx-snapshot_15.7mx15.tar.xz
+ 52bdf1a2914165c6e93573d06db97fd2 5578306 admin optional mx-snapshot_15.7mx15_i386.deb
