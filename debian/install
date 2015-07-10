@@ -7,3 +7,4 @@ iso-template.tar.gz 	usr/lib/mx-snapshot
 translations/*.qm 	usr/share/mx-snapshot/locale
 mx-snapshot.png	usr/share/pixmaps/mx
 icons/*			usr/share/mx-snapshot/icons
+license.html		usr/share/doc/mx-snapshot
