@@ -49,7 +49,8 @@ mxsnapshot::mxsnapshot(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
 
     version = getVersion("mx-snapshot");
-    checkLive();
+    live = isLive();
+    i686 = isi686();
     setup();
     reset_accounts = false;
     listUsedSpace();
@@ -132,13 +133,15 @@ bool mxsnapshot::replaceStringInFile(QString oldtext, QString newtext, QString f
 }
 
 // Check if running from a live envoronment
-void mxsnapshot::checkLive()
+bool mxsnapshot::isLive()
 {
-    if (system("mountpoint -q /live/aufs") == 0 ) {
-        live = true;
-    } else {
-        live = false;
-    }
+    return (system("mountpoint -q /live/aufs") == 0 );
+}
+
+// Check if running from a 32bit environment
+bool mxsnapshot::isi686()
+{
+    return (getCmdOut("uname -m") == "i686");
 }
 
 // Get version of the program
@@ -315,8 +318,24 @@ void mxsnapshot::copyNewIso()
     QString cmd = "tar xf /usr/lib/mx-snapshot/iso-template.tar.gz";
     runCmd(cmd);
 
-    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir + "/iso-template/antiX/vmlinuz";
+    cmd = "cp /boot/vmlinuz-" + kernel_used + " " + work_dir + "/iso-template/antiX/vmlinuz";        
     runCmd(cmd);
+
+    if(i686) {
+        cmd = "cp /boot/vmlinuz-3.16.0-4-586 " + work_dir + "/iso-template/antiX/vmlinuz1";
+        runCmd(cmd);
+        // remove x64 template files
+        runCmd("rm " + work_dir + "/iso-template/boot/grub/grub.cfg_x64");
+        runCmd("rm " + work_dir + "/iso-template/boot/syslinux/syslinux.cfg_x64");
+        runCmd("rm " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg_x64");
+    } else {
+        // mv x64 template files over
+        runCmd("mv " + work_dir + "/iso-template/boot/grub/grub.cfg_x64" + work_dir + "/iso-template/boot/grub/grub.cfg");
+        runCmd("mv " + work_dir + "/iso-template/boot/syslinux/syslinux.cfg_x64" + work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
+        runCmd("mv " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg_x64" + work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
+    }
+    replaceMenuStrings();
+
     makeMd5sum(work_dir + "/iso-template/antiX", "vmlinuz");
 
     QString initrd_dir = work_dir + "/initrd";
@@ -324,66 +343,39 @@ void mxsnapshot::copyNewIso()
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
-        copyModules(mod_dir + "/" + kernel_used, "/lib/modules/" + kernel_used);
+        copyModules(mod_dir + "/" + kernel_used, kernel_used);
         closeInitrd(initrd_dir, work_dir + "/iso-template/antiX/initrd.gz");
+        if (i686) {
+            cmd = "cp " + work_dir + "/iso-template/antiX/initrd.gz" + " " + work_dir + "/iso-template/antiX/initrd.gz1";
+            system(cmd.toUtf8());
+        }
     }
 }
 
-// copyModules(mod_dir/kernel_used /lib/modules/kernel_used)
-void mxsnapshot::copyModules(QString to, QString from)
+// replace text in menu items in grub.cfg, syslinux.cfg, isolinux.cfg
+void mxsnapshot::replaceMenuStrings() {
+    if (i386) {
+        QString new_string = "MX-15_686-pae (" + getCmdOut("date +'%d %B %Y'") + ")";
+        replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/grub/grub.cfg");
+        replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
+        replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
+        new_string = "MX-15_586-non-pae (" + getCmdOut("date +'%d %B %Y'") + ")";
+        replaceStringInFile("custom-name-non-pae", new_string, work_dir + "/iso-template/boot/grub/grub.cfg");
+        replaceStringInFile("custom-name-non-pae", new_string, work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
+        replaceStringInFile("custom-name-non-pae", new_string, work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
+    } else {
+        QString new_string = "MX-15_x64 (" + getCmdOut("date +'%d %B %Y'") + ")";
+        replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/grub/grub.cfg");
+        replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
+        replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
+    }
+}
+
+// copyModules(mod_dir/kernel_used kernel_used)
+void mxsnapshot::copyModules(QString to, QString kernel)
 {
-    QString cmd = QString("copy-initrd-modules -t=%1").arg(to);
+    QString cmd = QString("copy-initrd-modules -t=%1 -k=%2").arg(to).arg(kernel);
     system(cmd.toUtf8());
-
-//    QStringList mod_list; // list of modules
-//    QString expr; // expression list for find
-
-//    // read list of modules from file
-//    if (initrd_modules_file.open(QIODevice::ReadOnly)) {
-//        QTextStream in(&initrd_modules_file);
-//        while (!in.atEnd()) {
-//            QString line = in.readLine();
-//            if (line != "") {
-//                mod_list.append(line);
-//            }
-//        }
-//        initrd_modules_file.close();
-//    } else {
-//        QMessageBox::critical(0, tr("Error"), tr("Could not open file: ") + initrd_modules_file.fileName());
-//        cleanUp();
-//        return qApp->exit(2);
-//    }
-//    // modify module names for find operation
-//    for (QStringList::Iterator it = mod_list.begin(); it != mod_list.end(); ++it) {
-//        QString mod_name;
-//        mod_name = *it;
-//        mod_name.replace(QRegExp("[_-]"), "[_-]"); // replace _ or - with [_-]
-//        mod_name.replace(QRegExp("$"), ".ko"); // add .ko at end of the name
-//        *it = mod_name;
-//    }
-//    expr = mod_list.join(" -o -name ");
-//    expr = "-name " + expr;
-
-//    QDir dir;
-//    dir.mkpath(to);
-
-//    // find modules from list in "from" directory
-//    QString cmd = QString("find %1 %2").arg(from).arg(expr);
-//    QString files = getCmdOut(cmd);
-//    QStringList file_list = files.split("\n");
-
-
-    //    ui->outputLabel->setText(tr("Copying %1 modules into the initrd").arg(file_list.count()));
-//    // copy modules to destination
-//    for (QStringList::Iterator it = file_list.begin(); it != file_list.end(); ++it) {
-//        QString sub_dir, file_name;
-//        cmd = QString("basename $(dirname %1)").arg(*it);
-//        sub_dir = to + "/" + getCmdOut(cmd.toUtf8());
-//        dir.mkpath(sub_dir);
-//        cmd = QString("basename %1").arg(*it);
-//        file_name = getCmdOut(cmd.toUtf8());
-//        QFile::copy(*it, sub_dir + "/" + file_name);
-//    }
 }
 
 // Create the output filename

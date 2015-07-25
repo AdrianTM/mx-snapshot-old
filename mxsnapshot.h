@@ -57,6 +57,7 @@ public:
 
     bool live;
     bool reset_accounts;
+    bool i686;
     QDir snapshot_dir;
     QDir lib_mod_dir;
     QFile config_file;
@@ -79,17 +80,18 @@ public:
     bool checkInstalled(QString package);
     bool replaceStringInFile(QString oldtext, QString newtext, QString filepath);
     bool createIso(QString filename);
+    bool isLive();
+    bool isi686();
     void loadSettings();
     void setup();
     void listUsedSpace();
-    void listFreeSpace();
-    void checkLive();
+    void listFreeSpace();    
     void checkEditor();
     void checkDirectories();
     void checkSaveWork();
     void openInitrd(QString file, QString initrd_dir);
     void closeInitrd(QString initrd_dir, QString file);
-    void copyModules(QString to, QString form);
+    void copyModules(QString to, QString kernel);
     void copyNewIso();
     void mkDir(QString filename);
     void savePackageList(QString filename);
@@ -100,6 +102,7 @@ public:
     void cleanUp();
     void makeMd5sum(QString folder, QString filename);
     void fixPermissions();
+    void replaceMenuStrings();
     QString getSnapshotSize();
     QString getFilename();
     QStringList listUsers();

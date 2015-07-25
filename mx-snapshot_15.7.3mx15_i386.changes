@@ -15,14 +15,14 @@ Changes:
  .
    * using copy-initrd-modules and installed-to-live scripts
 Checksums-Sha1:
- df14648e0314f14326d363c6fdf9ab15f8a00fe7 674 mx-snapshot_15.7.3mx15.dsc
- 3adfb64c25e1eadfe58d6ff44989cef4b3cb8f31 37345388 mx-snapshot_15.7.3mx15.tar.xz
- b20ec9481c3617109548235e3336dea845bbc017 9593058 mx-snapshot_15.7.3mx15_i386.deb
+ 2aa01ac774a3cabafa066bacf749c1fbab6e55b6 674 mx-snapshot_15.7.3mx15.dsc
+ 182d2c547c0d6c3572ff1932cba21bcee0d11c02 53780140 mx-snapshot_15.7.3mx15.tar.xz
+ 012340c5a9e1ec4ca8d5f05f1685670abe5a7fa0 9593788 mx-snapshot_15.7.3mx15_i386.deb
 Checksums-Sha256:
- db036757cbad680305ab2d9d46723ae57bb949b3a2f6c5f5bfe111eac3bf8108 674 mx-snapshot_15.7.3mx15.dsc
- b1e7f3afbcfbaaf623cbf4ed5fa18b0ac546d4a947f671ad3c80cdcd1c5c4de1 37345388 mx-snapshot_15.7.3mx15.tar.xz
- 0fe3f689421503538d2223f176cf09adb9cea65cece69effc54ae77814b25783 9593058 mx-snapshot_15.7.3mx15_i386.deb
+ fe3365a9d6213cfba7d87683abcd30d1ffbb105e4ea523c075f020749ad4c713 674 mx-snapshot_15.7.3mx15.dsc
+ c7576553caca79d7f59e6cad6ba8c21ec547d299cb7ce38ee6cb35a911c42893 53780140 mx-snapshot_15.7.3mx15.tar.xz
+ 19b467fa3c52193a14b140c4d53951b4de68700a6f4c6472c3b2743a920087a6 9593788 mx-snapshot_15.7.3mx15_i386.deb
 Files:
- 7dec4387f55d1792dc60e958a16143ed 674 admin optional mx-snapshot_15.7.3mx15.dsc
- 04c07471b46cce88284552bdd7ad8a35 37345388 admin optional mx-snapshot_15.7.3mx15.tar.xz
- f411710a705f13f39b987168c2bf427f 9593058 admin optional mx-snapshot_15.7.3mx15_i386.deb
+ c73a222b617c38e848fd597f4f783a12 674 admin optional mx-snapshot_15.7.3mx15.dsc
+ f1b22eb20f86bb7fd3d6b9f8e51a8f4a 53780140 admin optional mx-snapshot_15.7.3mx15.tar.xz
+ aaf5b988f7e1a3e65dac96d2ff03eb04 9593788 admin optional mx-snapshot_15.7.3mx15_i386.deb
