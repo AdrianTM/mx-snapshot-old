@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Sat, 25 Jul 2015 10:14:47 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source i386
+Version: 15.7.3mx15
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-snapshot - MX Snapshot
+Changes:
+ mx-snapshot (15.7.3mx15) mx; urgency=medium
+ .
+   * using copy-initrd-modules and installed-to-live scripts
+Checksums-Sha1:
+ df14648e0314f14326d363c6fdf9ab15f8a00fe7 674 mx-snapshot_15.7.3mx15.dsc
+ 3adfb64c25e1eadfe58d6ff44989cef4b3cb8f31 37345388 mx-snapshot_15.7.3mx15.tar.xz
+ b20ec9481c3617109548235e3336dea845bbc017 9593058 mx-snapshot_15.7.3mx15_i386.deb
+Checksums-Sha256:
+ db036757cbad680305ab2d9d46723ae57bb949b3a2f6c5f5bfe111eac3bf8108 674 mx-snapshot_15.7.3mx15.dsc
+ b1e7f3afbcfbaaf623cbf4ed5fa18b0ac546d4a947f671ad3c80cdcd1c5c4de1 37345388 mx-snapshot_15.7.3mx15.tar.xz
+ 0fe3f689421503538d2223f176cf09adb9cea65cece69effc54ae77814b25783 9593058 mx-snapshot_15.7.3mx15_i386.deb
+Files:
+ 7dec4387f55d1792dc60e958a16143ed 674 admin optional mx-snapshot_15.7.3mx15.dsc
+ 04c07471b46cce88284552bdd7ad8a35 37345388 admin optional mx-snapshot_15.7.3mx15.tar.xz
+ f411710a705f13f39b987168c2bf427f 9593058 admin optional mx-snapshot_15.7.3mx15_i386.deb

@@ -30,7 +30,7 @@
 #include <QScrollBar>
 #include <QTextStream>
 
-//#include <QDebug>
+#include <QDebug>
 
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
@@ -70,7 +70,6 @@ void mxsnapshot::loadSettings()
     snapshot_dir = settings.value("snapshot_dir", "/home/snapshot").toString();
     ui->labelSnapshot->setText(tr("The snapshot will be placed by default in ") + snapshot_dir.absolutePath());
     snapshot_excludes.setFileName(settings.value("snapshot_excludes", "/usr/local/share/excludes/mx-snapshot-exclude.list").toString());
-    initrd_modules_file.setFileName(settings.value("initrd_modules_file", "/usr/lib/mx-snapshot/initrd-modules.list").toString());
     snapshot_basename = settings.value("snapshot_basename", "snapshot").toString();
     make_md5sum = settings.value("make_md5sum", "no").toString();
     make_isohybrid = settings.value("make_isohybrid", "yes").toString();
@@ -287,16 +286,6 @@ void mxsnapshot::checkDirectories()
     work_dir = getCmdOut("mktemp -d " + snapshot_dir.absolutePath() + "/mx-snapshot-XXXXXXXX");
 }
 
-void mxsnapshot::checkInitrdModules()
-{
-    if (!initrd_modules_file.exists()) {
-        QString msg = tr("Could not find list of modules to put into the initrd") + "/n"\
-            + tr("Missing file:") + " " + initrd_modules_file.fileName();
-        QMessageBox::critical(0, tr("Error"), msg);
-        return qApp->exit(2);
-    }
-}
-
 void mxsnapshot::openInitrd(QString file, QString initrd_dir)
 {
     QString cmd = "mkdir -p " + initrd_dir;
@@ -343,54 +332,58 @@ void mxsnapshot::copyNewIso()
 // copyModules(mod_dir/kernel_used /lib/modules/kernel_used)
 void mxsnapshot::copyModules(QString to, QString from)
 {
-    QStringList mod_list; // list of modules
-    QString expr; // expression list for find
+    QString cmd = QString("copy-initrd-modules -t=%1").arg(to);
+    system(cmd.toUtf8());
 
-    // read list of modules from file
-    if (initrd_modules_file.open(QIODevice::ReadOnly)) {
-        QTextStream in(&initrd_modules_file);
-        while (!in.atEnd()) {
-            QString line = in.readLine();
-            if (line != "") {
-                mod_list.append(line);
-            }
-        }
-        initrd_modules_file.close();
-    } else {
-        QMessageBox::critical(0, tr("Error"), tr("Could not open file: ") + initrd_modules_file.fileName());
-        cleanUp();
-        return qApp->exit(2);
-    }
-    // modify module names for find operation
-    for (QStringList::Iterator it = mod_list.begin(); it != mod_list.end(); ++it) {
-        QString mod_name;
-        mod_name = *it;
-        mod_name.replace(QRegExp("[_-]"), "[_-]"); // replace _ or - with [_-]
-        mod_name.replace(QRegExp("$"), ".ko"); // add .ko at end of the name
-        *it = mod_name;
-    }
-    expr = mod_list.join(" -o -name ");
-    expr = "-name " + expr;
+//    QStringList mod_list; // list of modules
+//    QString expr; // expression list for find
 
-    QDir dir;
-    dir.mkpath(to);
+//    // read list of modules from file
+//    if (initrd_modules_file.open(QIODevice::ReadOnly)) {
+//        QTextStream in(&initrd_modules_file);
+//        while (!in.atEnd()) {
+//            QString line = in.readLine();
+//            if (line != "") {
+//                mod_list.append(line);
+//            }
+//        }
+//        initrd_modules_file.close();
+//    } else {
+//        QMessageBox::critical(0, tr("Error"), tr("Could not open file: ") + initrd_modules_file.fileName());
+//        cleanUp();
+//        return qApp->exit(2);
+//    }
+//    // modify module names for find operation
+//    for (QStringList::Iterator it = mod_list.begin(); it != mod_list.end(); ++it) {
+//        QString mod_name;
+//        mod_name = *it;
+//        mod_name.replace(QRegExp("[_-]"), "[_-]"); // replace _ or - with [_-]
+//        mod_name.replace(QRegExp("$"), ".ko"); // add .ko at end of the name
+//        *it = mod_name;
+//    }
+//    expr = mod_list.join(" -o -name ");
+//    expr = "-name " + expr;
 
-    // find modules from list in "from" directory
-    QString cmd = QString("find %1 %2").arg(from).arg(expr);
-    QString files = getCmdOut(cmd);
-    QStringList file_list = files.split("\n");
-    ui->outputLabel->setText(tr("Copying %1 modules into the initrd").arg(file_list.count()));
+//    QDir dir;
+//    dir.mkpath(to);
 
-    // copy modules to destination
-    for (QStringList::Iterator it = file_list.begin(); it != file_list.end(); ++it) {
-        QString sub_dir, file_name;
-        cmd = QString("basename $(dirname %1)").arg(*it);
-        sub_dir = to + "/" + getCmdOut(cmd.toUtf8());
-        dir.mkpath(sub_dir);
-        cmd = QString("basename %1").arg(*it);
-        file_name = getCmdOut(cmd.toUtf8());
-        QFile::copy(*it, sub_dir + "/" + file_name);
-    }
+//    // find modules from list in "from" directory
+//    QString cmd = QString("find %1 %2").arg(from).arg(expr);
+//    QString files = getCmdOut(cmd);
+//    QStringList file_list = files.split("\n");
+
+
+    //    ui->outputLabel->setText(tr("Copying %1 modules into the initrd").arg(file_list.count()));
+//    // copy modules to destination
+//    for (QStringList::Iterator it = file_list.begin(); it != file_list.end(); ++it) {
+//        QString sub_dir, file_name;
+//        cmd = QString("basename $(dirname %1)").arg(*it);
+//        sub_dir = to + "/" + getCmdOut(cmd.toUtf8());
+//        dir.mkpath(sub_dir);
+//        cmd = QString("basename %1").arg(*it);
+//        file_name = getCmdOut(cmd.toUtf8());
+//        QFile::copy(*it, sub_dir + "/" + file_name);
+//    }
 }
 
 // Create the output filename
@@ -809,7 +802,6 @@ void mxsnapshot::on_buttonNext_clicked()
         if (edit_boot_menu == "yes") {
             checkEditor();
         }
-        checkInitrdModules();
         kernel_used = getCmdOut("uname -r");
         ui->stackedWidget->setCurrentWidget(ui->settingsPage);
         ui->label_1->setText(tr("Snapshot will use the following settings:*"));

@@ -61,7 +61,6 @@ public:
     QDir lib_mod_dir;
     QFile config_file;
     QFile snapshot_excludes;
-    QFile initrd_modules_file;
     QFile gui_editor;
     QString version;
     QString work_dir;
@@ -87,7 +86,6 @@ public:
     void checkLive();
     void checkEditor();
     void checkDirectories();
-    void checkInitrdModules();
     void checkSaveWork();
     void openInitrd(QString file, QString initrd_dir);
     void closeInitrd(QString initrd_dir, QString file);
