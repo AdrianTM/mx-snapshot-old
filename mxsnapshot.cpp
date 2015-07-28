@@ -346,7 +346,7 @@ void mxsnapshot::copyNewIso()
         copyModules(mod_dir + "/" + kernel_used, kernel_used);
         closeInitrd(initrd_dir, work_dir + "/iso-template/antiX/initrd.gz");
         if (i686) {
-            cmd = "cp " + work_dir + "/iso-template/antiX/initrd.gz" + " " + work_dir + "/iso-template/antiX/initrd.gz1";
+            cmd = "cp " + work_dir + "/iso-template/antiX/initrd.gz" + " " + work_dir + "/iso-template/antiX/initrd1.gz";
             system(cmd.toUtf8());
         }
     }

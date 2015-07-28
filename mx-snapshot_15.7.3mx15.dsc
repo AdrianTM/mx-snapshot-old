@@ -10,8 +10,8 @@ Build-Depends: qt5-qmake, qt5-default, qttools5-dev-tools, debhelper (>= 7.0.50~
 Package-List:
  mx-snapshot deb admin optional arch=any
 Checksums-Sha1:
- 182d2c547c0d6c3572ff1932cba21bcee0d11c02 53780140 mx-snapshot_15.7.3mx15.tar.xz
+ 2eb57c7da6c5df663d15026e14f599f84963df0f 70219760 mx-snapshot_15.7.3mx15.tar.xz
 Checksums-Sha256:
- c7576553caca79d7f59e6cad6ba8c21ec547d299cb7ce38ee6cb35a911c42893 53780140 mx-snapshot_15.7.3mx15.tar.xz
+ e95a4cb9e87ebbf851f03bbd2c5966f7b4dbeb9adb97740e63d1417d7bd641fe 70219760 mx-snapshot_15.7.3mx15.tar.xz
 Files:
- f1b22eb20f86bb7fd3d6b9f8e51a8f4a 53780140 mx-snapshot_15.7.3mx15.tar.xz
+ c115a4ea3340376da00061ea8db5c0f3 70219760 mx-snapshot_15.7.3mx15.tar.xz
