@@ -354,7 +354,7 @@ void mxsnapshot::copyNewIso()
 
 // replace text in menu items in grub.cfg, syslinux.cfg, isolinux.cfg
 void mxsnapshot::replaceMenuStrings() {
-    if (i386) {
+    if (i686) {
         QString new_string = "MX-15_686-pae (" + getCmdOut("date +'%d %B %Y'") + ")";
         replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/grub/grub.cfg");
         replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
