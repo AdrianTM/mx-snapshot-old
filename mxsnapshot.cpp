@@ -330,9 +330,9 @@ void mxsnapshot::copyNewIso()
         runCmd("rm " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg_x64");
     } else {
         // mv x64 template files over
-        runCmd("mv " + work_dir + "/iso-template/boot/grub/grub.cfg_x64" + work_dir + "/iso-template/boot/grub/grub.cfg");
-        runCmd("mv " + work_dir + "/iso-template/boot/syslinux/syslinux.cfg_x64" + work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
-        runCmd("mv " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg_x64" + work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
+        runCmd("mv " + work_dir + "/iso-template/boot/grub/grub.cfg_x64 " + work_dir + "/iso-template/boot/grub/grub.cfg");
+        runCmd("mv " + work_dir + "/iso-template/boot/syslinux/syslinux.cfg_x64 " + work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
+        runCmd("mv " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg_x64 " + work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
     }
     replaceMenuStrings();
 
