@@ -1,3 +1,9 @@
+mx-snapshot (15.10mx15) mx; urgency=medium
+
+  * update with new ISO template
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 11 Oct 2015 14:39:27 -0400
+
 mx-snapshot (15.8mx15) mx; urgency=medium
 
   * various fixes

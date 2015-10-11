@@ -1,0 +1,116 @@
+# Global Property
+title-text: ""
+desktop-image: "Squam_Lake-grub.png"
+desktop-color: "#000000"
+terminal-font: "DejaVu Sans Mono Regular 16"
+
+# Show some text at the top of the screen
++ label {
+    left = 50%-160
+    top = 2%
+    width = 100%
+    text = "Welcome to MX-15 a3 (Fusion)!"
+    color = "white"
+    font = "Liberation Sans Regular 20"
+    align = "left"
+}
+
+# Show a title
++ label {
+    left = 50%-160
+    top = 21%
+    width = 100%
+    text = "MX-15 UEFI Live Session GRUB2 menu:"
+    color = "white"
+    font = "Liberation Sans Regular 20"
+    align = "left"
+}
+
+# Show the boot menu
++ boot_menu {
+    left = 50%-160
+    top = 30%
+    width = 60%
+    height = 30%
+    item_font = "Liberation Sans Regular 20"
+    item_color = "white"
+    selected_item_color = "lime"
+    item_height = 32
+    item_padding = 0
+    item_spacing = 0
+    icon_width = 0
+    icon_height = 0
+    icon_spacing = 0
+
+   #uncomment line below to add a selected item bar
+   #selected_item_pixmap_style = "select_*.png"
+
+   #uncomment line below to enable menu background
+   #menu_pixmap_style = "menu_bkg_*.png"
+
+   #uncomment lines below to also enable a scrollbar (the menu_pixmap_style line above also needs to be enabled)
+   #scrollbar = true
+   #scrollbar_width = 17
+   #scrollbar_thumb = "sb_th_*.png"
+   #scrollbar_frame = "sb_fr_*.png"
+}
+
+# Show a styled horizontal progress bar
++ progress_bar {
+    id = "__timeout__"
+    left = 50%-160
+    top = 63%
+    width = 25%
+    height = 18
+    bg_color = "201, 0, 22"
+    fg_color = "255, 99,9"
+    border_color = "255, 181, 21"
+    show_text = true
+    font = "Liberation Sans Regular 14"
+    text_color = "white"
+    #text = "@TIMEOUT_NOTIFICATION_SHORT@"
+    #text = "@TIMEOUT_NOTIFICATION_MIDDLE@"
+    text = "@TIMEOUT_NOTIFICATION_LONG@"
+    #text = "Highlighted entry will be executed automatically in %ds"
+    bar_style = "progress_bar_*.png"
+    highlight_style = "progress_highlight_*.png"
+}
+
+# Show informational messages below the boot menu
+# --using individual labels instead of a vbox
++ label {
+    left = 50%-160
+    top = 70%
+    width = 100%
+    text = "- Press the UP or DOWN arrow keys to highlight an entry  "
+    color = "yellow"
+    font = "Liberation Sans Regular 14"
+    align = "left"
+}
++ label {
+    left = 50%-160
+    top = 74%
+    width = 100%
+    text = "- Press the ENTER key to boot the highlighted entry      "
+    color = "yellow"
+    font = "Liberation Sans Regular 14" 
+    align = "left"
+}
++ label {
+    left = 50%-160
+    top = 78%
+    width = 100%
+    text = "- Press 'e' to edit the commands of the highlighted entry"
+    color = "yellow"
+    font = "Liberation Sans Regular 14"
+    align = "left"
+}
++ label {
+    left = 50%-160
+    top = 82%
+    width = 100%
+    text = "- Press 'c' for the GRUB command-line                    "
+    color = "yellow"
+    font = "Liberation Sans Regular 14"
+    align = "left"
+}
