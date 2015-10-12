@@ -130,6 +130,7 @@ private slots:
     void on_excludeDesktop_toggled(bool checked);
     void on_buttonSelectSnapshot_clicked();
     void on_radioRespin_clicked(bool checked);
+    void on_radioPersonal_clicked(bool checked);
 
 private:
     Ui::mxsnapshot *ui;

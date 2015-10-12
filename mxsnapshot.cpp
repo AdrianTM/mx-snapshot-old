@@ -934,6 +934,16 @@ void mxsnapshot::on_radioRespin_clicked(bool checked)
     }
 }
 
+void mxsnapshot::on_radioPersonal_clicked(bool checked)
+{
+    if (checked) {
+        if (ui->excludeAll->isChecked()) {
+            ui->excludeAll->click();
+        }
+    }
+}
+
+
 // About button clicked
 void mxsnapshot::on_buttonAbout_clicked()
 {
