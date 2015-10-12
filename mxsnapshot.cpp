@@ -428,12 +428,10 @@ void mxsnapshot::setupEnv()
     // mount empty fstab file
     system("mount --bind " + work_dir.toUtf8() + "/fstabdummy /etc/fstab");
 
-    if (!live && !reset_accounts) {
-        // copy minstall.desktop to Desktop on all accounts
-        system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/antix/minstall.desktop 2>/dev/null");
-        system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/mx/minstall.desktop 2>/dev/null");
-        system("chmod +x /home/*/Desktop/minstall.desktop");
-    }
+    // copy minstall.desktop to Desktop on all accounts
+    system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/antix/minstall.desktop 2>/dev/null");
+    system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/mx/minstall.desktop 2>/dev/null");
+    system("chmod +x /home/*/Desktop/minstall.desktop");
 
     // install mx-installer and live-init-mx if absent
     if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
@@ -699,6 +697,7 @@ void mxsnapshot::cleanUp()
         runCmd("apt-get -y purge live-init-mx");
         // remove installer icon
         system("rm /home/*/Desktop/minstall.desktop");
+        system("rm /etc/skel/Desktop/Installer.desktop");
     }
     ui->outputLabel->clear();
 }
