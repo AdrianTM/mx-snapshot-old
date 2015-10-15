@@ -30,7 +30,7 @@
 #include <QScrollBar>
 #include <QTextStream>
 
-#include <QDebug>
+//#include <QDebug>
 
 mxsnapshot::mxsnapshot(QWidget *parent) :
     QDialog(parent),
@@ -628,7 +628,7 @@ bool mxsnapshot::createIso(QString filename)
 
     // create the iso file
     QDir::setCurrent(work_dir + "/iso-template");
-    cmd = "genisoimage -allow-limited-size -l -V MX-14live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
+    cmd = "genisoimage -allow-limited-size -l -V MX-Linux-live -R -J -pad -no-emul-boot -boot-load-size 4 -boot-info-table -b boot/isolinux/isolinux.bin -c boot/isolinux/isolinux.cat -o " + snapshot_dir.absolutePath() + "/" + filename + " .";
     ui->outputLabel->setText(tr("Creating CD/DVD image file..."));
     if (runCmd(cmd) != 0) {
         QMessageBox::critical(0, tr("Error"), tr("Could not create ISO file, please check whether you have enough space on the destination partition."));
