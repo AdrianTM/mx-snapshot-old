@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -95,7 +93,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
@@ -236,25 +234,9 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
         <translation>Nie można zainstalować</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">Nie można znaleźć listy modułów do przekazania initrd</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">Brakujący plik:</translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Kopiowanie nowego systemu plików iso...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">Nie można otworzyć pliku:</translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Kopiowanie modułów %1 do initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>
@@ -264,7 +246,7 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="624"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="632"/>
@@ -274,7 +256,7 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="634"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="640"/>
@@ -379,7 +361,7 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="841"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="951"/>
@@ -409,12 +391,12 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="959"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="965"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="973"/>

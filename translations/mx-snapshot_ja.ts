@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ja">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ja" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -112,7 +110,7 @@
     <message>
         <location filename="../mxsnapshot.ui" line="385"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option will reset &amp;quot;demo&amp;quot; and &amp;quot;root&amp;quot; passwords to the MX Linux defaults and will not copy any personal accounts created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.ui" line="388"/>
@@ -253,25 +251,9 @@ leafpad をインストールし、それを使います。</translation>
         <translation>インストールできません</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">initrd に入れるモジュールリストが見つかりません</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">ファイル誤り: </translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>新たなファイルシステムをコピー中...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">ファイルを開けません: </translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">initrd の %1 モジュールをコピー中</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>
@@ -281,7 +263,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="624"/>
         <source>Could not create linuxfs file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="632"/>
@@ -291,7 +273,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="634"/>
         <source>Could not create ISO file, please check whether you have enough space on the destination partition.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="640"/>
@@ -396,7 +378,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="841"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="951"/>
@@ -426,12 +408,12 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="959"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Snapshot ライセンス</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="965"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Snapshot ヘルプ</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="973"/>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>QApplication</name>
     <message>
@@ -236,25 +234,9 @@ Wollen Sie leafpad installieren und diesmal benutzen?</translation>
         <translation>Konnte nicht installieren</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">Kann die Modulliste nicht finden, um sie in initrd einzufügen</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">Fehlende Datei:</translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Kopiere Dateisystem für neue ISO...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">Konnte Datei nicht öffnen:</translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Kopiere %1 Module in initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>
