@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Thu, 15 Oct 2015 11:07:38 -0400
+Source: mx-snapshot
+Binary: mx-snapshot
+Architecture: source i386
+Version: 15.10.1mx15
+Distribution: mx
+Urgency: medium
+Maintainer: Steven Pusser (Stevo) <maintainer@mepiscommunity.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-snapshot - MX Snapshot
+Changes:
+ mx-snapshot (15.10.1mx15) mx; urgency=medium
+ .
+   * minor fix
+Checksums-Sha1:
+ 2ba9df6ad9a6c4b992bb38bdd450c85373133f9d 678 mx-snapshot_15.10.1mx15.dsc
+ 850b85c92ea3b9e049ba43d4c00e48cb9fa43f52 29581300 mx-snapshot_15.10.1mx15.tar.xz
+ 09cae2f6431ba42eb55c4dd61c3f453fb67790cb 9694058 mx-snapshot_15.10.1mx15_i386.deb
+Checksums-Sha256:
+ c02fcd4c7548b5ff3ed16d6b7b122f54deb8031386a314daf9d3f14728ca68b0 678 mx-snapshot_15.10.1mx15.dsc
+ 2a3929f8f96161204ef88575674d3ded41818c9a2ddfa3003fbdfd83e441e38b 29581300 mx-snapshot_15.10.1mx15.tar.xz
+ 5cdba98d275aff0a6000014c8f6c7dff4fda68e47f5a0ab38df0c06103c3b450 9694058 mx-snapshot_15.10.1mx15_i386.deb
+Files:
+ 94e7b559635c2863930b15927df61472 678 admin optional mx-snapshot_15.10.1mx15.dsc
+ 227ec485cb975392678f1fb69da8dc02 29581300 admin optional mx-snapshot_15.10.1mx15.tar.xz
+ d4638d1d61797619aed571f5259de83f 9694058 admin optional mx-snapshot_15.10.1mx15_i386.deb
