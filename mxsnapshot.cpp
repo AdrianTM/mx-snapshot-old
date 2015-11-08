@@ -8,11 +8,7 @@
  *
  * This file is part of MX Snapshot.
  *
-<<<<<<< HEAD
- * MX Tools is free software: you can redistribute it and/or modify
-=======
  * MX Snapshot is free software: you can redistribute it and/or modify
->>>>>>> upstream/master
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -263,40 +259,12 @@ bool mxsnapshot::installPackage(QString package)
     connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
     proc->start("apt-get update");
     loop.exec();
-<<<<<<< HEAD
-    proc->start("apt-get install live-init-mx");
-    loop.exec();    
-    if (proc->exitCode() != 0) {
-        QMessageBox::critical(0, tr("Error"), tr("Could not install live-init-mx"));
-    }
-}
-
-// Installs live-init-mx package
-bool mxsnapshot::installLeafpad()
-{
-    QEventLoop loop;
-    ui->outputBox->clear();
-    ui->buttonNext->setDisabled(true);
-    ui->buttonBack->setDisabled(true);
-    this->show();
-    ui->stackedWidget->setCurrentIndex(2);
-    setConnections(timer, proc);
-    connect(proc, SIGNAL(finished(int)), &loop, SLOT(quit()));
-    proc->start("apt-get update");
-    loop.exec();
-    proc->start("apt-get install leafpad");
-=======
     proc->start("apt-get install " + package);
->>>>>>> upstream/master
     loop.exec();
     disconnectAll();
     this->hide();
     if (proc->exitCode() != 0) {
-<<<<<<< HEAD
-        QMessageBox::critical(0, tr("Error"), tr("Could not install leafpad"));
-=======
         QMessageBox::critical(0, tr("Error"), tr("Could not install ") + package);
->>>>>>> upstream/master
         return false;
     }
     this->show();
@@ -375,7 +343,7 @@ void mxsnapshot::copyNewIso()
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
-        copyModules(mod_dir + "/" + kernel_used, kernel_used);
+        copyModules(initrd_dir, kernel_used);
         closeInitrd(initrd_dir, work_dir + "/iso-template/antiX/initrd.gz");
         if (i686) {
             cmd = "cp " + work_dir + "/iso-template/antiX/initrd.gz" + " " + work_dir + "/iso-template/antiX/initrd1.gz";
@@ -396,45 +364,10 @@ void mxsnapshot::replaceMenuStrings() {
         replaceStringInFile("custom-name-non-pae", new_string, work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
         replaceStringInFile("custom-name-non-pae", new_string, work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
     } else {
-<<<<<<< HEAD
-        QMessageBox::critical(0, tr("Error"), tr("Could not open file: ") + initrd_modules_file.fileName());
-        return qApp->exit(2);
-    }
-    // modify module names for find operation
-    for (QStringList::Iterator it = mod_list.begin(); it != mod_list.end(); ++it) {
-        QString mod_name;
-        mod_name = *it;
-        mod_name.replace(QRegExp("[_-]"), "[_-]"); // replace _ or - with [_-]
-        mod_name.replace(QRegExp("$"), ".ko"); // add .ko at end of the name
-        *it = mod_name;
-    }
-    expr = mod_list.join(" -o -name ");
-    expr = "-name " + expr;
-
-    QDir dir;
-    dir.mkpath(to);
-
-    // find modules from list in "from" directory
-    QString cmd = QString("find %1 %2").arg(from).arg(expr);
-    QString files = getCmdOut(cmd);
-    QStringList file_list = files.split("\n");
-    ui->outputLabel->setText(tr("Copying %1 modules into the initrd").arg(file_list.count()));
-
-    // copy modules to destination
-    for (QStringList::Iterator it = file_list.begin(); it != file_list.end(); ++it) {
-        QString sub_dir, file_name;
-        cmd = QString("basename $(dirname %1)").arg(*it);
-        sub_dir = to + "/" + getCmdOut(cmd.toAscii());
-        dir.mkpath(sub_dir);
-        cmd = QString("basename %1").arg(*it);
-        file_name = getCmdOut(cmd.toAscii());
-        QFile::copy(*it, sub_dir + "/" + file_name);
-=======
         QString new_string = "MX-15_x64 (" + getCmdOut("date +'%d %B %Y'") + ")";
         replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/grub/grub.cfg");
         replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/syslinux/syslinux.cfg");
         replaceStringInFile("custom-name-pae", new_string, work_dir + "/iso-template/boot/isolinux/isolinux.cfg");
->>>>>>> upstream/master
     }
 }
 
@@ -500,19 +433,11 @@ void mxsnapshot::setupEnv()
     system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/mx/minstall.desktop 2>/dev/null");
     system("chmod +x /home/*/Desktop/minstall.desktop");
 
-    // install mx-installer and live-init-mx if absent
-    if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
+    // install mx-installer if absent
+    if (!checkInstalled("mx-installer")) {
         runCmd("apt-get update");
         if (!checkInstalled("mx-installer")) {
             runCmd("apt-get install mx-installer");
-        }
-        if (!checkInstalled("live-init-mx")) {
-            runCmd("apt-get install live-init-mx");
-            if (!checkInstalled("live-init-mx")) {
-                QMessageBox::critical(0, tr("Error"), tr("Could not install ") + "live-init-mx");
-                cleanUp();
-                return qApp->exit(2);
-            }
         }
     }
 
