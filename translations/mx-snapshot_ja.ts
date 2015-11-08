@@ -253,25 +253,9 @@ leafpad をインストールし、それを使います。</translation>
         <translation>インストールできません</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">initrd に入れるモジュールリストが見つかりません</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">ファイル誤り: </translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>新たなファイルシステムをコピー中...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">ファイルを開けません: </translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">initrd の %1 モジュールをコピー中</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>
@@ -396,7 +380,7 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="841"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="951"/>
@@ -426,12 +410,12 @@ leafpad をインストールし、それを使います。</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="959"/>
         <source>MX Snapshot License</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Snapshot ライセンス</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="965"/>
         <source>MX Snapshot Help</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Snapshot ヘルプ</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="973"/>

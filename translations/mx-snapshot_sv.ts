@@ -237,25 +237,9 @@ Kommer att installera leafpad och använda den.</translation>
         <translation>Kunde inte installera</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">Kunde inte hitta listan över moduler att infoga i initrd</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">Saknad fil:</translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Kopierar new-iso filsystem...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">Kunde inte öppna fil:</translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Kopierar %1 moduler till initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>

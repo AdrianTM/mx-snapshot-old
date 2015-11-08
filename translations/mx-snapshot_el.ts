@@ -236,25 +236,9 @@ Will install leafpad and use it this time.</source>
         <translation>Δεν ήταν δυνατή η εγκατάσταση</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">Δε βρεθηκε η λίστα των ενοτήτων για να μπει στο initrd</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">Λείπει το αρχείο:</translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Αντιγράφοντας το filesystem new-iso...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">Δεν ήταν δυνατό το άνοιγμα του αρχείου:</translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Αντιγραφή %1 ενοτήτων στο initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>

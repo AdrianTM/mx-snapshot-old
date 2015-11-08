@@ -237,25 +237,9 @@ Aquest cop s&apos;instal·larà i usarà leafpad.</translation>
         <translation>No s&apos;ha pogut instal·lar </translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">No s&apos;ha trobat la llista de mòduls per posar a initrd </translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">Manca el fitxer: </translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Copiant el sistema de fitxers del nou-iso: </translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">No s&apos;ha pogut obrir el fitxer: </translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Copiant %1 mòduls al initrd </translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>

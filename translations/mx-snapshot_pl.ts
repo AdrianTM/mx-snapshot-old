@@ -236,25 +236,9 @@ Tym razem zainstaluję i użyję programu leafpad.</translation>
         <translation>Nie można zainstalować</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">Nie można znaleźć listy modułów do przekazania initrd</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">Brakujący plik:</translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Kopiowanie nowego systemu plików iso...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">Nie można otworzyć pliku:</translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Kopiowanie modułów %1 do initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>

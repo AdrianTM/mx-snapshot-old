@@ -237,25 +237,9 @@ Verrà installato leafpad e usato per questa volta.</translation>
         <translation>Non è stato possibile installare</translation>
     </message>
     <message>
-        <source>Could not find list of modules to put into the initrd</source>
-        <translation type="vanished">Non è stato possibile trovare una lista di moduli da inserire in initrd</translation>
-    </message>
-    <message>
-        <source>Missing file:</source>
-        <translation type="vanished">File mancante:</translation>
-    </message>
-    <message>
         <location filename="../mxsnapshot.cpp" line="316"/>
         <source>Copying the new-iso filesystem...</source>
         <translation>Copia del filesystem della nuova-iso ...</translation>
-    </message>
-    <message>
-        <source>Could not open file: </source>
-        <translation type="vanished">Non è stato possibile aprire il file:</translation>
-    </message>
-    <message>
-        <source>Copying %1 modules into the initrd</source>
-        <translation type="vanished">Copia di %1 moduli in initrd</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="622"/>
@@ -350,7 +334,7 @@ Verrà installato leafpad e usato per questa volta.</translation>
     <message>
         <location filename="../mxsnapshot.cpp" line="810"/>
         <source>OK to start?</source>
-        <translation>Va bene iniziare?</translation>
+        <translation>Ok ad iniziare?</translation>
     </message>
     <message>
         <location filename="../mxsnapshot.cpp" line="818"/>
