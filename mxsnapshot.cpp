@@ -343,7 +343,7 @@ void mxsnapshot::copyNewIso()
 
     QString mod_dir = initrd_dir + "/lib/modules";
     if (initrd_dir != "") {
-        copyModules(mod_dir + "/" + kernel_used, kernel_used);
+        copyModules(initrd_dir, kernel_used);
         closeInitrd(initrd_dir, work_dir + "/iso-template/antiX/initrd.gz");
         if (i686) {
             cmd = "cp " + work_dir + "/iso-template/antiX/initrd.gz" + " " + work_dir + "/iso-template/antiX/initrd1.gz";
@@ -433,19 +433,11 @@ void mxsnapshot::setupEnv()
     system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/mx/minstall.desktop 2>/dev/null");
     system("chmod +x /home/*/Desktop/minstall.desktop");
 
-    // install mx-installer and live-init-mx if absent
-    if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
+    // install mx-installer if absent
+    if (!checkInstalled("mx-installer")) {
         runCmd("apt-get update");
         if (!checkInstalled("mx-installer")) {
             runCmd("apt-get install mx-installer");
-        }
-        if (!checkInstalled("live-init-mx")) {
-            runCmd("apt-get install live-init-mx");
-            if (!checkInstalled("live-init-mx")) {
-                QMessageBox::critical(0, tr("Error"), tr("Could not install ") + "live-init-mx");
-                cleanUp();
-                return qApp->exit(2);
-            }
         }
     }
 

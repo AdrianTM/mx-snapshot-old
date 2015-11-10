@@ -9,7 +9,7 @@ terminal-font: "DejaVu Sans Mono Regular 16"
     left = 50%-160
     top = 2%
     width = 100%
-    text = "Welcome to MX-15 a3 (Fusion)!"
+    text = "Welcome to MX-15 (Fusion)!"
     color = "white"
     font = "Liberation Sans Regular 20"
     align = "left"

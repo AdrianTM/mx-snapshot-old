@@ -22,24 +22,24 @@ set menu_color_highlight=black/light-gray
 
 menuentry "custom-name-pae" {
 	set gfxpayload=keep
-	linux	/antiX/vmlinuz quiet disable_srv=LX
+	linux	/antiX/vmlinuz quiet load=aufs nosysv=LX
 	initrd	/antiX/initrd.gz
 }
 
 menuentry "Custom Boot (with menus)" {
 	set gfxpayload=keep
-	linux	/antiX/vmlinuz quiet menus disable_srv=LX
+	linux	/antiX/vmlinuz quiet menus load=aufs nosysv=LX
 	initrd	/antiX/initrd.gz
 }
 menuentry "Safe Video Mode" {
 	set gfxpayload=keep
-	linux	/antiX/vmlinuz quiet nomodeset xdrvr=vesa disable_srv=LX
+	linux	/antiX/vmlinuz quiet nomodeset xorg=safe load=aufs nosysv=LX
 	initrd	/antiX/initrd.gz
 }
 
 menuentry "Failsafe Boot" {
 	set gfxpayload=keep
-	linux	/antiX/vmlinuz quiet load=all nomodeset xdrvr=vesa disable_srv=LX
+	linux	/antiX/vmlinuz quiet failsafe nomodeset nosysv=LX
 	initrd	/antiX/initrd.gz
 }
 

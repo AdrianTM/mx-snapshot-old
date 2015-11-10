@@ -1,4 +1,4 @@
-UI gfxboot gfxtheme isolinux.msg
+UI gfxboot gfx-cpio isolinux.msg
 timeout 600
 
 default live
@@ -6,21 +6,9 @@ default live
 MENU TITLE Welcome to MX-15 (Fusion)
 
 LABEL live
-    MENU LABEL custom-name-pae
+    MENU LABEL custom-name
     KERNEL /antiX/vmlinuz
-    APPEND quiet disable_srv=LX 
-    INITRD /antiX/initrd.gz
-
-LABEL safe
-    MENU LABEL Safe_Video_Mode
-    KERNEL /antiX/vmlinuz
-    APPEND quiet nomodeset xdrvr=vesa disable_srv=LX
-    INITRD /antiX/initrd.gz
-
-LABEL failsafe
-    MENU LABEL Failsafe_Boot
-    KERNEL /antiX/vmlinuz
-    APPEND quiet load=all nomodeset disable_srv=LX 
+    APPEND quiet load=aufs nosysv=LX 
     INITRD /antiX/initrd.gz
 
 LABEL harddisk
