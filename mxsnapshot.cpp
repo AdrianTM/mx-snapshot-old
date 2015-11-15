@@ -684,9 +684,6 @@ void mxsnapshot::cleanUp()
         system("rm -r " + work_dir.toUtf8());
     }
     if (!live) {
-        // remove live-init-mx
-        ui->outputLabel->setText(tr("Removing live-init-mx"));
-        runCmd("apt-get -y purge live-init-mx");
         // remove installer icon
         system("rm /home/*/Desktop/minstall.desktop");
         system("rm /etc/skel/Desktop/Installer.desktop");

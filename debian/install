@@ -8,4 +8,3 @@ mx-snapshot.png	usr/share/pixmaps/mx
 icons/*			usr/share/mx-snapshot/icons
 license.html		usr/share/doc/mx-snapshot
 scripts/copy-initrd-modules	usr/sbin
-scripts/mx-installed-to-live	usr/sbin
