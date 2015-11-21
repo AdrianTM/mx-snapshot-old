@@ -20,12 +20,6 @@ menuentry "custom-name-pae" {
 	initrd	/antiX/initrd.gz
 }
 
-menuentry "custom-name-non-pae" {
-	set gfxpayload=keep
-	linux	/antiX/vmlinuz1 quiet nosysv=X
-	initrd	/antiX/initrd.gz
-}
-
 menuentry "Failsafe" {
 	set gfxpayload=keep
 	linux	/antiX/vmlinuz quiet failsafe
