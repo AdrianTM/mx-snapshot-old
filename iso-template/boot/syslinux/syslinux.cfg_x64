@@ -1,4 +1,4 @@
-UI gfxboot gfx-cpio isolinux.msg
+UI gfxboot gfx-cpio syslinux.msg
 timeout 600
 
 default live
@@ -8,7 +8,7 @@ MENU TITLE Welcome to MX-15 (Fusion)
 LABEL live
     MENU LABEL custom-name
     KERNEL /antiX/vmlinuz
-    APPEND quiet load=aufs nosysv=LX 
+    APPEND quiet nosysv=X 
     INITRD /antiX/initrd.gz
 
 LABEL harddisk
