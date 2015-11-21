@@ -1,12 +1,20 @@
-mx-snapshot (15.11mx15) mx; urgency=medium
+mx-snapshot (15.10.5mx15) mx; urgency=medium
 
-  * Some updates 
+  * Removed x64 grub/syslinu/isolinux.cfg files.
 
- -- Adrian <adrian@mxlinux.org>  Sun, 15 Nov 2015 16:59:28 -0500
+ -- anticapitalista <antiX@operamail.com>  Sat, 21 Nov 2015 14:14:00 +0200
+
+
+mx-snapshot (15.10.4mx15) mx; urgency=medium
+
+  * Brought up to date to beta2
+
+ -- anticapitalista <antiX@operamail.com>  Mon, 16 Nov 2015 17:14:00 +0200
+
 
 mx-snapshot (15.10.3mx15) mx; urgency=medium
 
-  * Brought up to date to beta1
+  * Brought up to date to a5
 
  -- anticapitalista <antiX@operamail.com>  Thu, 29 Oct 2015 16:26:00 +0200
 

@@ -433,11 +433,19 @@ void mxsnapshot::setupEnv()
     system("echo /home/*/Desktop | xargs -n1 cp /usr/share/applications/mx/minstall.desktop 2>/dev/null");
     system("chmod +x /home/*/Desktop/minstall.desktop");
 
-    // install mx-installer if absent
-    if (!checkInstalled("mx-installer")) {
+    // install mx-installer and live-init-mx if absent
+    if (!checkInstalled("mx-installer") || !checkInstalled("live-init-mx")) {
         runCmd("apt-get update");
         if (!checkInstalled("mx-installer")) {
             runCmd("apt-get install mx-installer");
+        }
+        if (!checkInstalled("live-init-mx")) {
+            runCmd("apt-get install live-init-mx");
+            if (!checkInstalled("live-init-mx")) {
+                QMessageBox::critical(0, tr("Error"), tr("Could not install ") + "live-init-mx");
+                cleanUp();
+                return qApp->exit(2);
+            }
         }
     }
 
@@ -684,6 +692,9 @@ void mxsnapshot::cleanUp()
         system("rm -r " + work_dir.toUtf8());
     }
     if (!live) {
+        // remove live-init-mx
+        ui->outputLabel->setText(tr("Removing live-init-mx"));
+        runCmd("apt-get -y purge live-init-mx");
         // remove installer icon
         system("rm /home/*/Desktop/minstall.desktop");
         system("rm /etc/skel/Desktop/Installer.desktop");
